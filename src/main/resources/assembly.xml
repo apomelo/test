@@ -32,8 +32,8 @@
             <outputDirectory>lib</outputDirectory>
         </fileSet>
         <fileSet>
-            <directory>src/main/resources/config</directory>
-            <outputDirectory>config</outputDirectory>
+            <directory>src/main/resources/conf</directory>
+            <outputDirectory>conf</outputDirectory>
             <fileMode>0644</fileMode>
         </fileSet>
     </fileSets>

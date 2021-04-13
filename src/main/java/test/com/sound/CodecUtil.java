@@ -5,7 +5,6 @@ import org.restcomm.media.core.spi.dsp.Codec;
 import org.restcomm.media.core.spi.memory.Frame;
 import org.restcomm.media.core.spi.memory.Memory;
 
-
 import javax.sound.sampled.AudioFormat;
 import java.io.ByteArrayOutputStream;
 import java.io.File;

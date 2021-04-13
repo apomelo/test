@@ -27,6 +27,8 @@ public class StringRegexTest {
         test12();
         test13();
         test14();
+        test15();
+        test16();
     }
 
     /**
@@ -189,5 +191,42 @@ public class StringRegexTest {
         System.out.println("test14: ");
         System.out.println("result: " + result);
         System.out.println("sentence: " + sentence);
+    }
+
+    /**
+     * 替换空白字符的字符串为 \u0001
+     */
+    public static void test15() {
+        String sentence = "#_1234asdf#*  \t你好123\n\n\t  ";
+        String regex = "\\s";
+        String result = sentence.replaceAll(regex, "\u0001");
+        System.out.println("test15: ");
+        System.out.println("result: " + result);
+        System.out.println("sentence: " + sentence);
+    }
+
+    /**
+     * 替换空白字符的字符串 \u0001
+     */
+    public static void test16() {
+        String sentence = "#_1234asdf#*  \t你好123\n\n\t  ";
+        String regex = "\\s+";
+        String result = sentence.replaceAll(regex, "\u0001");
+        System.out.println("test16: ");
+        System.out.println("result: " + result);
+        System.out.println("sentence: " + sentence);
+    }
+
+    /**
+     * 在没给字符串前加指定字符
+     */
+    public static void test17() {
+        String reg = "(?=[\\s\\S])";
+//        String reg = "/?=[\\s\\S]/";
+        String s = "aslkgfi";
+        logger.info("{}", s);
+        logger.info("{}", s.replaceAll(reg, "\\\\")); // replacement相当于省略了$0
+        String str = "_我a哈哈问c?&%aa_";
+        System.out.println (str.replaceAll(reg, "\\\\$0"));
     }
 }

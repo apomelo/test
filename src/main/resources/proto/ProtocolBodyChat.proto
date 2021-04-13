@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package test.com.google.protobuf.proto;
+option java_outer_classname = "ProtocolBodyChat";
+
+message BodyChat {
+    int32 from = 1;
+    int32 chatType = 2;
+    int32 roomId = 3;
+    repeated int32 to = 4;
+    repeated string text = 5;
+}

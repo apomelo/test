@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package test.com.google.protobuf.proto;
+option java_outer_classname = "PrivateProtocol";
+
+import "ProtocolHead.proto";
+import "ProtocolBodyOne.proto";
+import "ProtocolBodyChat.proto";
+
+message Protocol {
+    Head head = 1;
+    oneof body {
+        BodyOne bodyOne = 11;
+        BodyChat bodyChat = 12;
+    }
+}

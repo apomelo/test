@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package test.com.google.protobuf.proto;
+option java_outer_classname = "ProtocolBodyOne";
+
+message BodyOne {
+    Action action = 1;
+    Corpus corpus = 2;
+    int32 page = 3;
+    repeated float floatListTest = 4;
+    repeated Corpus corpusListTest = 5;
+    repeated Action actionListTest = 6;
+}
+
+message Action {
+    /**
+     * type类型：
+     */
+    int32 type = 1;
+}
+enum Corpus {
+    NIL = 0;
+    UNIVERSAL = 1;
+    WEB = 2;
+    IMAGES = 3;
+    LOCAL = 4;
+    NEWS = 5;
+    PRODUCTS = 6;
+    VIDEO = 7;
+}

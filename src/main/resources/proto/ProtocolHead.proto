@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package test.com.google.protobuf.proto;
+option java_outer_classname = "ProtocolHead";
+
+message Head {
+    /**
+     * Body类型
+     */
+    Type type = 1;
+}
+
+enum Type {
+    NONE = 0;
+    BODY_ONE = 11;
+    BODY_CHAT = 12;
+}

@@ -6,8 +6,13 @@ package test.java.lang;
 public class ExceptionTest {
 
     public static void main(String[] args) {
-        int i = 1;
+//        test1();
+//        test2();
+        test3();
+    }
 
+    public static void test1() {
+        int i = 1;
         try {
             i = i / 0;
         } catch (Exception e) {
@@ -18,4 +23,21 @@ public class ExceptionTest {
         }
     }
 
+    public static void test2() {
+        int i = 1;
+        try {
+            i = i / 0;
+        } finally {
+            System.out.println("1111111");
+        }
+    }
+
+    public static void test3() {
+        int i = 1;
+        try {
+            i = i * 0;
+        } finally {
+            System.out.println("222222");
+        }
+    }
 }

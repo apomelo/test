@@ -1,17 +1,32 @@
 #!/bin/bash
-source /etc/profile
+
+echo "get into start.sh"
+
 echo "PATH="$PATH
 echo "JAVA_HOME="$JAVA_HOME
 
 cd `dirname $0`
 BIN_DIR=`pwd`
+echo "pwd: "`pwd`
 cd ..
 DEPLOY_DIR=`pwd`
-CONF_DIR=${DEPLOY_DIR}/config
+echo "pwd: "`pwd`
+CONF_DIR=${DEPLOY_DIR}/conf
 
-SERVER_NAME=`sed '/application.name/!d;s/.*=//' config/application.properties | tr -d '\r'`
-LOGS_DIR=`sed '/log.dir/!d;s/.*=//' config/application.properties | tr -d '\r'`
-MAIN_CLASS=`sed '/main.class/!d;s/.*=//' config/application.properties | tr -d '\r'`
+SERVER_NAME=`sed '/application.name/!d;s/.*=//' conf/application.properties | tr -d '\r'`
+LOG_DIR=`sed '/<property name="LOG_HOME">/!d;s/.*">//;s/<.*//' conf/log4j2.xml | tr -d '\r'`
+if [ ! -n "$LOG_DIR" ]; then
+    LOG_DIR=${DEPLOY_DIR}/log
+fi
+if [ ! -d "$LOG_DIR" ]; then
+    echo "$LOG_DIR is not exist"
+    mkdir "$LOG_DIR"
+    echo "create dir: $LOG_DIR"
+fi
+# 一或多个jar包时用下面方式运行
+MAIN_CLASS=`sed '/main.class/!d;s/.*=//' conf/application.properties | tr -d '\r'`
+# 只有一个jar包时可以用下面方式运行，但不推荐
+# JAR_OPTION='-jar test.jar'
 
 PID=`ps auxf | grep java | grep "$CONF_DIR" | grep -v grep |awk '{print $2}'`
 if [ -n "$PID" ]; then
@@ -24,23 +39,23 @@ LIB_DIR=${DEPLOY_DIR}/lib
 LIB_JARS=`ls ${LIB_DIR}|grep .jar|awk '{print "'${LIB_DIR}'/"$0}'|tr "\n" ":"`
 
 
-JAVA_OPTS="-server -Dfile.encoding=utf-8 -Duser.timezone=GMT+08 -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -Xloggc:${LOGS_DIR}/gc.log -XX:+HeapDumpOnOutOfMemoryError -XX:ErrorFile=${LOGS_DIR}/java_error_%p.log -XX:HeapDumpPath=${LOGS_DIR}/java_error.hprof"
+JAVA_OPTS="-server -Dfile.encoding=utf-8 -Duser.timezone=GMT+08 -XX:+PrintGCDetails -XX:+PrintGCDateStamps -Xloggc:${LOG_DIR}/gc.log -XX:+HeapDumpOnOutOfMemoryError -XX:ErrorFile=${LOG_DIR}/java_error_%p.log -XX:HeapDumpPath=${LOG_DIR}/java_error.hprof "
 
 JAVA_DEBUG_OPTS=""
 if [ "$1" = "debug" ]; then
-    JAVA_DEBUG_OPTS=" -Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,address=8000,server=y,suspend=n "
+    JAVA_DEBUG_OPTS="-Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,address=8000,server=y,suspend=n "
 fi
 
 JAVA_JMX_OPTS=""
 if [ "$1" = "jmx" ]; then
-    JAVA_JMX_OPTS="-Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=5010 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false  "
+    JAVA_JMX_OPTS="-Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=5010 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false "
 fi
 
-JAVA_MEM_OPTS="-Xms256m -Xmx256m -Xmn128m -Xss256k -XX:PermSize=64M -XX:MaxPermSize=128m -XX:SurvivorRatio=8"
+JAVA_MEM_OPTS="-Xmx256m -Xms256m -Xmn128m -Xss256k -XX:SurvivorRatio=8 "
 
 export LD_LIBRARY_PATH=${DEPLOY_DIR}/lib
 echo -e "Starting the $SERVER_NAME ...\c"
-nohup java $JAVA_OPTS $JAVA_MEM_OPTS $JAVA_DEBUG_OPTS $JAVA_JMX_OPTS -classpath $CONF_DIR:$LIB_JARS ${MAIN_CLASS} 1>${LOGS_DIR}/stdout  2>&1 &
+nohup java $JAVA_OPTS $JAVA_MEM_OPTS $JAVA_DEBUG_OPTS $JAVA_JMX_OPTS -classpath $CONF_DIR:$LIB_JARS $MAIN_CLASS 1>$LOG_DIR/stdout  2>&1 &
 
 COUNT=0
 NUM=0
@@ -59,5 +74,3 @@ fi
 echo "OK!"
 PID=`ps auxf | grep java | grep "$CONF_DIR" | grep -v grep  | awk '{print $2}'`
 echo "PID: $PID"
-
-
