@@ -10,14 +10,20 @@ public class IntegerTest {
     private static final Logger logger = LoggerFactory.getLogger(IntegerTest.class);
 
     public static void main(String[] args) {
-        testSrc();
+        parseInteger();
+        getChars();
+        rotateLeft();
 //        testInstance();
 //        testDivide();
 //        testParse();
 //        testVariable();
     }
 
-    private static void testSrc() {
+    private static void parseInteger() {
+        logger.info("parseInt: {}", Integer.parseInt("2147483648", 10));
+    }
+
+    private static void getChars() {
         int i = 65536;
         int q = (i * 52429) >>> (16+3);
         logger.info("q: {}", q);
@@ -27,6 +33,18 @@ public class IntegerTest {
         logger.info("q2: {}", q2);
         int q3 = q1 >> (16+3);
         logger.info("q3: {}", q3);
+    }
+
+    private static void rotateLeft() {
+        int i = 0b11001100;
+        int distance = 2;
+
+        int g = i << distance;
+        int h = i >>> -distance;
+        logger.info("g: {}", g);
+        logger.info("h: {}", h);
+        int j = g | h;
+        logger.info("j: {}", j);
     }
 
     private static void testInstance() {
