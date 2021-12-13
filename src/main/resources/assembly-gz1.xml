@@ -12,7 +12,7 @@
 <assembly xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
           xmlns="http://maven.apache.org/plugins/ASSEMBLY/2.0.0"
           xsi:schemaLocation="http://maven.apache.org/plugins/ASSEMBLY/2.0.0 http://maven.apache.org/xsd/assembly-2.0.0.xsd">
-    <id>deploy</id>
+    <id>deploy1</id>
     <formats>
         <format>tar.gz</format>
     </formats>
