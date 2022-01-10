@@ -19,7 +19,8 @@ public class HashMapTest {
     private static final Logger logger = LoggerFactory.getLogger(HashMapTest.class);
     public static void main(String[] args) {
 //        test();
-        testStreamSort();
+        testStreamSort1();
+        testStreamSort2();
 //        testStreamMax();
 //        testMerge();
 //        testKeySetRemove();
@@ -40,7 +41,7 @@ public class HashMapTest {
         logger.info("{}", JSON.parseObject("{}", HashMap.class));
     }
 
-    public static void testStreamSort() {
+    public static void testStreamSort1() {
         Map<Integer, Integer> map = new HashMap<>();
         map.put(1, 8);
         map.put(2, 7);
@@ -56,6 +57,23 @@ public class HashMapTest {
         List<Integer> result2 = map.entrySet().stream().sorted(Map.Entry.<Integer, Integer>comparingByValue().reversed()).map(Map.Entry::getKey).collect(Collectors.toList());
         logger.info("result2: {}", result2);
         List<Integer> result3 = map.entrySet().stream().sorted(Map.Entry.comparingByValue()).map(Map.Entry::getKey).collect(Collectors.toList());
+        logger.info("result3: {}", result3);
+    }
+
+    public static void testStreamSort2() {
+        Map<Integer, Integer[]> map = new HashMap<>();
+        map.put(0, new Integer[] {0, 0});
+        map.put(1, new Integer[] {8, 3});
+        map.put(2, new Integer[] {7, 4});
+        map.put(3, new Integer[] {6, 1});
+        map.put(4, new Integer[] {5, 2});
+        logger.info("map: {}", map);
+        Map<Integer, Integer[]> result = new LinkedHashMap<>();
+        map.entrySet().stream().filter(e -> e.getValue()[0] > 0).sorted((e1,e2) -> e1.getValue()[0].compareTo(e2.getValue()[0])).forEachOrdered(e -> result.put(e.getKey(), e.getValue()));
+        logger.info("result: {}", result);
+        LinkedHashMap<Integer, Integer[]> result2 = map.entrySet().stream().filter(e -> e.getValue()[0] > 0).sorted(Comparator.comparing(e -> e.getValue()[0])).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
+        logger.info("result2: {}", result2);
+        List<Integer> result3 = map.entrySet().stream().filter(e -> e.getValue()[0] > 0).sorted(Comparator.comparing(e -> e.getValue()[0])).map(e -> e.getKey()).collect(Collectors.toList());
         logger.info("result3: {}", result3);
     }
 
