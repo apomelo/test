@@ -123,11 +123,15 @@ public class HashMapTest {
         Map<Integer, Integer> map = new HashMap<>();
         map.put(1, 8);
         map.put(2, 7);
+        map.put(3, 6);
+        map.put(4, 6);
         Set<Integer> keySet = map.keySet();
         logger.info("keySet: {}", keySet);
         keySet.remove(1);
         logger.info("keySet1: {}", keySet);
-        logger.info("keySet2: {}", map.keySet());
+        logger.info("map1: {}", map);
+        map.keySet().removeIf(i -> i >= 3);
+        logger.info("map2: {}", map);
     }
 
     public static void testGroupingBy() {
