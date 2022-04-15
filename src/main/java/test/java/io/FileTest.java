@@ -3,11 +3,11 @@ package test.java.io;
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import test.ApplicationConfig;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.util.ResourceBundle;
 
 /**
  * Created by C on 2019/4/10.
@@ -23,11 +23,7 @@ public class FileTest {
 
     private static void test1() throws IOException {
 //        String pre = new String(("D:" + File.separator).getBytes(), "UTF-8");
-        ResourceBundle resourceBundle = ResourceBundle.getBundle("application");
-        String pre = resourceBundle.getString("file.path");
-        if (!pre.endsWith(File.separator)) {
-            pre += File.separator;
-        }
+        String pre = ApplicationConfig.getInstance().getFilePath();
         String name1 = new String("测试1.raw".getBytes(), "UTF-8");
         String name2 = new String("测试2.raw".getBytes(), "GBK");
         String name3 = new String("测试3.raw".getBytes(), "ISO-8859-1");

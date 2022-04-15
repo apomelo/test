@@ -18,7 +18,6 @@
             <unpackOptions>
                 <excludes>
                     <exclude>proto/**</exclude>
-                    <exclude>data/**</exclude>
                 </excludes>
             </unpackOptions>
         </dependencySet>
@@ -30,7 +29,6 @@
             <unpackOptions>
                 <excludes>
                     <exclude>proto/**</exclude>
-                    <exclude>data/**</exclude>
                 </excludes>
             </unpackOptions>
         </dependencySet>

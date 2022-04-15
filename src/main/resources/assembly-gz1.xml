@@ -36,6 +36,11 @@
             <outputDirectory>conf</outputDirectory>
             <fileMode>0644</fileMode>
         </fileSet>
+        <fileSet>
+            <directory>data</directory>
+            <outputDirectory>data</outputDirectory>
+            <fileMode>0644</fileMode>
+        </fileSet>
     </fileSets>
     <dependencySets>
         <dependencySet>

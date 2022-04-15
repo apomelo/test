@@ -11,14 +11,24 @@
 
     <fileSets>
         <fileSet>
-            <directory>src/main/resources/bin/boot</directory>
+            <directory>src/main/resources/bin</directory>
             <outputDirectory>bin</outputDirectory>
             <fileMode>0755</fileMode>
         </fileSet>
         <fileSet>
+            <directory>src/main/resources/version</directory>
+            <outputDirectory>version</outputDirectory>
+            <fileMode>0666</fileMode>
+        </fileSet>
+        <fileSet>
             <directory>src/main/resources/${profiles.active}</directory>
             <outputDirectory>conf</outputDirectory>
-            <fileMode>0755</fileMode>
+            <fileMode>0644</fileMode>
+        </fileSet>
+        <fileSet>
+            <directory>data</directory>
+            <outputDirectory>data</outputDirectory>
+            <fileMode>0644</fileMode>
         </fileSet>
     </fileSets>
     <files>

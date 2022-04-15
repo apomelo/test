@@ -1,4 +1,4 @@
-package test.SingleInstance;
+package test.singleinstance;
 
 /**
  * Created by C on 2018/11/16.
