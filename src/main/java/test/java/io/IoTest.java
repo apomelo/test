@@ -18,6 +18,12 @@ public class IoTest {
 
     public static void main(String[] args) {
         String filePath = ApplicationConfig.getInstance().getFilePath();
+        StringBuilder stringBuilder1 = readIo(filePath);
+        writeIo(filePath, stringBuilder1);
+        StringBuilder stringBuilder2 = readNio(filePath);
+        writeNio(filePath, stringBuilder2);
+        channelCopy(filePath);
+        transferFromOrTo(filePath);
     }
 
     private static StringBuilder readIo(String prePath) {
@@ -29,14 +35,12 @@ public class IoTest {
         try {
             is = new BufferedInputStream(new FileInputStream(filePath));
             byte[] buffer = new byte[1024];
-            int read = is.read(buffer);
-            while (read != mark) {
-                for (int i = 0; i < read; i++) {
-                    stringBuilder.append((char)buffer[i]);
-                }
-                read = is.read(buffer);
+            int readLength;
+            ByteArrayOutputStream  byteArrayOutputStream = new ByteArrayOutputStream();
+            while ((readLength = is.read(buffer)) != mark) {
+                byteArrayOutputStream.write(buffer, 0, readLength);
             }
-
+            stringBuilder.append(byteArrayOutputStream.toString("UTF-8"));
             logger.info("文件 {} 的内容是: {}", fileName, stringBuilder);
         } catch (IOException e) {
             logger.info("exception=", e);
@@ -52,7 +56,30 @@ public class IoTest {
         return stringBuilder;
     }
 
-    public StringBuilder readNio(String prePath) {
+    private static void writeIo(String prePath, StringBuilder stringBuilder) {
+        String fileName = "io-io-out.txt";
+        String filePath = prePath + fileName;
+        OutputStream os = null;
+        try {
+            byte[] bytes = stringBuilder.toString().getBytes(StandardCharsets.UTF_8);
+            logger.info("bytes长度: {}", bytes.length);
+            os = new BufferedOutputStream(new FileOutputStream(filePath));
+            os.write(bytes);
+            logger.info("写入文件: {}", bytes.length);
+        } catch (IOException e) {
+            logger.info("exception=", e);
+        } finally {
+            if (os != null) {
+                try {
+                    os.close();
+                } catch (IOException e) {
+                    logger.info("exception=", e);
+                }
+            }
+        }
+    }
+
+    private static StringBuilder readNio(String prePath) {
         FileInputStream fis = null;
         StringBuilder stringBuilder = new StringBuilder();
         int mark = -1;
@@ -63,20 +90,22 @@ public class IoTest {
             FileChannel channel = fis.getChannel();
             // 分配空间
             ByteBuffer byteBuffer = ByteBuffer.allocate(1024);
-            // 从channel中读取数据到buffer
-            int read = channel.read(byteBuffer);
 
-            while (read != mark) {
+            // 从channel中读取数据到buffer
+            int read;
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            while ((read = channel.read(byteBuffer)) != mark) {
                 // 翻转缓冲区，position设置为0，limit设置为之前position的值
                 byteBuffer.flip();
-                while (byteBuffer.hasRemaining()) {
-                    stringBuilder.append((char)byteBuffer.get());
-                }
+                byte[] temp = new byte[read];
+//                byte[] temp = new byte[byteBuffer.remaining()];
+                byteBuffer.get(temp);
+                byteArrayOutputStream.write(temp);
 
                 byteBuffer.compact();
-                read = channel.read(byteBuffer);
             }
 
+            stringBuilder.append(byteArrayOutputStream.toString("UTF-8"));
             logger.info("文件 {} 的内容是: {}", fileName, stringBuilder);
         } catch (IOException e) {
             logger.info("exception=", e);
@@ -119,6 +148,93 @@ public class IoTest {
             if (fos != null) {
                 try {
                     fos.close();
+                } catch (IOException e) {
+                    logger.info("exception=", e);
+                }
+            }
+        }
+    }
+
+    private static void channelCopy(String prePath) {
+        String inFileName = "io.txt";
+        String outFileName = "io-channel-copy.txt";
+        String inFilePath = prePath + inFileName;
+        String outFilePath = prePath + outFileName;
+        FileInputStream fis = null;
+        FileOutputStream fos = null;
+        try {
+            fis= new FileInputStream(inFilePath);
+            fos = new FileOutputStream(outFilePath);
+            FileChannel inChannel = fis.getChannel();
+            FileChannel outChannel = fos.getChannel();
+            ByteBuffer byteBuffer = ByteBuffer.allocate(1);
+            while (inChannel.read(byteBuffer) != -1) {
+                byteBuffer.flip();
+                outChannel.write(byteBuffer);
+                //清空重置
+                byteBuffer.clear();
+            }
+        } catch (IOException e) {
+            logger.info("exception=", e);
+        } finally {
+            if (fis != null) {
+                try {
+                    fis.close();
+                } catch (IOException e) {
+                    logger.info("exception=", e);
+                }
+            }
+            if (fos != null) {
+                try {
+                    fos.close();
+                } catch (IOException e) {
+                    logger.info("exception=", e);
+                }
+            }
+        }
+    }
+
+    private static void transferFromOrTo(String prePath) {
+        String inFileName = "io.txt";
+        String outFileName1 = "io-transfer-from.txt";
+        String outFileName2 = "io-transfer-to.txt";
+        String inFilePath = prePath + inFileName;
+        String outFilePath1 = prePath + outFileName1;
+        String outFilePath2 = prePath + outFileName2;
+        FileInputStream fis = null;
+        FileOutputStream fos1 = null;
+        FileOutputStream fos2 = null;
+        try {
+            fis= new FileInputStream(inFilePath);
+            fos1 = new FileOutputStream(outFilePath1);
+            fos2 = new FileOutputStream(outFilePath2);
+            FileChannel inChannel = fis.getChannel();
+            FileChannel outChannel1 = fos1.getChannel();
+            FileChannel outChannel2 = fos2.getChannel();
+            // transferFrom方法，从哪拷贝，从哪个位置开始拷贝多长
+            outChannel1.transferFrom(inChannel, 0, inChannel.size());
+            // transferTo方法，拷贝到哪儿，从哪个位置开始拷贝多长
+            inChannel.transferTo(0, inChannel.size(), outChannel2);
+        } catch (IOException e) {
+            logger.info("exception=", e);
+        } finally {
+            if (fis != null) {
+                try {
+                    fis.close();
+                } catch (IOException e) {
+                    logger.info("exception=", e);
+                }
+            }
+            if (fos1 != null) {
+                try {
+                    fos1.close();
+                } catch (IOException e) {
+                    logger.info("exception=", e);
+                }
+            }
+            if (fos2 != null) {
+                try {
+                    fos2.close();
                 } catch (IOException e) {
                     logger.info("exception=", e);
                 }
