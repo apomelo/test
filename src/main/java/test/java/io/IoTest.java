@@ -19,11 +19,11 @@ public class IoTest {
     public static void main(String[] args) {
         String filePath = ApplicationConfig.getInstance().getFilePath();
         StringBuilder stringBuilder1 = readIo(filePath);
-        writeIo(filePath, stringBuilder1);
+        writeIo(filePath + "tmp" + File.separator, stringBuilder1);
         StringBuilder stringBuilder2 = readNio(filePath);
-        writeNio(filePath, stringBuilder2);
-        channelCopy(filePath);
-        transferFromOrTo(filePath);
+        writeNio(filePath + "tmp" + File.separator, stringBuilder2);
+        channelCopy(filePath, filePath + "tmp" + File.separator);
+        transferFromOrTo(filePath, filePath + "tmp" + File.separator);
     }
 
     private static StringBuilder readIo(String prePath) {
@@ -155,11 +155,11 @@ public class IoTest {
         }
     }
 
-    private static void channelCopy(String prePath) {
+    private static void channelCopy(String readPrePath, String writePrePath) {
         String inFileName = "io.txt";
         String outFileName = "io-channel-copy.txt";
-        String inFilePath = prePath + inFileName;
-        String outFilePath = prePath + outFileName;
+        String inFilePath = readPrePath + inFileName;
+        String outFilePath = writePrePath + outFileName;
         FileInputStream fis = null;
         FileOutputStream fos = null;
         try {
@@ -194,13 +194,13 @@ public class IoTest {
         }
     }
 
-    private static void transferFromOrTo(String prePath) {
+    private static void transferFromOrTo(String readPrePath, String writePrePath) {
         String inFileName = "io.txt";
         String outFileName1 = "io-transfer-from.txt";
         String outFileName2 = "io-transfer-to.txt";
-        String inFilePath = prePath + inFileName;
-        String outFilePath1 = prePath + outFileName1;
-        String outFilePath2 = prePath + outFileName2;
+        String inFilePath = readPrePath + inFileName;
+        String outFilePath1 = writePrePath + outFileName1;
+        String outFilePath2 = writePrePath + outFileName2;
         FileInputStream fis = null;
         FileOutputStream fos1 = null;
         FileOutputStream fos2 = null;

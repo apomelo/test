@@ -1,6 +1,8 @@
 #!/bin/bash
 
-echo "get into stop.sh"
+echo "$(date "+%Y-%m-%d %H:%M:%S") get into stop.sh"
+
+. /etc/profile
 
 echo "PATH="$PATH
 echo "JAVA_HOME="$JAVA_HOME
