@@ -1,6 +1,8 @@
 #!/bin/bash
 
-echo "get into start.sh"
+echo "$(date "+%Y-%m-%d %H:%M:%S") get into start.sh"
+
+. /etc/profile
 
 echo "PATH="$PATH
 echo "JAVA_HOME="$JAVA_HOME

@@ -1,6 +1,8 @@
 #!/bin/bash
 
-echo "get into deploy.sh"
+echo "$(date "+%Y-%m-%d %H:%M:%S") get into deploy.sh"
+
+. /etc/profile
 
 if [ $# -ne 2 ];then
     echo -e "Must input the parameters:

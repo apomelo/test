@@ -8,6 +8,7 @@
         <property name="LOG_HOME">D:/data/logs/test_project</property>
         #配置日志文件名称
         <property name="FILE_NAME">test_project</property>
+        <property name="EXCEPTION">exception</property>
         <property name="SINGLE_SIZE">50MB</property>
     </properties>
     <!-- 自定义日志级别 -->
@@ -17,6 +18,10 @@
         <console name="Console" target="SYSTEM_OUT">
             <!--输出日志的格式 -->
             <PatternLayout pattern="%d{yyyyMMdd HHmmss.SSS} pid:${FILE_NAME} thread:%t %level [%c{1}] %msg%n" />
+        </console>
+        <console name="ConsoleException" target="SYSTEM_OUT">
+            <!--把异常打印的堆栈信息输出到一行-->
+            <PatternLayout pattern="%d{yyyyMMdd HHmmss.SSS} pid:${FILE_NAME} thread:%t %level [%c{1}] %msg{nolookups}%xThrowable{separator(|)}%n" />
         </console>
         <!--文件会打印出所有信息，这个log每次运行程序会自动清空，由append属性决定，这个也挺有用的，适合临时测试用 -->
         <!-- <File name="log" fileName="log/test.log" append="false"> -->
@@ -33,6 +38,16 @@
                 <SizeBasedTriggeringPolicy size="${SINGLE_SIZE}" />
             </Policies>
         </RollingFile>
+        <RollingFile name="ExceptionLogFile"
+                     fileName="${LOG_HOME}/${EXCEPTION}.log"
+                     filePattern="${LOG_HOME}/${EXCEPTION}-%d{yyyy-MM-dd}-%i.log">
+            <ThresholdFilter level="warn" onMatch="ACCEPT" onMismatch="DENY"/>
+            <PatternLayout pattern="%d{yyyyMMdd HHmmss.SSS} pid:${FILE_NAME} thread:%t %level [%c{1}] %msg%n" />
+            <Policies>
+                <TimeBasedTriggeringPolicy modulate="true" interval="24"/>
+                <SizeBasedTriggeringPolicy size="${SINGLE_SIZE}" />
+            </Policies>
+        </RollingFile>
     </appenders>
     <!--然后定义logger，只有定义了logger并引入的appender，appender才会生效 -->
     <loggers>
@@ -41,10 +56,16 @@
         <logger name="test" level="debug" additivity="false">
             <appender-ref ref="Console" />
             <appender-ref ref="RollingFileInfo" />
+            <appender-ref ref="ExceptionLogFile" />
+        </logger>
+        <logger name="test.java.lang.ExceptionTest" level="warn" additivity="false">
+            <appender-ref ref="ConsoleException" />
+            <appender-ref ref="ExceptionLogFile" />
         </logger>
         <root level="info">
             <appender-ref ref="Console" />
             <appender-ref ref="RollingFileInfo" />
+            <appender-ref ref="ExceptionLogFile" />
         </root>
     </loggers>
 </configuration>
