@@ -10,13 +10,14 @@ public class IntegerTest {
     private static final Logger logger = LoggerFactory.getLogger(IntegerTest.class);
 
     public static void main(String[] args) {
-        parseInteger();
-        getChars();
-        rotateLeft();
+//        parseInteger();
+//        getChars();
+//        rotateLeft();
 //        testInstance();
 //        testDivide();
 //        testParse();
 //        testVariable();
+        testBaseConversion();
     }
 
     private static void parseInteger() {
@@ -100,5 +101,25 @@ public class IntegerTest {
     private static void testVariable2(int... i) {
         int[] j = i;
         logger.info("{}", j);
+    }
+
+    private static void testBaseConversion() {
+        int a = 1000;
+        String s = Integer.toString(a, Character.MAX_RADIX);
+        StringBuilder stringBuilder = new StringBuilder();
+        int maxLength = 6;
+        int length = s.length();
+        if (length <= maxLength) {
+            for (int i = 0; i < maxLength - length; i ++) {
+                stringBuilder.append("0");
+            }
+            stringBuilder.append(s);
+        } else {
+            throw new NumberFormatException("illegal number");
+        }
+        int b = Integer.parseInt(stringBuilder.toString().toUpperCase(), Character.MAX_RADIX);
+        logger.info("a = {}", a);
+        logger.info("stringBuilder = {}", stringBuilder.toString().toUpperCase());
+        logger.info("b = {}", b);
     }
 }
