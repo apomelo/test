@@ -30,9 +30,12 @@
 		<protobuf.version>3.7.1</protobuf.version>
 		<jedis.version>2.9.0</jedis.version>
 		<disruptor.version>3.3.6</disruptor.version>
+		<netty.version>4.1.79.Final</netty.version>
 		<poi.version>4.1.2</poi.version>
 		<simplejavamail.version>6.0.3</simplejavamail.version>
 		<javamail.version>1.6.2</javamail.version>
+		<asm.version>9.3</asm.version>
+		<javassist.version>3.29.0-GA</javassist.version>
 	</properties>
 
 	<parent>
@@ -192,6 +195,12 @@
 			<artifactId>disruptor</artifactId>
 		</dependency>
 
+		<!-- netty -->
+		<dependency>
+			<groupId>io.netty</groupId>
+			<artifactId>netty-all</artifactId>
+		</dependency>
+
 		<!--读取excel 转换为bean的依赖-->
 		<dependency>
 			<groupId>org.apache.poi</groupId>
@@ -212,6 +221,18 @@
 		<dependency>
 			<groupId>com.sun.mail</groupId>
 			<artifactId>javax.mail</artifactId>
+		</dependency>
+
+		<!-- asm -->
+		<dependency>
+			<groupId>org.ow2.asm</groupId>
+			<artifactId>asm</artifactId>
+		</dependency>
+
+		<!-- javassist -->
+		<dependency>
+			<groupId>org.javassist</groupId>
+			<artifactId>javassist</artifactId>
 		</dependency>
 	</dependencies>
 	
@@ -356,6 +377,13 @@
 				<version>${disruptor.version}</version>
 			</dependency>
 
+			<!-- netty -->
+			<dependency>
+				<groupId>io.netty</groupId>
+				<artifactId>netty-all</artifactId>
+				<version>${netty.version}</version>
+			</dependency>
+
 			<!-- 读取excel 转换为bean的依赖 -->
 			<dependency>
 				<groupId>org.apache.poi</groupId>
@@ -380,6 +408,20 @@
 				<groupId>com.sun.mail</groupId>
 				<artifactId>javax.mail</artifactId>
 				<version>${javamail.version}</version>
+			</dependency>
+
+			<!-- asm -->
+			<dependency>
+				<groupId>org.ow2.asm</groupId>
+				<artifactId>asm</artifactId>
+				<version>${asm.version}</version>
+			</dependency>
+
+			<!-- javassist -->
+			<dependency>
+				<groupId>org.javassist</groupId>
+				<artifactId>javassist</artifactId>
+				<version>${javassist.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
