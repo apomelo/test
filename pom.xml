@@ -21,6 +21,7 @@
 		<jackson.version>2.12.7</jackson.version>
 		<fastjson.version>1.2.83</fastjson.version>
 		<mysql-connector-java.version>8.0.28</mysql-connector-java.version>
+		<mybatis.version>3.5.10</mybatis.version>
 		<commons-io.version>2.6</commons-io.version>
 		<commons-lang3.version>3.8.1</commons-lang3.version>
 		<commons-beanutils.version>1.9.3</commons-beanutils.version>
@@ -153,6 +154,12 @@
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
+		</dependency>
+
+		<!-- mybatis -->
+		<dependency>
+			<groupId>org.mybatis</groupId>
+			<artifactId>mybatis</artifactId>
 		</dependency>
 
 		<!-- commons -->
@@ -311,6 +318,13 @@
 				<groupId>mysql</groupId>
 				<artifactId>mysql-connector-java</artifactId>
 				<version>${mysql-connector-java.version}</version>
+			</dependency>
+
+			<!-- mybatis -->
+			<dependency>
+				<groupId>org.mybatis</groupId>
+				<artifactId>mybatis</artifactId>
+				<version>${mybatis.version}</version>
 			</dependency>
 
 			<!-- commons -->
