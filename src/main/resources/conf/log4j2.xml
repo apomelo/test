@@ -5,7 +5,7 @@
 <configuration status="WARN" monitorInterval="600">
     <properties>
         #配置日志文件目录(相对目录或者绝对目录)
-        <property name="LOG_HOME">D:/data/logs/test_project</property>
+        <property name="LOG_HOME">log</property>
         #配置日志文件名称
         <property name="FILE_NAME">test_project</property>
         <property name="EXCEPTION">exception</property>
