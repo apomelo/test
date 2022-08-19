@@ -38,6 +38,7 @@
 		<javamail.version>1.6.2</javamail.version>
 		<asm.version>9.3</asm.version>
 		<javassist.version>3.29.0-GA</javassist.version>
+		<alipay-sdk.version>4.33.1.ALL</alipay-sdk.version>
 	</properties>
 
 	<parent>
@@ -250,6 +251,13 @@
 			<groupId>org.javassist</groupId>
 			<artifactId>javassist</artifactId>
 		</dependency>
+
+		<!-- 支付 -->
+		<!-- alipay-sdk -->
+		<dependency>
+			<groupId>com.alipay.sdk</groupId>
+			<artifactId>alipay-sdk-java</artifactId>
+		</dependency>
 	</dependencies>
 	
 	<dependencyManagement>
@@ -445,6 +453,14 @@
 				<groupId>org.javassist</groupId>
 				<artifactId>javassist</artifactId>
 				<version>${javassist.version}</version>
+			</dependency>
+
+			<!-- 支付 -->
+			<!-- alipay-sdk -->
+			<dependency>
+				<groupId>com.alipay.sdk</groupId>
+				<artifactId>alipay-sdk-java</artifactId>
+				<version>${alipay-sdk.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
