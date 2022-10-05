@@ -29,7 +29,7 @@
 		<commons-logging.version>1.2</commons-logging.version>
 		<commons-pool2.version>2.4.2</commons-pool2.version>
 		<commons-codec.version>1.11</commons-codec.version>
-		<protobuf.version>3.7.1</protobuf.version>
+		<protobuf.version>3.16.3</protobuf.version>
 		<jedis.version>2.9.0</jedis.version>
 		<disruptor.version>3.3.6</disruptor.version>
 		<netty.version>4.1.79.Final</netty.version>
