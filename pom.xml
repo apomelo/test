@@ -39,6 +39,7 @@
 		<asm.version>9.3</asm.version>
 		<javassist.version>3.29.0-GA</javassist.version>
 		<alipay-sdk.version>4.33.1.ALL</alipay-sdk.version>
+		<guava.version>31.1-jre</guava.version>
 	</properties>
 
 	<parent>
@@ -258,6 +259,12 @@
 			<groupId>com.alipay.sdk</groupId>
 			<artifactId>alipay-sdk-java</artifactId>
 		</dependency>
+
+		<!-- guava -->
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+		</dependency>
 	</dependencies>
 	
 	<dependencyManagement>
@@ -461,6 +468,13 @@
 				<groupId>com.alipay.sdk</groupId>
 				<artifactId>alipay-sdk-java</artifactId>
 				<version>${alipay-sdk.version}</version>
+			</dependency>
+
+			<!-- guava -->
+			<dependency>
+				<groupId>com.google.guava</groupId>
+				<artifactId>guava</artifactId>
+				<version>${guava.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
