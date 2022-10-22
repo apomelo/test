@@ -16,9 +16,9 @@
 		<java.version>1.8</java.version>
 		<junit.version>4.12</junit.version>
 		<lombok.version>1.18.16</lombok.version>
-		<log4j.version>2.17.0</log4j.version>
+		<log4j.version>2.17.1</log4j.version>
 		<slf4j.version>1.7.36</slf4j.version>
-		<jackson.version>2.13.4.1</jackson.version>
+		<jackson.version>2.13.4</jackson.version>
 		<fastjson.version>1.2.83</fastjson.version>
 		<mysql-connector-java.version>8.0.28</mysql-connector-java.version>
 		<mybatis.version>3.5.10</mybatis.version>
@@ -194,11 +194,6 @@
 		<dependency>
 			<groupId>com.google.protobuf</groupId>
 			<artifactId>protobuf-java</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.google.protobuf</groupId>
-			<artifactId>protoc</artifactId>
-			<type>pom</type>
 		</dependency>
 
 		<!-- jedis -->
@@ -393,12 +388,6 @@
 				<groupId>com.google.protobuf</groupId>
 				<artifactId>protobuf-java</artifactId>
 				<version>${protobuf.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.google.protobuf</groupId>
-				<artifactId>protoc</artifactId>
-				<version>${protobuf.version}</version>
-				<type>pom</type>
 			</dependency>
 
 			<!-- jedis -->
