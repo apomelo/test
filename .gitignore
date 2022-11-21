@@ -3,6 +3,7 @@
 target/
 .classpath
 .project
-test.iml
+*.iml
 data/tmp/
 log/*
+package/*

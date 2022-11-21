@@ -12,14 +12,21 @@
 <assembly xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
           xmlns="http://maven.apache.org/plugins/ASSEMBLY/2.0.0"
           xsi:schemaLocation="http://maven.apache.org/plugins/ASSEMBLY/2.0.0 http://maven.apache.org/xsd/assembly-2.0.0.xsd">
+    <!-- 描述文件的id -->
     <id>deploy1</id>
+    <!-- 指定程序集格式 -->
     <formats>
         <format>tar.gz</format>
     </formats>
+
+    <!-- 包内根路径 -->
+    <baseDirectory>/</baseDirectory>
+
     <fileSets>
         <fileSet>
             <directory>src/main/resources/bin</directory>
             <outputDirectory>bin</outputDirectory>
+<!--            <lineEnding>unix</lineEnding>-->
             <fileMode>0755</fileMode>
         </fileSet>
         <fileSet>

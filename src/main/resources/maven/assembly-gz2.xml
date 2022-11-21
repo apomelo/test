@@ -2,17 +2,21 @@
 <assembly xmlns="http://maven.apache.org/ASSEMBLY/2.0.0"
           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
           xsi:schemaLocation="http://maven.apache.org/ASSEMBLY/2.0.0 http://maven.apache.org/xsd/assembly-2.0.0.xsd">
+    <!-- 描述文件的id -->
     <id>deploy2</id>
+    <!-- 指定程序集格式 -->
     <formats>
         <format>tar.gz</format>
     </formats>
 
+    <!-- 包内根路径 -->
     <baseDirectory>/${project.name}</baseDirectory>
 
     <fileSets>
         <fileSet>
             <directory>src/main/resources/bin</directory>
             <outputDirectory>bin</outputDirectory>
+<!--            <lineEnding>unix</lineEnding>-->
             <fileMode>0755</fileMode>
         </fileSet>
         <fileSet>
@@ -33,7 +37,7 @@
     </fileSets>
     <files>
         <file>
-            <source>target/${project.name}-deploy2.jar</source>
+            <source>${package.dir}/${project.name}-deploy2.jar</source>
             <outputDirectory>lib</outputDirectory>
             <destName>${project.name}.jar</destName>
             <fileMode>0755</fileMode>

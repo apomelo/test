@@ -1,554 +1,630 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
-	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.test</groupId>
-	<artifactId>test-project</artifactId>
-	<version>1.0.0</version>
-	<packaging>jar</packaging>
-	
-	<name>test-project</name>
-	<url>http://maven.apache.org/</url>
-	
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<java.version>1.8</java.version>
-		<junit.version>4.12</junit.version>
-		<lombok.version>1.18.16</lombok.version>
-		<log4j.version>2.17.1</log4j.version>
-		<slf4j.version>1.7.36</slf4j.version>
-		<jackson.version>2.13.4</jackson.version>
-		<fastjson.version>1.2.83</fastjson.version>
-		<mysql-connector-java.version>8.0.28</mysql-connector-java.version>
-		<mybatis.version>3.5.10</mybatis.version>
-		<commons-io.version>2.6</commons-io.version>
-		<commons-lang3.version>3.8.1</commons-lang3.version>
-		<commons-beanutils.version>1.9.3</commons-beanutils.version>
-		<commons-dbcp2.version>2.5.0</commons-dbcp2.version>
-		<commons-logging.version>1.2</commons-logging.version>
-		<commons-pool2.version>2.4.2</commons-pool2.version>
-		<commons-codec.version>1.11</commons-codec.version>
-		<protobuf.version>3.16.3</protobuf.version>
-		<jedis.version>2.9.0</jedis.version>
-		<disruptor.version>3.3.6</disruptor.version>
-		<netty.version>4.1.79.Final</netty.version>
-		<poi.version>4.1.2</poi.version>
-		<simplejavamail.version>6.0.3</simplejavamail.version>
-		<javamail.version>1.6.2</javamail.version>
-		<asm.version>9.3</asm.version>
-		<javassist.version>3.29.0-GA</javassist.version>
-		<alipay-sdk.version>4.33.1.ALL</alipay-sdk.version>
-		<guava.version>31.1-jre</guava.version>
-	</properties>
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.test</groupId>
+    <artifactId>test-project</artifactId>
+    <version>1.0.0</version>
+    <packaging>jar</packaging>
 
-	<parent>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.1.1.RELEASE</version>
-	</parent>
-	
-	<dependencies>
-		<!-- springboot -->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter</artifactId>
-			<exclusions>
-				<exclusion>
-					<groupId>org.springframework.boot</groupId>
-					<artifactId>spring-boot-starter-logging</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-redis</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-mongodb</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-jdbc</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-amqp</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-log4j2</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
-			<exclusions>
-				<exclusion>
-					<groupId>org.springframework.boot</groupId>
-					<artifactId>spring-boot-starter-logging</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-aop</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-devtools</artifactId>
-			<scope>runtime</scope>
-		</dependency>
+    <name>test-project</name>
+    <url>http://maven.apache.org/</url>
 
-		<!-- junit -->
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<scope>test</scope>
-		</dependency>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <java.version>1.8</java.version>
 
-		<!-- lombok -->
-		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-			<scope>provided</scope>
-		</dependency>
+        <package.dir>${project.basedir}/package</package.dir>
+        <user.name>apomelo</user.name>
 
-		<!-- log4j2 -->
-		<dependency>
-			<groupId>org.apache.logging.log4j</groupId>
-			<artifactId>log4j-api</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.logging.log4j</groupId>
-			<artifactId>log4j-core</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.logging.log4j</groupId>
-			<artifactId>log4j-slf4j-impl</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-ext</artifactId>
-		</dependency>
+        <junit.version>4.12</junit.version>
+        <lombok.version>1.18.16</lombok.version>
+        <log4j.version>2.17.1</log4j.version>
+        <slf4j.version>1.7.36</slf4j.version>
+        <jackson.version>2.13.4</jackson.version>
+        <fastjson.version>1.2.83</fastjson.version>
+        <mysql-connector-java.version>8.0.28</mysql-connector-java.version>
+        <mybatis.version>3.5.10</mybatis.version>
+        <commons-io.version>2.6</commons-io.version>
+        <commons-lang3.version>3.8.1</commons-lang3.version>
+        <commons-beanutils.version>1.9.3</commons-beanutils.version>
+        <commons-dbcp2.version>2.5.0</commons-dbcp2.version>
+        <commons-logging.version>1.2</commons-logging.version>
+        <commons-pool2.version>2.4.2</commons-pool2.version>
+        <commons-codec.version>1.11</commons-codec.version>
+        <protobuf.version>3.16.3</protobuf.version>
+        <jedis.version>2.9.0</jedis.version>
+        <disruptor.version>3.3.6</disruptor.version>
+        <netty.version>4.1.79.Final</netty.version>
+        <poi.version>4.1.2</poi.version>
+        <simplejavamail.version>6.0.3</simplejavamail.version>
+        <javamail.version>1.6.2</javamail.version>
+        <asm.version>9.3</asm.version>
+        <javassist.version>3.29.0-GA</javassist.version>
+        <alipay-sdk.version>4.33.1.ALL</alipay-sdk.version>
+        <guava.version>31.1-jre</guava.version>
+    </properties>
 
-		<!-- jackson -->
-		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-annotations</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-databind</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-core</artifactId>
-		</dependency>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.1.1.RELEASE</version>
+    </parent>
 
-		<!-- fastjson -->
-		<dependency>
-			<groupId>com.alibaba</groupId>
-			<artifactId>fastjson</artifactId>
-		</dependency>
+    <dependencies>
+        <!-- springboot -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-logging</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-mongodb</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-jdbc</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-amqp</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-log4j2</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-logging</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+            <scope>runtime</scope>
+        </dependency>
 
-		<!-- mysql-connector-java -->
-		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
-		</dependency>
+        <!-- junit -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
 
-		<!-- mybatis -->
-		<dependency>
-			<groupId>org.mybatis</groupId>
-			<artifactId>mybatis</artifactId>
-		</dependency>
+        <!-- lombok -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <scope>provided</scope>
+        </dependency>
 
-		<!-- commons -->
-		<dependency>
-			<groupId>commons-io</groupId>
-			<artifactId>commons-io</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-lang3</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>commons-beanutils</groupId>
-			<artifactId>commons-beanutils</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-dbcp2</artifactId>
-		</dependency>
+        <!-- log4j2 -->
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-slf4j-impl</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-ext</artifactId>
+        </dependency>
 
-		<!-- protobuf -->
-		<dependency>
-			<groupId>com.google.protobuf</groupId>
-			<artifactId>protobuf-java</artifactId>
-		</dependency>
+        <!-- jackson -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+        </dependency>
 
-		<!-- jedis -->
-		<dependency>
-			<groupId>redis.clients</groupId>
-			<artifactId>jedis</artifactId>
-		</dependency>
+        <!-- fastjson -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+        </dependency>
 
-		<!-- disruptor -->
-		<dependency>
-			<groupId>com.lmax</groupId>
-			<artifactId>disruptor</artifactId>
-		</dependency>
+        <!-- mysql-connector-java -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+        </dependency>
 
-		<!-- netty -->
-		<dependency>
-			<groupId>io.netty</groupId>
-			<artifactId>netty-all</artifactId>
-		</dependency>
+        <!-- mybatis -->
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis</artifactId>
+        </dependency>
 
-		<!--读取excel 转换为bean的依赖-->
-		<dependency>
-			<groupId>org.apache.poi</groupId>
-			<artifactId>poi</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.poi</groupId>
-			<artifactId>poi-ooxml</artifactId>
-		</dependency>
+        <!-- commons -->
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>commons-beanutils</groupId>
+            <artifactId>commons-beanutils</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-dbcp2</artifactId>
+        </dependency>
 
-		<!-- simple-java-mail -->
-		<dependency>
-			<groupId>org.simplejavamail</groupId>
-			<artifactId>simple-java-mail</artifactId>
-		</dependency>
+        <!-- protobuf -->
+        <dependency>
+            <groupId>com.google.protobuf</groupId>
+            <artifactId>protobuf-java</artifactId>
+        </dependency>
 
-		<!-- java mail -->
-		<dependency>
-			<groupId>com.sun.mail</groupId>
-			<artifactId>javax.mail</artifactId>
-		</dependency>
+        <!-- jedis -->
+        <dependency>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+        </dependency>
 
-		<!-- asm -->
-		<dependency>
-			<groupId>org.ow2.asm</groupId>
-			<artifactId>asm</artifactId>
-		</dependency>
+        <!-- disruptor -->
+        <dependency>
+            <groupId>com.lmax</groupId>
+            <artifactId>disruptor</artifactId>
+        </dependency>
 
-		<!-- javassist -->
-		<dependency>
-			<groupId>org.javassist</groupId>
-			<artifactId>javassist</artifactId>
-		</dependency>
+        <!-- netty -->
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-all</artifactId>
+        </dependency>
 
-		<!-- 支付 -->
-		<!-- alipay-sdk -->
-		<dependency>
-			<groupId>com.alipay.sdk</groupId>
-			<artifactId>alipay-sdk-java</artifactId>
-		</dependency>
+        <!--读取excel 转换为bean的依赖-->
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+        </dependency>
 
-		<!-- guava -->
-		<dependency>
-			<groupId>com.google.guava</groupId>
-			<artifactId>guava</artifactId>
-		</dependency>
-	</dependencies>
-	
-	<dependencyManagement>
-		<dependencies>
-			<!-- junit -->
-			<dependency>
-				<groupId>junit</groupId>
-				<artifactId>junit</artifactId>
-				<scope>test</scope>
-				<version>${junit.version}</version>
-			</dependency>
+        <!-- simple-java-mail -->
+        <dependency>
+            <groupId>org.simplejavamail</groupId>
+            <artifactId>simple-java-mail</artifactId>
+        </dependency>
 
-			<!-- lombok -->
-			<dependency>
-				<groupId>org.projectlombok</groupId>
-				<artifactId>lombok</artifactId>
-				<version>${lombok.version}</version>
-				<scope>provided</scope>
-			</dependency>
+        <!-- java mail -->
+        <dependency>
+            <groupId>com.sun.mail</groupId>
+            <artifactId>javax.mail</artifactId>
+        </dependency>
 
-			<!-- log4j2 -->
-			<dependency>
-				<groupId>org.apache.logging.log4j</groupId>
-				<artifactId>log4j-api</artifactId>
-				<version>${log4j.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.apache.logging.log4j</groupId>
-				<artifactId>log4j-core</artifactId>
-				<version>${log4j.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.apache.logging.log4j</groupId>
-				<artifactId>log4j-slf4j-impl</artifactId>
-				<version>${log4j.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.slf4j</groupId>
-				<artifactId>slf4j-api</artifactId>
-				<version>${slf4j.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.slf4j</groupId>
-				<artifactId>slf4j-ext</artifactId>
-				<version>${slf4j.version}</version>
-			</dependency>
+        <!-- asm -->
+        <dependency>
+            <groupId>org.ow2.asm</groupId>
+            <artifactId>asm</artifactId>
+        </dependency>
 
-			<!-- jackson -->
-			<dependency>
-				<groupId>com.fasterxml.jackson.core</groupId>
-				<artifactId>jackson-annotations</artifactId>
-				<version>${jackson.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.fasterxml.jackson.core</groupId>
-				<artifactId>jackson-databind</artifactId>
-				<version>${jackson.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.fasterxml.jackson.core</groupId>
-				<artifactId>jackson-core</artifactId>
-				<version>${jackson.version}</version>
-			</dependency>
+        <!-- javassist -->
+        <dependency>
+            <groupId>org.javassist</groupId>
+            <artifactId>javassist</artifactId>
+        </dependency>
 
-			<!-- fastjson -->
-			<dependency>
-				<groupId>com.alibaba</groupId>
-				<artifactId>fastjson</artifactId>
-				<version>${fastjson.version}</version>
-			</dependency>
+        <!-- 支付 -->
+        <!-- alipay-sdk -->
+        <dependency>
+            <groupId>com.alipay.sdk</groupId>
+            <artifactId>alipay-sdk-java</artifactId>
+        </dependency>
 
-			<!-- mysql-connector-java -->
-			<dependency>
-				<groupId>mysql</groupId>
-				<artifactId>mysql-connector-java</artifactId>
-				<version>${mysql-connector-java.version}</version>
-			</dependency>
+        <!-- guava -->
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+        </dependency>
+    </dependencies>
 
-			<!-- mybatis -->
-			<dependency>
-				<groupId>org.mybatis</groupId>
-				<artifactId>mybatis</artifactId>
-				<version>${mybatis.version}</version>
-			</dependency>
+    <dependencyManagement>
+        <dependencies>
+            <!-- junit -->
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <scope>test</scope>
+                <version>${junit.version}</version>
+            </dependency>
 
-			<!-- commons -->
-			<dependency>
-				<groupId>commons-io</groupId>
-				<artifactId>commons-io</artifactId>
-				<version>${commons-io.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.apache.commons</groupId>
-				<artifactId>commons-lang3</artifactId>
-				<version>${commons-lang3.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>commons-beanutils</groupId>
-				<artifactId>commons-beanutils</artifactId>
-				<version>${commons-beanutils.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.apache.commons</groupId>
-				<artifactId>commons-dbcp2</artifactId>
-				<version>${commons-dbcp2.version}</version>
-			</dependency>
+            <!-- lombok -->
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombok.version}</version>
+                <scope>provided</scope>
+            </dependency>
 
-			<dependency>
-				<groupId>commons-logging</groupId>
-				<artifactId>commons-logging</artifactId>
-				<version>${commons-logging.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.apache.commons</groupId>
-				<artifactId>commons-pool2</artifactId>
-				<version>${commons-pool2.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>commons-codec</groupId>
-				<artifactId>commons-codec</artifactId>
-				<version>${commons-codec.version}</version>
-			</dependency>
+            <!-- log4j2 -->
+            <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-api</artifactId>
+                <version>${log4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-core</artifactId>
+                <version>${log4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-slf4j-impl</artifactId>
+                <version>${log4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>${slf4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-ext</artifactId>
+                <version>${slf4j.version}</version>
+            </dependency>
 
-			<!-- protobuf -->
-			<dependency>
-				<groupId>com.google.protobuf</groupId>
-				<artifactId>protobuf-java</artifactId>
-				<version>${protobuf.version}</version>
-			</dependency>
+            <!-- jackson -->
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-annotations</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-databind</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-core</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
 
-			<!-- jedis -->
-			<dependency>
-				<groupId>redis.clients</groupId>
-				<artifactId>jedis</artifactId>
-				<version>${jedis.version}</version>
-			</dependency>
+            <!-- fastjson -->
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>${fastjson.version}</version>
+            </dependency>
 
-			<!-- disruptor -->
-			<dependency>
-				<groupId>com.lmax</groupId>
-				<artifactId>disruptor</artifactId>
-				<version>${disruptor.version}</version>
-			</dependency>
+            <!-- mysql-connector-java -->
+            <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <version>${mysql-connector-java.version}</version>
+            </dependency>
 
-			<!-- netty -->
-			<dependency>
-				<groupId>io.netty</groupId>
-				<artifactId>netty-all</artifactId>
-				<version>${netty.version}</version>
-			</dependency>
+            <!-- mybatis -->
+            <dependency>
+                <groupId>org.mybatis</groupId>
+                <artifactId>mybatis</artifactId>
+                <version>${mybatis.version}</version>
+            </dependency>
 
-			<!-- 读取excel 转换为bean的依赖 -->
-			<dependency>
-				<groupId>org.apache.poi</groupId>
-				<artifactId>poi</artifactId>
-				<version>${poi.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.apache.poi</groupId>
-				<artifactId>poi-ooxml</artifactId>
-				<version>${poi.version}</version>
-			</dependency>
+            <!-- commons -->
+            <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>${commons-io.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>${commons-lang3.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-beanutils</groupId>
+                <artifactId>commons-beanutils</artifactId>
+                <version>${commons-beanutils.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-dbcp2</artifactId>
+                <version>${commons-dbcp2.version}</version>
+            </dependency>
 
-			<!-- simple-java-mail -->
-			<dependency>
-				<groupId>org.simplejavamail</groupId>
-				<artifactId>simple-java-mail</artifactId>
-				<version>${simplejavamail.version}</version>
-			</dependency>
+            <dependency>
+                <groupId>commons-logging</groupId>
+                <artifactId>commons-logging</artifactId>
+                <version>${commons-logging.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-pool2</artifactId>
+                <version>${commons-pool2.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-codec</groupId>
+                <artifactId>commons-codec</artifactId>
+                <version>${commons-codec.version}</version>
+            </dependency>
 
-			<!-- java mail -->
-			<dependency>
-				<groupId>com.sun.mail</groupId>
-				<artifactId>javax.mail</artifactId>
-				<version>${javamail.version}</version>
-			</dependency>
+            <!-- protobuf -->
+            <dependency>
+                <groupId>com.google.protobuf</groupId>
+                <artifactId>protobuf-java</artifactId>
+                <version>${protobuf.version}</version>
+            </dependency>
 
-			<!-- asm -->
-			<dependency>
-				<groupId>org.ow2.asm</groupId>
-				<artifactId>asm</artifactId>
-				<version>${asm.version}</version>
-			</dependency>
+            <!-- jedis -->
+            <dependency>
+                <groupId>redis.clients</groupId>
+                <artifactId>jedis</artifactId>
+                <version>${jedis.version}</version>
+            </dependency>
 
-			<!-- javassist -->
-			<dependency>
-				<groupId>org.javassist</groupId>
-				<artifactId>javassist</artifactId>
-				<version>${javassist.version}</version>
-			</dependency>
+            <!-- disruptor -->
+            <dependency>
+                <groupId>com.lmax</groupId>
+                <artifactId>disruptor</artifactId>
+                <version>${disruptor.version}</version>
+            </dependency>
 
-			<!-- 支付 -->
-			<!-- alipay-sdk -->
-			<dependency>
-				<groupId>com.alipay.sdk</groupId>
-				<artifactId>alipay-sdk-java</artifactId>
-				<version>${alipay-sdk.version}</version>
-			</dependency>
+            <!-- netty -->
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-all</artifactId>
+                <version>${netty.version}</version>
+            </dependency>
 
-			<!-- guava -->
-			<dependency>
-				<groupId>com.google.guava</groupId>
-				<artifactId>guava</artifactId>
-				<version>${guava.version}</version>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
+            <!-- 读取excel 转换为bean的依赖 -->
+            <dependency>
+                <groupId>org.apache.poi</groupId>
+                <artifactId>poi</artifactId>
+                <version>${poi.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.poi</groupId>
+                <artifactId>poi-ooxml</artifactId>
+                <version>${poi.version}</version>
+            </dependency>
 
-	<build>
-		<resources>
-			<resource>
-				<directory>src/main/resources/${profiles.active}</directory>
-			</resource>
-			<resource>
-				<directory>src/main/resources</directory>
-			</resource>
-		</resources>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
-					<source>${java.version}</source>
-					<target>${java.version}</target>
-					<encoding>${project.build.sourceEncoding}</encoding>
-					<!-- use this before version 3.1 -->
-<!--					<compilerArguments>-->
-<!--						<extdirs>src/main/resources/lib</extdirs>-->
-<!--					</compilerArguments>-->
-					<compilerArgs>
-						<arg>-extdirs</arg>
-						<arg>src/main/resources/lib</arg>
-					</compilerArgs>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-assembly-plugin</artifactId>
-				<configuration>
-					<archive>
-						<manifest>
-							<mainClass></mainClass>
-						</manifest>
-					</archive>
-					<descriptors>
-						<descriptor>src/main/resources/assembly-jar1.xml</descriptor>
-						<descriptor>src/main/resources/assembly-gz1.xml</descriptor>
-						<descriptor>src/main/resources/assembly-jar2.xml</descriptor>
-						<descriptor>src/main/resources/assembly-gz2.xml</descriptor>
-					</descriptors>
-					<finalName>${project.name}</finalName>
-				</configuration>
-				<executions>
-					<execution>
-						<id>make-assembly</id>
-						<phase>package</phase>
-						<goals>
-							<goal>single</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-		</plugins>
+            <!-- simple-java-mail -->
+            <dependency>
+                <groupId>org.simplejavamail</groupId>
+                <artifactId>simple-java-mail</artifactId>
+                <version>${simplejavamail.version}</version>
+            </dependency>
 
-		<pluginManagement>
-			<plugins>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-compiler-plugin</artifactId>
-					<version>3.7.0</version>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-assembly-plugin</artifactId>
-					<version>3.0.0</version>
-				</plugin>
-			</plugins>
-		</pluginManagement>
-	</build>
+            <!-- java mail -->
+            <dependency>
+                <groupId>com.sun.mail</groupId>
+                <artifactId>javax.mail</artifactId>
+                <version>${javamail.version}</version>
+            </dependency>
 
-	<profiles>
-		<profile>
-			<id>conf</id>
-			<properties>
-				<profiles.active>conf</profiles.active>
-			</properties>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
-		</profile>
-	</profiles>
+            <!-- asm -->
+            <dependency>
+                <groupId>org.ow2.asm</groupId>
+                <artifactId>asm</artifactId>
+                <version>${asm.version}</version>
+            </dependency>
+
+            <!-- javassist -->
+            <dependency>
+                <groupId>org.javassist</groupId>
+                <artifactId>javassist</artifactId>
+                <version>${javassist.version}</version>
+            </dependency>
+
+            <!-- 支付 -->
+            <!-- alipay-sdk -->
+            <dependency>
+                <groupId>com.alipay.sdk</groupId>
+                <artifactId>alipay-sdk-java</artifactId>
+                <version>${alipay-sdk.version}</version>
+            </dependency>
+
+            <!-- guava -->
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>${guava.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources/${profiles.active}</directory>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+            </resource>
+        </resources>
+        <plugins>
+            <!-- clean package -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-clean-plugin</artifactId>
+                <configuration>
+                    <!-- 是否排除默认编译目录 -->
+                    <excludeDefaultDirectories>false</excludeDefaultDirectories>
+                    <!-- 额外清除的目录 -->
+                    <filesets>
+                        <fileset>
+                            <directory>${package.dir}</directory>
+                        </fileset>
+                    </filesets>
+                </configuration>
+            </plugin>
+            <!-- compile package -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <!-- java 版本 -->
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <!-- encoding -->
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                    <!-- use this before version 3.1 -->
+                    <!--					<compilerArguments>-->
+                    <!--						<extdirs>src/main/resources/lib</extdirs>-->
+                    <!--					</compilerArguments>-->
+                    <!-- 编译参数 -->
+                    <compilerArgs>
+                        <!-- 引用本地包的目录 -->
+                        <arg>-extdirs</arg>
+                        <arg>src/main/resources/lib</arg>
+                    </compilerArgs>
+                </configuration>
+            </plugin>
+            <!-- jar package -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <!-- addClasspath: 是否在manifest文件中添加classpath。默认为false。
+                            如果为true，则会在manifest文件中添加classpath，这样在启动的时候就不用再手动指定classpath了。 -->
+                            <addClasspath>false</addClasspath>
+                            <!-- classpathPrefix: classpath的前缀。 -->
+                            <classpathPrefix>lib/</classpathPrefix>
+                            <mainClass>com.jnitest.Main</mainClass>
+                        </manifest>
+                        <manifestEntries>
+                            <Built-By>${user.name}</Built-By>
+                        </manifestEntries>
+                    </archive>
+                    <!-- 自定义输出目录 -->
+                    <outputDirectory>${package.dir}</outputDirectory>
+                    <!-- 自定义输出包的名称 -->
+                    <finalName>${project.name}-${project.version}</finalName>
+                    <!-- 排除指定目录 -->
+                    <excludes>
+                        <exclude>maven/**</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+            <!-- assembly package -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>com.jnitest.Main</mainClass>
+                        </manifest>
+                        <manifestEntries>
+                            <Built-By>${user.name}</Built-By>
+                        </manifestEntries>
+                    </archive>
+                    <descriptors>
+                        <descriptor>src/main/resources/maven/assembly-jar1-1.xml</descriptor>
+                        <descriptor>src/main/resources/maven/assembly-jar1-2.xml</descriptor>
+                        <descriptor>src/main/resources/maven/assembly-gz1.xml</descriptor>
+                        <descriptor>src/main/resources/maven/assembly-jar2.xml</descriptor>
+                        <descriptor>src/main/resources/maven/assembly-gz2.xml</descriptor>
+                    </descriptors>
+                    <!-- 自定义输出目录 -->
+                    <outputDirectory>${package.dir}</outputDirectory>
+                    <!-- 自定义输出包的名称 -->
+                    <finalName>${project.name}</finalName>
+                    <!-- 该标签默认为true，指定为false后包名将不会自动带上描述文件的id -->
+                    <appendAssemblyId>true</appendAssemblyId>
+                </configuration>
+                <executions>
+                    <execution>
+                        <!-- 名称随意，最好与描述文件中的id一致，不一致也无所谓，只要文件路径写对也能找到 -->
+                        <id>make-assembly</id>
+                        <!-- 绑定到 package 生命周期阶段上，该标签决定了该插件的作用 -->
+                        <phase>package</phase>
+                        <goals>
+                            <!-- 只运行一次 -->
+                            <goal>single</goal>
+                        </goals>
+                        <!-- 这里添加 configuration 会覆盖上面的 configuration -->
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-clean-plugin</artifactId>
+                    <version>3.1.0</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.7.0</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <version>3.1.0</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-assembly-plugin</artifactId>
+                    <version>3.0.0</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+
+    <profiles>
+        <profile>
+            <id>conf</id>
+            <properties>
+                <profiles.active>conf</profiles.active>
+            </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+    </profiles>
 </project>

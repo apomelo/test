@@ -2,26 +2,23 @@
 <assembly xmlns="http://maven.apache.org/ASSEMBLY/2.0.0"
           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
           xsi:schemaLocation="http://maven.apache.org/ASSEMBLY/2.0.0 http://maven.apache.org/xsd/assembly-2.0.0.xsd">
-    <id>deploy2</id>
+    <!-- 描述文件的id -->
+    <id>deploy1-1</id>
+    <!-- 指定程序集格式 -->
     <formats>
         <format>jar</format>
     </formats>
 
+    <!-- 包内根路径 -->
     <baseDirectory>/</baseDirectory>
 
     <dependencySets>
         <dependencySet>
-            <scope>system</scope>
-            <unpack>true</unpack>
-            <useProjectArtifact>true</useProjectArtifact>
-            <outputDirectory>/</outputDirectory>
-            <unpackOptions>
-                <excludes>
-                    <exclude>proto/**</exclude>
-                </excludes>
-            </unpackOptions>
-        </dependencySet>
-        <dependencySet>
+            <includes>
+                <!-- 缩写 groupId:artifactId 或全限定符 groupId:artifactId:type[:classifier]:version -->
+                <!-- 这里是缩写 -->
+                <include>com.test:test-project</include>
+            </includes>
             <scope>runtime</scope>
             <unpack>true</unpack>
             <useProjectArtifact>true</useProjectArtifact>
@@ -29,6 +26,7 @@
             <unpackOptions>
                 <excludes>
                     <exclude>proto/**</exclude>
+                    <exclude>maven/**</exclude>
                 </excludes>
             </unpackOptions>
         </dependencySet>
