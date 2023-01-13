@@ -45,7 +45,14 @@ JAVA_OPTS="-server -Dfile.encoding=utf-8 -Duser.timezone=GMT+08 -XX:+PrintGCDeta
 
 JAVA_DEBUG_OPTS=""
 if [ "$1" = "debug" ]; then
-    JAVA_DEBUG_OPTS="-Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,address=8000,server=y,suspend=n "
+    # JDK 1.3.x or earlier
+#    JAVA_DEBUG_OPTS="-Xnoagent -Djava.compiler=NONE -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=8000 "
+    # JDK 1.4.x
+#    JAVA_DEBUG_OPTS="-Xdebug -Xrunjdwp:transport=dt_socket,address=8000,server=y,suspend=n "
+    # JDK 5 - 8
+    JAVA_DEBUG_OPTS="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=8000 "
+    # JDK 9 or later
+#    JAVA_DEBUG_OPTS="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:8000 "
 fi
 
 JAVA_JMX_OPTS=""
