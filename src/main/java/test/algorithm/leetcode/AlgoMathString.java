@@ -2,20 +2,25 @@ package test.algorithm.leetcode;
 
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * 数学 字符串
  * @author C
  * @date 2023/1/31
  */
 @Slf4j
-public class MathString {
+public class AlgoMathString {
     public static void main(String[] args) {
         // 整数转罗马数字
         log.info("IntegerToRoman: {}", new IntegerToRoman().intToRoman(58));
         log.info("IntegerToRoman: {}", new IntegerToRoman().intToRoman(1994));
         log.info("IntegerToRoman: {}", new IntegerToRoman().intToRoman(2004));
         // 罗马数字转整数
-        log.info("RomanToInteger: {}", new RomanToInteger().romanToInt("V"));
+        log.info("RomanToInteger: {}", new RomanToInteger().romanToInt("LVIII"));
+        log.info("RomanToInteger: {}", new RomanToInteger().romanToInt("MCMXCIV"));
+        log.info("RomanToInteger: {}", new RomanToInteger().romanToInt("MMIV"));
     }
 }
 
@@ -174,7 +179,27 @@ class IntegerToRoman {
 // @lc code=start
 class RomanToInteger {
     public int romanToInt(String s) {
-        return 0;
+        Map<Character, Integer> symbolValues = new HashMap<Character, Integer>() {{
+            put('I', 1);
+            put('V', 5);
+            put('X', 10);
+            put('L', 50);
+            put('C', 100);
+            put('D', 500);
+            put('M', 1000);
+        }};
+        int res = 0;
+        int n = s.length();
+        // 可以将罗马字符的每个字符视作一个单独的值，若一个数字右侧的数字比它大，则将该数字的符号取反
+        for (int i = 0; i < n; i ++) {
+            int value = symbolValues.get(s.charAt(i));
+            if (i < n - 1 && value < symbolValues.get(s.charAt(i + 1))) {
+                res -= value;
+            } else {
+                res += value;
+            }
+        }
+        return res;
     }
 }
 // @lc code=end

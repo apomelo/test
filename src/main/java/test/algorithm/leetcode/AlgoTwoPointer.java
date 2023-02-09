@@ -6,7 +6,7 @@ import lombok.extern.slf4j.Slf4j;
  * 双指针算法
  */
 @Slf4j
-public class TwoPointer {
+public class AlgoTwoPointer {
     public static void main(String[] args) {
         log.info("ContainerWithMostWater: {}", new ContainerWithMostWater().maxArea(new int[] {1,8,6,2,5,4,8,3,7}));
         log.info("ContainerWithMostWater: {}", new ContainerWithMostWater().maxArea(new int[] {1,1}));

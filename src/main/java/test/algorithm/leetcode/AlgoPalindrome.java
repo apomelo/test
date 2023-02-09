@@ -6,7 +6,7 @@ import lombok.extern.slf4j.Slf4j;
  * 回文算法
  */
 @Slf4j
-public class Palindrome {
+public class AlgoPalindrome {
     public static void main(String[] args) {
         // 回文数
         log.info("PalindromeNum: {}", new PalindromeNum().isPalindrome(-121));

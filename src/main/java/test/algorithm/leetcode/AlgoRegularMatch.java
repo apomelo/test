@@ -6,7 +6,7 @@ import lombok.extern.slf4j.Slf4j;
  * 正则匹配算法
  */
 @Slf4j
-public class RegularMatch {
+public class AlgoRegularMatch {
     public static void main(String[] args) {
         log.info("RegularExpressionMatching: {}", new RegularExpressionMatching().isMatch("aa", "a*"));
         log.info("RegularExpressionMatching: {}", new RegularExpressionMatching().isMatch("aac", ".*"));

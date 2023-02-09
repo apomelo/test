@@ -14,7 +14,8 @@ public class StringTest {
     public static void main(String[] args) {
 //        test1();
 //        test2();
-        test3();
+//        test3();
+        test4();
     }
 
     private static void test1() {
@@ -34,6 +35,9 @@ public class StringTest {
         logger.info("{}", s1.toLowerCase().equals(s2));
     }
 
+    /**
+     * 字符串 equals 和 == 的速度判断
+     */
     private static void test3() {
         String s1 = new String("asdf");
         String s2 = new String("asdf");
@@ -67,5 +71,12 @@ public class StringTest {
         }
         long end4 = System.nanoTime();
         logger.info("time: {}", end4 - start4);
+    }
+
+    private static void test4() {
+        String s1 = "";
+        String[] split = s1.split("#");
+        logger.info("{}", split.length);
+        logger.info("{}", split);
     }
 }
