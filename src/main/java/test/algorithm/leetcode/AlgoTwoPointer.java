@@ -19,6 +19,8 @@ public class AlgoTwoPointer {
         log.info("ThreeSum: {}", new ThreeSum().threeSum(new int[] {0,0,0}));
         log.info("ThreeSumClosest: {}", new ThreeSumClosest().threeSumClosest(new int[] {-1,2,1,-4}, 1));
         log.info("ThreeSumClosest: {}", new ThreeSumClosest().threeSumClosest(new int[] {0,0,0}, 1));
+        log.info("ThreeSumClosest: {}", new ThreeSumClosest().threeSumClosest(new int[] {1,1,-1}, 0));
+        log.info("ThreeSumClosest: {}", new ThreeSumClosest().threeSumClosest(new int[] {0,3,97,102,200}, 300));
     }
 }
 
@@ -233,9 +235,8 @@ class ThreeSumClosest {
                         closedDiffer = differ;
                     }
                     res.add(new ArrayList<>(Arrays.asList(small, big)));
-                    while (left < right && nums[left] == small) left ++;
-                    while (right > left && nums[right] == big) right --;
-                } else if (sum < target) {
+                }
+                if (sum < target) {
                     while (left < right && nums[left] == small) left ++;
                 } else {
                     while (right > left && nums[right] == big) right --;
@@ -245,7 +246,8 @@ class ThreeSumClosest {
             int curIndex = start;
             while (curIndex < length) {
                 int curNum = nums[curIndex];
-                List<List<Integer>> lists = nSum(nums, n - 1, closedDiffer - curNum, target - curNum, start + 1);
+                // 这里 closedDiffer 是定量，不需要减 curNum
+                List<List<Integer>> lists = nSum(nums, n - 1, closedDiffer, target - curNum, curIndex + 1);
                 if (lists.size() > 0) {
                     // 判断最小差值
                     int sum = lists.get(0).stream().mapToInt(Integer::intValue).sum() + curNum;
@@ -275,6 +277,46 @@ class ThreeSumClosest {
             return Integer.MAX_VALUE;
         }
         return r;
+    }
+
+    /**
+     * 第二种解法（非nSum）
+     */
+    public int threeSumClosest2(int[] nums, int target) {
+        if (nums.length < 3) {
+            return 0;
+        }
+        // 别忘了要先排序数组
+        Arrays.sort(nums);
+        // 记录三数之和与目标值的偏差
+        int delta = Integer.MAX_VALUE;
+        for (int i = 0; i < nums.length - 2; i++) {
+            // 固定 nums[i] 为三数之和中的第一个数，
+            // 然后对 nums[i+1..] 搜索接近 target - nums[i] 的两数之和
+            int sum = nums[i] + twoSumClosest2(nums, i + 1, target - nums[i]);
+            if (Math.abs(delta) > Math.abs(target - sum)) {
+                delta = target - sum;
+            }
+        }
+        return target - delta;
+    }
+    // 在 nums[start..] 搜索最接近 target 的两数之和
+    private int twoSumClosest2(int[] nums, int start, int target) {
+        int lo = start, hi = nums.length - 1;
+        // 记录两数之和与目标值的偏差
+        int delta = Integer.MAX_VALUE;
+        while (lo < hi) {
+            int sum = nums[lo] + nums[hi];
+            if (Math.abs(delta) > Math.abs(target - sum)) {
+                delta = target - sum;
+            }
+            if (sum < target) {
+                lo++;
+            } else {
+                hi--;
+            }
+        }
+        return target - delta;
     }
 }
 // @lc code=end
