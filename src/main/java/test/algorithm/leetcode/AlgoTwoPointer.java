@@ -21,6 +21,8 @@ public class AlgoTwoPointer {
         log.info("ThreeSumClosest: {}", new ThreeSumClosest().threeSumClosest(new int[] {0,0,0}, 1));
         log.info("ThreeSumClosest: {}", new ThreeSumClosest().threeSumClosest(new int[] {1,1,-1}, 0));
         log.info("ThreeSumClosest: {}", new ThreeSumClosest().threeSumClosest(new int[] {0,3,97,102,200}, 300));
+        log.info("FourSum: {}", new FourSum().fourSum(new int[] {1,0,-1,0,-2,2}, 0));
+        log.info("FourSum: {}", new FourSum().fourSum(new int[] {2,2,2,2,2}, 8));
     }
 }
 
@@ -165,7 +167,7 @@ class ThreeSum {
                     list.add(curNum);
                     res.add(list);
                 });
-                while (curIndex < length && nums[curIndex] == curNum) curIndex++;
+                while (curIndex < length && nums[curIndex] == curNum) curIndex ++;
             }
         }
         return res;
@@ -264,7 +266,7 @@ class ThreeSumClosest {
                         });
                     }
                 }
-                while (curIndex < length && nums[curIndex] == curNum) curIndex++;
+                while (curIndex < length && nums[curIndex] == curNum) curIndex ++;
             }
         }
         // 最终返回最小差值的列表
@@ -320,3 +322,95 @@ class ThreeSumClosest {
     }
 }
 // @lc code=end
+
+
+/**
+ * @lc app=leetcode.cn id=18 lang=java
+ *
+ * [18] 四数之和
+ *
+ * https://leetcode.cn/problems/4sum/description/
+ *
+ * algorithms
+ * Medium (37.55%)
+ * Likes:    1505
+ * Dislikes: 0
+ * Total Accepted:    417.6K
+ * Total Submissions: 1.1M
+ * Testcase Example:  '[1,0,-1,0,-2,2]\n0'
+ *
+ * 给你一个由 n 个整数组成的数组 nums ，和一个目标值 target 。请你找出并返回满足下述全部条件且不重复的四元组 [nums[a],
+ * nums[b], nums[c], nums[d]] （若两个四元组元素一一对应，则认为两个四元组重复）：
+ * 0 <= a, b, c, d < n
+ * a、b、c 和 d 互不相同
+ * nums[a] + nums[b] + nums[c] + nums[d] == target
+ * 你可以按 任意顺序 返回答案 。
+ *
+ * 示例 1：
+ * 输入：nums = [1,0,-1,0,-2,2], target = 0
+ * 输出：[[-2,-1,1,2],[-2,0,0,2],[-1,0,0,1]]
+ *
+ * 示例 2：
+ * 输入：nums = [2,2,2,2,2], target = 8
+ * 输出：[[2,2,2,2]]
+ *
+ * 提示：
+ * 1 <= nums.length <= 200
+ * -10^9 <= nums[i] <= 10^9
+ * -10^9 <= target <= 10^9
+ */
+
+// @lc code=start
+class FourSum {
+    public List<List<Integer>> fourSum(int[] nums, int target) {
+        Arrays.sort(nums);
+        return nSum(nums, 4, target, 0);
+    }
+
+    private List<List<Integer>> nSum(int[] nums, int n, int target, int start) {
+        List<List<Integer>> res = new ArrayList<>();
+        // 判断边界
+        int length = nums.length;
+        if (n > length || n < 2 || start >= length) {
+            return res;
+        }
+
+        if (n == 2) {
+            int left = start, right = length - 1;
+            while (left < right) {
+                int small = nums[left], big = nums[right];
+                // 这道题两数相加不会溢出，不需要判断
+                int sum = small + big;
+                if (sum == target) {
+                    res.add(new ArrayList<>(Arrays.asList(small, big)));
+                    while (left < right && nums[left] == small) left ++;
+                    while (left < right && nums[right] == big) right --;
+                } else if (sum < target) {
+                    while (left < right && nums[left] == small) left ++;
+                } else {
+                    while (left < right && nums[right] == big) right --;
+                }
+            }
+        } else {
+            int curIndex = start;
+            while (curIndex < length) {
+                int curNum = nums[curIndex];
+                // 这道题相减可能溢出
+                List<List<Integer>> subRes = subtractOverflow(target, curNum) ? new ArrayList<>() : nSum(nums, n - 1, target - curNum, curIndex + 1);
+                subRes.forEach(list -> {
+                    list.add(curNum);
+                    res.add(list);
+                });
+                while (curIndex < length && nums[curIndex] == curNum) curIndex ++;
+            }
+        }
+        return res;
+    }
+
+    private boolean subtractOverflow(int x, int y) {
+        int r = x - y;
+        return ((x ^ y) & (x ^ r)) < 0;
+    }
+}
+// @lc code=end
+
