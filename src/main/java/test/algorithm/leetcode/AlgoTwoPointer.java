@@ -23,6 +23,9 @@ public class AlgoTwoPointer {
         log.info("ThreeSumClosest: {}", new ThreeSumClosest().threeSumClosest(new int[] {0,3,97,102,200}, 300));
         log.info("FourSum: {}", new FourSum().fourSum(new int[] {1,0,-1,0,-2,2}, 0));
         log.info("FourSum: {}", new FourSum().fourSum(new int[] {2,2,2,2,2}, 8));
+        log.info("RemoveNthNodeFromEndOfList: {}", new RemoveNthNodeFromEndOfList().removeNthFromEnd(RemoveNthNodeFromEndOfList.example1(), 2));
+        log.info("RemoveNthNodeFromEndOfList: {}", new RemoveNthNodeFromEndOfList().removeNthFromEnd(RemoveNthNodeFromEndOfList.example2(), 1));
+        log.info("RemoveNthNodeFromEndOfList: {}", new RemoveNthNodeFromEndOfList().removeNthFromEnd(RemoveNthNodeFromEndOfList.example3(), 1));
     }
 }
 
@@ -414,3 +417,121 @@ class FourSum {
 }
 // @lc code=end
 
+/**
+ * @lc app=leetcode.cn id=19 lang=java
+ *
+ * [19] 删除链表的倒数第 N 个结点
+ *
+ * https://leetcode.cn/problems/remove-nth-node-from-end-of-list/description/
+ *
+ * algorithms
+ * Medium (45.15%)
+ * Likes:    2413
+ * Dislikes: 0
+ * Total Accepted:    1M
+ * Total Submissions: 2.3M
+ * Testcase Example:  '[1,2,3,4,5]\n2'
+ *
+ * 给你一个链表，删除链表的倒数第 n 个结点，并且返回链表的头结点。
+ *
+ * 示例 1：
+ * 输入：head = [1,2,3,4,5], n = 2
+ * 输出：[1,2,3,5]
+ *
+ * 示例 2：
+ * 输入：head = [1], n = 1
+ * 输出：[]
+ *
+ * 示例 3：
+ * 输入：head = [1,2], n = 1
+ * 输出：[1]
+ *
+ * 提示：
+ * 链表中结点的数目为 sz
+ * 1 <= sz <= 30
+ * 0 <= Node.val <= 100
+ * 1 <= n <= sz
+ *
+ * 进阶：你能尝试使用一趟扫描实现吗？
+ */
+// @lc code=start
+class RemoveNthNodeFromEndOfList {
+
+    public ListNode removeNthFromEnd(ListNode head, int n) {
+        if (head == null || n == 0) {
+            return null;
+        }
+        ListNode newHead = new ListNode(-1, head);
+        ListNode left = newHead;
+        ListNode right = newHead;
+        for (int i = 0; i < n; i ++) {
+            if (right.next == null) {
+                return null;
+            }
+            right = right.next;
+        }
+        while (right.next != null) {
+            left = left.next;
+            right = right.next;
+        }
+        left.next = left.next.next;
+        return newHead.next;
+    }
+
+    // 解法2
+    public ListNode removeNthFromEnd2(ListNode head, int n) {
+        // 虚拟头结点
+        ListNode dummy = new ListNode(-1);
+        dummy.next = head;
+        // 删除倒数第 n 个，要先找倒数第 n + 1 个节点
+        ListNode x = findFromEnd(dummy, n + 1);
+        // 删掉倒数第 n 个节点
+        x.next = x.next.next;
+        return dummy.next;
+    }
+
+    // 返回链表的倒数第 k 个节点
+    ListNode findFromEnd(ListNode head, int k) {
+        ListNode p1 = head;
+        // p1 先走 k 步
+        for (int i = 0; i < k; i++) {
+            p1 = p1.next;
+        }
+        ListNode p2 = head;
+        // p1 和 p2 同时走 n - k 步
+        // 注意: 因为传入的是 n + 1, 所以这里用 p1 != null 判断, 如果传入的是 n, 这里应该判断 p1.next != null
+        while (p1 != null) {
+            p2 = p2.next;
+            p1 = p1.next;
+        }
+        // p2 现在指向第 n - k 个节点
+        return p2;
+    }
+
+    /**
+     * Definition for singly-linked list.
+     */
+    private static class ListNode {
+        int val;
+        ListNode next;
+        ListNode() {}
+        ListNode(int val) { this.val = val; }
+        ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+
+        @Override
+        public String toString() {
+            return val + ", " + next;
+        }
+    }
+
+    public static ListNode example1() {
+        return new ListNode(1, new ListNode(2, new ListNode(3, new ListNode(4, new ListNode(5)))));
+    }
+    public static ListNode example2() {
+        return new ListNode(1);
+    }
+    public static ListNode example3() {
+        return new ListNode(1, new ListNode(2));
+    }
+}
+// @lc code=end
