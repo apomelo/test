@@ -2,6 +2,10 @@ package test.algorithm.leetcode;
 
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Stack;
+
 /**
  * 栈
  * @author C
@@ -11,7 +15,9 @@ import lombok.extern.slf4j.Slf4j;
 public class AlgoStack {
     public static void main(String[] args) {
         // 模板
-        log.info("template: {}", new AlgoStack());
+        log.info("ValidParentheses: {}", new ValidParentheses().isValid("()[]{}"));
+        log.info("ValidParentheses: {}", new ValidParentheses().isValid("(]"));
+        log.info("ValidParentheses: {}", new ValidParentheses().isValid("([)]"));
     }
 }
 
@@ -54,8 +60,27 @@ public class AlgoStack {
  */
 // @lc code=start
 class ValidParentheses {
-    public boolean validParentheses(String s) {
-        return false;
+    public boolean isValid(String s) {
+        Map<Character, Character> maping = new HashMap<Character, Character>() {{
+            put('(', ')');
+            put('{', '}');
+            put('[', ']');
+        }};
+        Stack<Character> stack = new Stack<>();
+        for (char c : s.toCharArray()) {
+            if (stack.empty()) {
+                stack.push(c);
+            } else {
+                Character peek = stack.peek();
+                Character mapC = maping.get(peek);
+                if (mapC != null && mapC == c) {
+                    stack.pop();
+                } else {
+                    stack.push(c);
+                }
+            }
+        }
+        return stack.empty();
     }
 }
 // @lc code=end

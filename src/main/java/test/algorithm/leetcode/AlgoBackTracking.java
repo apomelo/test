@@ -2,6 +2,7 @@ package test.algorithm.leetcode;
 
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -17,6 +18,8 @@ public class AlgoBackTracking {
         log.info("LetterCombinationsOfAPhoneNumber: {}", new LetterCombinationsOfAPhoneNumber().letterCombinations("23"));
         log.info("LetterCombinationsOfAPhoneNumber: {}", new LetterCombinationsOfAPhoneNumber().letterCombinations(""));
         log.info("LetterCombinationsOfAPhoneNumber: {}", new LetterCombinationsOfAPhoneNumber().letterCombinations("2"));
+        log.info("GenerateParentheses: {}", new GenerateParentheses().generateParenthesis(3));
+        log.info("GenerateParentheses: {}", new GenerateParentheses().generateParenthesis(1));
     }
 }
 
@@ -92,6 +95,78 @@ class LetterCombinationsOfAPhoneNumber {
                 sb.deleteCharAt(sb.length() - 1);
             }
         }
+    }
+}
+// @lc code=end
+
+/**
+ * @lc app=leetcode.cn id=22 lang=java
+ *
+ * [22] 括号生成
+ *
+ * https://leetcode.cn/problems/generate-parentheses/description/
+ *
+ * algorithms
+ * Medium (77.59%)
+ * Likes:    3103
+ * Dislikes: 0
+ * Total Accepted:    656K
+ * Total Submissions: 845.7K
+ * Testcase Example:  '3'
+ *
+ * 数字 n 代表生成括号的对数，请你设计一个函数，用于能够生成所有可能的并且 有效的 括号组合。
+ *
+ * 示例 1：
+ * 输入：n = 3
+ * 输出：["((()))","(()())","(())()","()(())","()()()"]
+ *
+ * 示例 2：
+ * 输入：n = 1
+ * 输出：["()"]
+ *
+ * 提示：
+ * 1 <= n <= 8
+ */
+// @lc code=start
+class GenerateParentheses {
+    public List<String> generateParenthesis(int n) {
+        List<String> res = new ArrayList<>();
+        StringBuilder track = new StringBuilder();
+        backtrack(n, n, track, res);
+        return res;
+    }
+
+    /**
+     * 回溯算法
+     * @param left 剩余的左括号数量
+     * @param right 剩余的右括号数量
+     * @param track 回溯字符串
+     * @param res 存储符合条件的字符串
+     */
+    private void backtrack(int left, int right, StringBuilder track, List<String> res) {
+        // 若左括号剩下的多，说明不合法
+        if (left > right) {
+            return;
+        }
+        // 数量小于 0 不合法
+        if (left < 0 || right < 0) {
+            return;
+        }
+        // 当所有括号都恰好用完时，得到一个合法的括号组合
+        if (left == 0 && right == 0) {
+            res.add(track.toString());
+            return;
+        }
+
+        // 尝试放一个左括号
+        track.append('('); // 选择
+        backtrack(left - 1, right, track, res);
+        track.deleteCharAt(track.length() - 1); // 撤消选择
+
+        // 尝试放一个右括号
+        track.append(')'); // 选择
+        backtrack(left, right - 1, track, res);
+        track.deleteCharAt(track.length() - 1); // 撤消选择
     }
 }
 // @lc code=end
