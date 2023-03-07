@@ -14,6 +14,9 @@ public class AlgoLinkedList {
         log.info("MergeTwoSortedLists: {}", new MergeTwoSortedLists().mergeTwoLists(MergeTwoSortedLists.example1(), MergeTwoSortedLists.example2()));
         log.info("MergeTwoSortedLists: {}", new MergeTwoSortedLists().mergeTwoLists(MergeTwoSortedLists.example3(), MergeTwoSortedLists.example3()));
         log.info("MergeTwoSortedLists: {}", new MergeTwoSortedLists().mergeTwoLists(MergeTwoSortedLists.example3(), MergeTwoSortedLists.example4()));
+        log.info("SwapNodesInPairs: {}", new SwapNodesInPairs().swapPairs(SwapNodesInPairs.example1()));
+        log.info("SwapNodesInPairs: {}", new SwapNodesInPairs().swapPairs(SwapNodesInPairs.example2()));
+        log.info("SwapNodesInPairs: {}", new SwapNodesInPairs().swapPairs(SwapNodesInPairs.example3()));
     }
 }
 
@@ -109,6 +112,113 @@ class MergeTwoSortedLists {
     }
     public static ListNode example4() {
         return new ListNode(0);
+    }
+}
+// @lc code=end
+
+
+/**
+ * @lc app=leetcode.cn id=24 lang=java
+ *
+ * [24] 两两交换链表中的节点
+ *
+ * https://leetcode.cn/problems/swap-nodes-in-pairs/description/
+ *
+ * algorithms
+ * Medium (71.30%)
+ * Likes:    1741
+ * Dislikes: 0
+ * Total Accepted:    588.3K
+ * Total Submissions: 825.1K
+ * Testcase Example:  '[1,2,3,4]'
+ *
+ * 给你一个链表，两两交换其中相邻的节点，并返回交换后链表的头节点。你必须在不修改节点内部的值的情况下完成本题（即，只能进行节点交换）。
+ *
+ * 示例 1：
+ * 输入：head = [1,2,3,4]
+ * 输出：[2,1,4,3]
+ *
+ * 示例 2：
+ * 输入：head = []
+ * 输出：[]
+ *
+ * 示例 3：
+ * 输入：head = [1]
+ * 输出：[1]
+ *
+ * 提示：
+ * 链表中节点的数目在范围 [0, 100] 内
+ * 0 <= Node.val <= 100
+ */
+// @lc code=start
+class SwapNodesInPairs {
+    // 解法2
+    public ListNode swapPairs(ListNode head) {
+        if (head == null || head.next == null) return head;
+        ListNode dummy = new ListNode(-1);
+        ListNode p = dummy;
+        ListNode p1 = head;
+        int index = 1;
+        while (p1 != null) {
+            if (index % 2 == 1) {
+                p.next = p1;
+                p1 = p1.next;
+                // 指针停留
+            } else {
+                ListNode temp = p.next;
+                // 断开环
+                temp.next = null;
+                p.next = p1;
+                p1 = p1.next;
+                p.next.next = temp;
+                // 指针移动 2 位
+                p = p.next.next;
+            }
+            index ++;
+        }
+        return dummy.next;
+    }
+
+    // 解法2: 递归
+    public ListNode swapPairs2(ListNode head) {
+        if (head == null || head.next == null) {
+            return head;
+        }
+        ListNode first = head;
+        ListNode second = head.next;
+        ListNode others = head.next.next;
+        // 先把前两个元素翻转
+        second.next = first;
+        // 利用递归定义，将剩下的链表节点两两翻转，接到后面
+        first.next = swapPairs(others);
+        // 现在整个链表都成功翻转了，返回新的头结点
+        return second;
+    }
+
+    /**
+     * Definition for singly-linked list.
+     */
+    private static class ListNode {
+        int val;
+        ListNode next;
+        ListNode() {}
+        ListNode(int val) { this.val = val; }
+        ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+
+        @Override
+        public String toString() {
+            return val + ", " + next;
+        }
+    }
+
+    public static ListNode example1() {
+        return new ListNode(1, new ListNode(2, new ListNode(3, new ListNode(4))));
+    }
+    public static ListNode example2() {
+        return null;
+    }
+    public static ListNode example3() {
+        return new ListNode(1);
     }
 }
 // @lc code=end
