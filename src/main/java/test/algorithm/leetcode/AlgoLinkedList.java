@@ -14,9 +14,10 @@ public class AlgoLinkedList {
         log.info("MergeTwoSortedLists: {}", new MergeTwoSortedLists().mergeTwoLists(MergeTwoSortedLists.example1(), MergeTwoSortedLists.example2()));
         log.info("MergeTwoSortedLists: {}", new MergeTwoSortedLists().mergeTwoLists(MergeTwoSortedLists.example3(), MergeTwoSortedLists.example3()));
         log.info("MergeTwoSortedLists: {}", new MergeTwoSortedLists().mergeTwoLists(MergeTwoSortedLists.example3(), MergeTwoSortedLists.example4()));
-        log.info("SwapNodesInPairs: {}", new SwapNodesInPairs().swapPairs(SwapNodesInPairs.example1()));
-        log.info("SwapNodesInPairs: {}", new SwapNodesInPairs().swapPairs(SwapNodesInPairs.example2()));
-        log.info("SwapNodesInPairs: {}", new SwapNodesInPairs().swapPairs(SwapNodesInPairs.example3()));
+        log.info("SwapNodesInPairs: {}", new SwapNodesInPairs().swapPairs1(SwapNodesInPairs.example1()));
+        log.info("SwapNodesInPairs: {}", new SwapNodesInPairs().swapPairs1(SwapNodesInPairs.example2()));
+        log.info("SwapNodesInPairs: {}", new SwapNodesInPairs().swapPairs1(SwapNodesInPairs.example3()));
+        log.info("SwapNodesInPairs: {}", new SwapNodesInPairs().swapPairs2(SwapNodesInPairs.example1()));
         log.info("ReverseNodesInKGroup: {}", new ReverseNodesInKGroup().reverseKGroup(ReverseNodesInKGroup.example1(), 2));
         log.info("ReverseNodesInKGroup: {}", new ReverseNodesInKGroup().reverseKGroup(ReverseNodesInKGroup.example1(), 3));
         log.info("ReverseNodesInKGroup: {}", new ReverseNodesInKGroup().reverseKGroup(ReverseNodesInKGroup.example2(), 2));
@@ -156,7 +157,7 @@ class MergeTwoSortedLists {
 // @lc code=start
 class SwapNodesInPairs {
     // 解法1
-    public ListNode swapPairs(ListNode head) {
+    public ListNode swapPairs1(ListNode head) {
         if (head == null || head.next == null) return head;
         ListNode dummy = new ListNode(-1);
         ListNode p = dummy;
@@ -191,10 +192,12 @@ class SwapNodesInPairs {
         ListNode second = head.next;
         ListNode others = head.next.next;
         // 先把前两个元素翻转
-        // 此处会导致环异常
+        // 一定要加 first.next = null; 这句, 否则会导致环异常:
+        // (Method threw 'java.lang.StackOverflowError' exception. Cannot evaluate test.algorithm.leetcode.SwapNodesInPairs$ListNode.toString())
+        first.next = null;
         second.next = first;
         // 利用递归定义，将剩下的链表节点两两翻转，接到后面
-        first.next = swapPairs(others);
+        first.next = swapPairs2(others);
         // 现在整个链表都成功翻转了，返回新的头结点
         return second;
     }
