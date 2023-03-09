@@ -26,6 +26,10 @@ public class AlgoTwoPointer {
         log.info("RemoveNthNodeFromEndOfList: {}", new RemoveNthNodeFromEndOfList().removeNthFromEnd(RemoveNthNodeFromEndOfList.example1(), 2));
         log.info("RemoveNthNodeFromEndOfList: {}", new RemoveNthNodeFromEndOfList().removeNthFromEnd(RemoveNthNodeFromEndOfList.example2(), 1));
         log.info("RemoveNthNodeFromEndOfList: {}", new RemoveNthNodeFromEndOfList().removeNthFromEnd(RemoveNthNodeFromEndOfList.example3(), 1));
+        log.info("RemoveDuplicatesFromSortedArray: {}", new RemoveDuplicatesFromSortedArray().removeDuplicates(new int[] {1,1,2}));
+        log.info("RemoveDuplicatesFromSortedArray: {}", new RemoveDuplicatesFromSortedArray().removeDuplicates(new int[] {0,0,1,1,1,2,2,3,3,4}));
+        log.info("RemoveElement: {}", new RemoveElement().removeElement(new int[] {3,2,2,3}, 3));
+        log.info("RemoveElement: {}", new RemoveElement().removeElement(new int[] {0,1,2,2,3,0,4,2}, 2));
     }
 }
 
@@ -532,6 +536,141 @@ class RemoveNthNodeFromEndOfList {
     }
     public static ListNode example3() {
         return new ListNode(1, new ListNode(2));
+    }
+}
+// @lc code=end
+
+
+/**
+ * @lc app=leetcode.cn id=26 lang=java
+ *
+ * [26] 删除有序数组中的重复项
+ *
+ * https://leetcode.cn/problems/remove-duplicates-from-sorted-array/description/
+ *
+ * algorithms
+ * Easy (54.67%)
+ * Likes:    3053
+ * Dislikes: 0
+ * Total Accepted:    1.4M
+ * Total Submissions: 2.6M
+ * Testcase Example:  '[1,1,2]'
+ *
+ * 给你一个 升序排列 的数组 nums ，请你 原地 删除重复出现的元素，使每个元素 只出现一次 ，返回删除后数组的新长度。元素的 相对顺序 应该保持
+ * 一致 。
+ * 由于在某些语言中不能改变数组的长度，所以必须将结果放在数组nums的第一部分。更规范地说，如果在删除重复项之后有 k 个元素，那么 nums 的前 k
+ * 个元素应该保存最终结果。
+ * 将最终结果插入 nums 的前 k 个位置后返回 k 。
+ * 不要使用额外的空间，你必须在 原地 修改输入数组 并在使用 O(1) 额外空间的条件下完成。
+ *
+ * 判题标准:
+ * 系统会用下面的代码来测试你的题解:
+ * int[] nums = [...]; // 输入数组
+ * int[] expectedNums = [...]; // 长度正确的期望答案
+ * int k = removeDuplicates(nums); // 调用
+ * assert k == expectedNums.length;
+ * for (int i = 0; i < k; i++) {
+ *     assert nums[i] == expectedNums[i];
+ * }
+ * 如果所有断言都通过，那么您的题解将被 通过。
+ *
+ * 示例 1：
+ * 输入：nums = [1,1,2]
+ * 输出：2, nums = [1,2,_]
+ * 解释：函数应该返回新的长度 2 ，并且原数组 nums 的前两个元素被修改为 1, 2 。不需要考虑数组中超出新长度后面的元素。
+ *
+ * 示例 2：
+ * 输入：nums = [0,0,1,1,1,2,2,3,3,4]
+ * 输出：5, nums = [0,1,2,3,4]
+ * 解释：函数应该返回新的长度 5 ， 并且原数组 nums 的前五个元素被修改为 0, 1, 2, 3, 4
+ * 。不需要考虑数组中超出新长度后面的元素。
+ *
+ * 提示：
+ * 1 <= nums.length <= 3 * 10^4
+ * -10^4 <= nums[i] <= 10^4
+ * nums 已按 升序 排列
+ */
+// @lc code=start
+class RemoveDuplicatesFromSortedArray {
+    public int removeDuplicates(int[] nums) {
+        if (nums == null || nums.length == 0) return 0;
+        int slow = 0, fast = 0;
+        while (fast < nums.length) {
+            if (nums[slow] != nums[fast]) {
+                slow ++;
+                // 维护 nums[0..slow] 无重复
+                nums[slow] = nums[fast];
+            }
+            fast ++;
+        }
+        // 数组长度为索引 + 1
+        return slow + 1;
+    }
+}
+// @lc code=end
+
+
+/**
+ * @lc app=leetcode.cn id=27 lang=java
+ *
+ * [27] 移除元素
+ *
+ * https://leetcode.cn/problems/remove-element/description/
+ *
+ * algorithms
+ * Easy (59.41%)
+ * Likes:    1697
+ * Dislikes: 0
+ * Total Accepted:    978.4K
+ * Total Submissions: 1.6M
+ * Testcase Example:  '[3,2,2,3]\n3'
+ *
+ * 给你一个数组 nums 和一个值 val，你需要 原地 移除所有数值等于 val 的元素，并返回移除后数组的新长度。
+ * 不要使用额外的数组空间，你必须仅使用 O(1) 额外空间并 原地 修改输入数组。
+ * 元素的顺序可以改变。你不需要考虑数组中超出新长度后面的元素。
+ *
+ * 说明:
+ * 为什么返回数值是整数，但输出的答案是数组呢?
+ * 请注意，输入数组是以「引用」方式传递的，这意味着在函数里修改输入数组对于调用者是可见的。
+ * 你可以想象内部操作如下:
+ * // nums 是以“引用”方式传递的。也就是说，不对实参作任何拷贝
+ * int len = removeElement(nums, val);
+ * // 在函数里修改输入数组对于调用者是可见的。
+ * // 根据你的函数返回的长度, 它会打印出数组中 该长度范围内 的所有元素。
+ * for (int i = 0; i < len; i++) {
+ *     print(nums[i]);
+ * }
+ *
+ * 示例 1：
+ * 输入：nums = [3,2,2,3], val = 3
+ * 输出：2, nums = [2,2]
+ * 解释：函数应该返回新的长度 2, 并且 nums 中的前两个元素均为 2。你不需要考虑数组中超出新长度后面的元素。例如，函数返回的新长度为 2 ，而
+ * nums = [2,2,3,3] 或 nums = [2,2,0,0]，也会被视作正确答案。
+ *
+ * 示例 2：
+ * 输入：nums = [0,1,2,2,3,0,4,2], val = 2
+ * 输出：5, nums = [0,1,4,0,3]
+ * 解释：函数应该返回新的长度 5, 并且 nums 中的前五个元素为 0, 1, 3, 0,
+ * 4。注意这五个元素可为任意顺序。你不需要考虑数组中超出新长度后面的元素。
+ *
+ * 提示：
+ * 0 <= nums.length <= 100
+ * 0 <= nums[i] <= 50
+ * 0 <= val <= 100
+ */
+// @lc code=start
+class RemoveElement {
+    public int removeElement(int[] nums, int val) {
+        if (nums == null || nums.length == 0) return 0;
+        int slow = 0, fast = 0;
+        while (fast < nums.length) {
+            if (nums[fast] != val) {
+                nums[slow] = nums[fast];
+                slow ++;
+            }
+            fast ++;
+        }
+        return slow;
     }
 }
 // @lc code=end
