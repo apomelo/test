@@ -3,7 +3,7 @@ package test.algorithm.leetcode;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * 模板
+ * 字符串
  * @author C
  * @date 2023/2/1
  */
@@ -14,6 +14,9 @@ public class AlgoString {
         log.info("LongestCommonPrefix: {}", new LongestCommonPrefix().longestCommonPrefix(new String[]{"flower","flow","flight"}));
         log.info("LongestCommonPrefix: {}", new LongestCommonPrefix().longestCommonPrefix(new String[]{"dog","racecar","car"}));
         log.info("LongestCommonPrefix: {}", new LongestCommonPrefix().longestCommonPrefix(new String[]{"ab", "a"}));
+        log.info("FindTheIndexOfTheFirstOccurrenceInAString: {}", new FindTheIndexOfTheFirstOccurrenceInAString().strStr("sadbutsad", "sad"));
+        log.info("FindTheIndexOfTheFirstOccurrenceInAString: {}", new FindTheIndexOfTheFirstOccurrenceInAString().strStr("leetcode", "leeto"));
+        log.info("FindTheIndexOfTheFirstOccurrenceInAString: {}", new FindTheIndexOfTheFirstOccurrenceInAString().strStr("mississippi", "issipi"));
     }
 }
 
@@ -94,6 +97,72 @@ class LongestCommonPrefix {
             }
         }
         return strs[0];
+    }
+}
+// @lc code=end
+
+
+/**
+ * @lc app=leetcode.cn id=28 lang=java
+ *
+ * [28] 找出字符串中第一个匹配项的下标
+ *
+ * https://leetcode.cn/problems/find-the-index-of-the-first-occurrence-in-a-string/description/
+ *
+ * algorithms
+ * Medium (42.01%)
+ * Likes:    1774
+ * Dislikes: 0
+ * Total Accepted:    809K
+ * Total Submissions: 1.9M
+ * Testcase Example:  '"sadbutsad"\n"sad"'
+ *
+ * 给你两个字符串 haystack 和 needle ，请你在 haystack 字符串中找出 needle 字符串的第一个匹配项的下标（下标从 0
+ * 开始）。如果 needle 不是 haystack 的一部分，则返回  -1 。
+ *
+ * 示例 1：
+ * 输入：haystack = "sadbutsad", needle = "sad"
+ * 输出：0
+ * 解释："sad" 在下标 0 和 6 处匹配。
+ * 第一个匹配项的下标是 0 ，所以返回 0 。
+ *
+ * 示例 2：
+ * 输入：haystack = "leetcode", needle = "leeto"
+ * 输出：-1
+ * 解释："leeto" 没有在 "leetcode" 中出现，所以返回 -1 。
+ *
+ * 提示：
+ * 1 <= haystack.length, needle.length <= 10^4
+ * haystack 和 needle 仅由小写英文字符组成
+ */
+
+// @lc code=start
+class FindTheIndexOfTheFirstOccurrenceInAString {
+    public int strStr(String haystack, String needle) {
+        int hayStackLength = haystack.length();
+        int needleLength = needle.length();
+        // 主字符串最大遍历位置
+        int max = hayStackLength - needleLength;
+        if (max < 0) return -1;
+
+        char first = needle.charAt(0);
+        // 遍历主字符串
+        for (int i = 0; i <= max; i ++) {
+            // 查找匹配的第一个字符串
+            if (haystack.charAt(i) != first) {
+                while (++i < hayStackLength && haystack.charAt(i) != first);
+            }
+            // 遍历表里后面字符串是否匹配
+            if (i <= max) {
+                int j = i + 1;
+                int end = i + needleLength;
+                for (int k = 1; j < end && haystack.charAt(j) == needle.charAt(k); j++, k++);
+                if (j == end) {
+                    return i;
+                }
+            }
+        }
+        return -1;
     }
 }
 // @lc code=end
