@@ -125,6 +125,7 @@ public class IntegerTest {
     }
 
     private static void testDisplacement() {
+        // 0x40000000 == 1073741824
 //        int a = 0x40000000;
         int a = 1073741824;
         int b = (a + a)  /  2;
@@ -132,6 +133,7 @@ public class IntegerTest {
         log.info("a:{}", a);
         log.info("b:{}", b);
         log.info("c:{}", c);
+        // 0xc0000000 == -1073741824
 //        int d = 0xc0000000;
         int d = -1073741824;
         int e = (d + d)  /  2;
