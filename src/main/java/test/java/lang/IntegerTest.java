@@ -17,7 +17,8 @@ public class IntegerTest {
 //        testParse();
 //        testVariable();
 //        testBaseConversion();
-        testDisplacement();
+//        testDisplacement();
+        testConversionToLong();
     }
 
     private static void parseInteger() {
@@ -138,5 +139,21 @@ public class IntegerTest {
         log.info("d:{}", d);
         log.info("e:{}", e);
         log.info("f:{}", f);
+    }
+
+    private static void testConversionToLong() {
+        int a = 100_000_000;
+        int b1 = 10_000;
+        long b2 = 10_000L;
+        int c1 = a * b1 / b1;
+        int c2 = (int) ((long) a * b1 / b1);
+        int c3 = (int) (((long) a) * b1 / b1);
+        int c4 = (int) ((long) (a * b1) / b1);
+        int c5 = (int) (a * b2 / b1);
+        log.info("c1:{}", c1);
+        log.info("c2:{}", c2);
+        log.info("c3:{}", c3);
+        log.info("c4:{}", c4);
+        log.info("c5:{}", c5);
     }
 }
