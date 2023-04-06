@@ -10,8 +10,12 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class AlgoSudoku {
     public static void main(String[] args) {
-        // 数独
-        log.info("template: {}", new AlgoSudoku());
+        // 有效的数独
+        log.info("ValidSudoku: {}", new ValidSudoku().isValidSudoku(ValidSudoku.example1()));
+        // 解数独
+        char[][] sudokuSolverExample1 = SudokuSolver.example1();
+        new SudokuSolver().solveSudoku(sudokuSolverExample1);
+        SudokuSolver.printSudoku(sudokuSolverExample1);
     }
 }
 
@@ -105,6 +109,178 @@ class ValidSudoku {
             }
         }
         return true;
+    }
+
+    public static char[][] example1() {
+        return new char[][] {
+                {'8','3','.','.','7','.','.','.','.'},
+                {'6','.','.','1','9','5','.','.','.'},
+                {'.','9','8','.','.','.','.','6','.'},
+                {'8','.','.','.','6','.','.','.','3'},
+                {'4','.','.','8','.','3','.','.','1'},
+                {'7','.','.','.','2','.','.','.','6'},
+                {'.','6','.','.','.','.','2','8','.'},
+                {'.','.','.','4','1','9','.','.','5'},
+                {'.','.','.','.','8','.','.','7','9'}
+        };
+    }
+}
+// @lc code=end
+
+
+/**
+ * @lc app=leetcode.cn id=37 lang=java
+ *
+ * [37] 解数独
+ *
+ * https://leetcode.cn/problems/sudoku-solver/description/
+ *
+ * algorithms
+ * Hard (67.63%)
+ * Likes:    1590
+ * Dislikes: 0
+ * Total Accepted:    197.9K
+ * Total Submissions: 292.7K
+ * Testcase Example:  '[["5","3",".",".","7",".",".",".","."],["6",".",".","1","9","5",".",".","."],[".","9","8",".",".",".",".","6","."],["8",".",".",".","6",".",".",".","3"],["4",".",".","8",".","3",".",".","1"],["7",".",".",".","2",".",".",".","6"],[".","6",".",".",".",".","2","8","."],[".",".",".","4","1","9",".",".","5"],[".",".",".",".","8",".",".","7","9"]]'
+ *
+ * 编写一个程序，通过填充空格来解决数独问题。
+ * 数独的解法需 遵循如下规则：
+ * 数字 1-9 在每一行只能出现一次。
+ * 数字 1-9 在每一列只能出现一次。
+ * 数字 1-9 在每一个以粗实线分隔的 3x3 宫内只能出现一次。（请参考示例图）
+ * 数独部分空格内已填入了数字，空白格用 '.' 表示。
+ *
+ * 示例 1：
+ * 输入：board =
+ * [["5","3",".",".","7",".",".",".","."]
+ * ,["6",".",".","1","9","5",".",".","."]
+ * ,[".","9","8",".",".",".",".","6","."]
+ * ,["8",".",".",".","6",".",".",".","3"]
+ * ,["4",".",".","8",".","3",".",".","1"]
+ * ,["7",".",".",".","2",".",".",".","6"]
+ * ,[".","6",".",".",".",".","2","8","."]
+ * ,[".",".",".","4","1","9",".",".","5"]
+ * ,[".",".",".",".","8",".",".","7","9"]]
+ * 输出：
+ * [["5","3","4","6","7","8","9","1","2"]
+ * ,["6","7","2","1","9","5","3","4","8"]
+ * ,["1","9","8","3","4","2","5","6","7"]
+ * ,["8","5","9","7","6","1","4","2","3"]
+ * ,["4","2","6","8","5","3","7","9","1"]
+ * ,["7","1","3","9","2","4","8","5","6"]
+ * ,["9","6","1","5","3","7","2","8","4"]
+ * ,["2","8","7","4","1","9","6","3","5"]
+ * ,["3","4","5","2","8","6","1","7","9"]]
+ * 解释：输入的数独如上图所示，唯一有效的解决方案如下所示：
+ *
+ * 提示：
+ * board.length == 9
+ * board[i].length == 9
+ * board[i][j] 是一位数字或者 '.'
+ * 题目数据 保证 输入数独仅有一个解
+ */
+// @lc code=start
+class SudokuSolver {
+    public void solveSudoku(char[][] board) {
+        dfs(board, 0, 0);
+    }
+
+    private boolean dfs(char[][] sd, int i, int j) {
+        if (j == 9) {
+            j = 0;
+            i ++;
+        }
+        if (i == 9) {
+            return true;
+        }
+        if (sd[i][j] == '.') {
+            for (int k = 1; k <= 9; k ++) {
+                char val = (char) ('0' + k);
+                // check 后满足
+                if (check(sd, i, j, val)) {
+                    sd[i][j] = val;
+                    // 已经找到答案了, 直接 return
+                    if (dfs(sd, i, j + 1)) {
+                        return true;
+                    }
+                    // 没找到答案, 回溯
+                    sd[i][j] = '.';
+                }
+            }
+            return false;
+        } else {
+            return dfs(sd, i, j + 1);
+        }
+    }
+
+    // 判断 sd[i][j] 是否可以填入 val
+    private boolean check(char[][] sd, int i, int j, char val) {
+        for (int k = 0; k < 9; k++) {
+            // 判断行是否存在重复
+            if (sd[i][k] == val) return false;
+            // 判断列是否存在重复
+            if (sd[k][j] == val) return false;
+            // 判断 3 x 3 方框是否存在重复
+            if (sd[(i / 3) * 3 + k / 3][(j / 3) * 3 + k % 3] == val)
+                return false;
+        }
+        return true;
+    }
+
+    private boolean check2(char[][] sd, int i, int j, char val) {
+        // 验证同行
+        for (int k = 0; k < 9; k ++) {
+            if (sd[i][k] == val) {
+                return false;
+            }
+        }
+        // 验证同列
+        for (int k = 0; k < 9; k ++) {
+            if (sd[k][j] == val) {
+                return false;
+            }
+        }
+
+        // 验证同小九宫格
+        // 九宫格行的起点
+        int rowLimit = i / 3 * 3;
+        // 九宫格列的起点
+        int colLimit = j / 3 * 3;
+        for (int k = rowLimit; k < rowLimit + 3; k ++) {
+            for (int l = colLimit; l < colLimit + 3; l ++) {
+                if (sd[k][l] == val) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    public static char[][] example1() {
+        return new char[][] {
+                {'5','3','.','.','7','.','.','.','.'},
+                {'6','.','.','1','9','5','.','.','.'},
+                {'.','9','8','.','.','.','.','6','.'},
+                {'8','.','.','.','6','.','.','.','3'},
+                {'4','.','.','8','.','3','.','.','1'},
+                {'7','.','.','.','2','.','.','.','6'},
+                {'.','6','.','.','.','.','2','8','.'},
+                {'.','.','.','4','1','9','.','.','5'},
+                {'.','.','.','.','8','.','.','7','9'}
+        };
+    }
+
+    public static void printSudoku(char[][] sd) {
+        System.out.println("------begin------");
+        // 打印数独
+        for (int i = 0; i < 9; i ++) {
+            for (int j = 0; j < 9; j ++) {
+                System.out.print(sd[i][j]);
+                System.out.print(" ");
+            }
+            System.out.println();
+        }
+        System.out.println("-------end-------");
     }
 }
 // @lc code=end
