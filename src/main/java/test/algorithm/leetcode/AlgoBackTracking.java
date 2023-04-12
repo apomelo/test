@@ -3,6 +3,7 @@ package test.algorithm.leetcode;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -18,8 +19,16 @@ public class AlgoBackTracking {
         log.info("LetterCombinationsOfAPhoneNumber: {}", new LetterCombinationsOfAPhoneNumber().letterCombinations("23"));
         log.info("LetterCombinationsOfAPhoneNumber: {}", new LetterCombinationsOfAPhoneNumber().letterCombinations(""));
         log.info("LetterCombinationsOfAPhoneNumber: {}", new LetterCombinationsOfAPhoneNumber().letterCombinations("2"));
+        // 括号生成
         log.info("GenerateParentheses: {}", new GenerateParentheses().generateParenthesis(3));
         log.info("GenerateParentheses: {}", new GenerateParentheses().generateParenthesis(1));
+        // 组合总和
+        log.info("CombinationSum: {}", new CombinationSum().combinationSum(new int[] {2,3,6,7}, 7));
+        log.info("CombinationSum: {}", new CombinationSum().combinationSum(new int[] {2,3,5}, 8));
+        log.info("CombinationSum: {}", new CombinationSum().combinationSum(new int[] {2}, 1));
+        // 组合总和 II
+        log.info("CombinationSumII: {}", new CombinationSumII().combinationSum2(new int[] {10,1,2,7,6,1,5}, 8));
+        log.info("CombinationSumII: {}", new CombinationSumII().combinationSum2(new int[] {2,5,2,1,2}, 5));
     }
 }
 
@@ -167,6 +176,184 @@ class GenerateParentheses {
         track.append(')'); // 选择
         backtrack(left, right - 1, track, res);
         track.deleteCharAt(track.length() - 1); // 撤消选择
+    }
+}
+// @lc code=end
+
+
+/**
+ * @lc app=leetcode.cn id=39 lang=java
+ *
+ * [39] 组合总和
+ *
+ * https://leetcode.cn/problems/combination-sum/description/
+ *
+ * algorithms
+ * Medium (72.47%)
+ * Likes:    2446
+ * Dislikes: 0
+ * Total Accepted:    715.6K
+ * Total Submissions: 987.7K
+ * Testcase Example:  '[2,3,6,7]\n7'
+ *
+ * 给你一个 无重复元素 的整数数组 candidates 和一个目标整数 target ，找出 candidates 中可以使数字和为目标数 target
+ * 的 所有 不同组合 ，并以列表形式返回。你可以按 任意顺序 返回这些组合。
+ * candidates 中的 同一个 数字可以 无限制重复被选取 。如果至少一个数字的被选数量不同，则两种组合是不同的。
+ * 对于给定的输入，保证和为 target 的不同组合数少于 150 个。
+ *
+ * 示例 1：
+ * 输入：candidates = [2,3,6,7], target = 7
+ * 输出：[[2,2,3],[7]]
+ * 解释：
+ * 2 和 3 可以形成一组候选，2 + 2 + 3 = 7 。注意 2 可以使用多次。
+ * 7 也是一个候选， 7 = 7 。
+ * 仅有这两种组合。
+ *
+ * 示例 2：
+ * 输入: candidates = [2,3,5], target = 8
+ * 输出: [[2,2,2,2],[2,3,3],[3,5]]
+ *
+ * 示例 3：
+ * 输入: candidates = [2], target = 1
+ * 输出: []
+ *
+ * 提示：
+ * 1 <= candidates.length <= 30
+ * 2 <= candidates[i] <= 40
+ * candidates 的所有元素 互不相同
+ * 1 <= target <= 40
+ */
+// @lc code=start
+class CombinationSum {
+    List<List<Integer>> res = new LinkedList<>();
+    // 记录回溯的路径
+    LinkedList<Integer> track = new LinkedList<>();
+
+    public List<List<Integer>> combinationSum(int[] candidates, int target) {
+        if (candidates.length == 0) {
+            return res;
+        }
+        backtrack(candidates, 0, target, 0);
+        return res;
+    }
+
+    // 回溯算法主函数
+    private void backtrack(int[] candidates, int start, int target, int sum) {
+        // 找到目标和
+        if (sum == target) {
+            res.add(new LinkedList<>(track));
+            return;
+        }
+
+        // 超过目标和，直接结束
+        if (sum > target) {
+            return;
+        }
+
+        // 回溯算法框架
+        for (int i = start; i < candidates.length; i ++) {
+            // 选择 candidates[i]
+            track.add(candidates[i]);
+            sum += candidates[i];
+            // 递归遍历下一层回溯树
+            backtrack(candidates, i, target, sum);
+            // 撤销选择 candidates[i]
+            sum -= candidates[i];
+            track.removeLast();
+        }
+    }
+}
+// @lc code=end
+
+
+/**
+ * @lc app=leetcode.cn id=40 lang=java
+ *
+ * [40] 组合总和 II
+ *
+ * https://leetcode.cn/problems/combination-sum-ii/description/
+ *
+ * algorithms
+ * Medium (59.95%)
+ * Likes:    1314
+ * Dislikes: 0
+ * Total Accepted:    417K
+ * Total Submissions: 695.7K
+ * Testcase Example:  '[10,1,2,7,6,1,5]\n8'
+ *
+ * 给定一个候选人编号的集合 candidates 和一个目标数 target ，找出 candidates 中所有可以使数字和为 target 的组合。
+ * candidates 中的每个数字在每个组合中只能使用 一次 。
+ * 注意：解集不能包含重复的组合。
+ *
+ * 示例 1:
+ * 输入: candidates = [10,1,2,7,6,1,5], target = 8,
+ * 输出:
+ * [
+ * [1,1,6],
+ * [1,2,5],
+ * [1,7],
+ * [2,6]
+ * ]
+ *
+ * 示例 2:
+ * 输入: candidates = [2,5,2,1,2], target = 5,
+ * 输出:
+ * [
+ * [1,2,2],
+ * [5]
+ * ]
+ *
+ * 提示:
+ * 1 <= candidates.length <= 100
+ * 1 <= candidates[i] <= 50
+ * 1 <= target <= 30
+ */
+// @lc code=start
+class CombinationSumII {
+    // 结果
+    LinkedList<List<Integer>> res = new LinkedList<>();
+    // 记录回溯的路径
+    LinkedList<Integer> track = new LinkedList<>();
+
+    public List<List<Integer>> combinationSum2(int[] candidates, int target) {
+        if (candidates.length == 0) {
+            return res;
+        }
+        Arrays.sort(candidates);
+        backtrack(candidates, 0, target, 0);
+        return res;
+    }
+
+    // 回溯算法主函数
+    private void backtrack(int[] candidates, int start, int target, int sum) {
+        // 找到目标和
+        if (sum == target) {
+            res.add(new LinkedList<>(track));
+            return;
+        }
+        // 超过目标和，直接结束
+        if (sum > target) {
+            return;
+        }
+
+        // 回溯
+        // 因为 1 <= candidates[i] <= 50, 所以这里可以设置为 0
+        int last = 0;
+        for (int i = start; i < candidates.length; i ++) {
+            // 不能有元素数值一致的集合
+            if (candidates[i] == last) {
+                continue;
+            }
+            last = candidates[i];
+            // 选择 candidates[i]
+            track.add(candidates[i]);
+            sum += candidates[i];
+            // 递归遍历下一层回溯树
+            backtrack(candidates, i + 1, target, sum);
+            // 撤销选择 candidates[i]
+            sum -= candidates[i];
+            track.removeLast();
+        }
     }
 }
 // @lc code=end

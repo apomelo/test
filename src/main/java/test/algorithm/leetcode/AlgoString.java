@@ -16,16 +16,21 @@ import java.util.Map;
 @Slf4j
 public class AlgoString {
     public static void main(java.lang.String[] args) {
-        // 模板
+        // 最长公共前缀
         log.info("LongestCommonPrefix: {}", new LongestCommonPrefix().longestCommonPrefix(new String[]{"flower", "flow", "flight"}));
         log.info("LongestCommonPrefix: {}", new LongestCommonPrefix().longestCommonPrefix(new String[]{"dog", "racecar", "car"}));
         log.info("LongestCommonPrefix: {}", new LongestCommonPrefix().longestCommonPrefix(new String[]{"ab", "a"}));
+        // 找出字符串中第一个匹配项的下标
         log.info("FindTheIndexOfTheFirstOccurrenceInAString: {}", new FindTheIndexOfTheFirstOccurrenceInAString().strStr("sadbutsad", "sad"));
         log.info("FindTheIndexOfTheFirstOccurrenceInAString: {}", new FindTheIndexOfTheFirstOccurrenceInAString().strStr("leetcode", "leeto"));
         log.info("FindTheIndexOfTheFirstOccurrenceInAString: {}", new FindTheIndexOfTheFirstOccurrenceInAString().strStr("mississippi", "issipi"));
+        // 串联所有单词的子串
         log.info("SubstringWithConcatenationOfAllWords: {}", new SubstringWithConcatenationOfAllWords().findSubstring("barfoothefoobarman", new String[]{"foo", "bar"}));
         log.info("SubstringWithConcatenationOfAllWords: {}", new SubstringWithConcatenationOfAllWords().findSubstring("wordgoodgoodgoodbestword", new String[]{"word", "good", "best", "word"}));
         log.info("SubstringWithConcatenationOfAllWords: {}", new SubstringWithConcatenationOfAllWords().findSubstring("barfoofoobarthefoobarman", new String[]{"bar", "foo", "the"}));
+        // 外观数列
+        log.info("CountAndSay: {}", new CountAndSay().countAndSay(1));
+        log.info("CountAndSay: {}", new CountAndSay().countAndSay(4));
     }
 }
 
@@ -295,6 +300,92 @@ class SubstringWithConcatenationOfAllWords {
             }
         }
         return res;
+    }
+}
+// @lc code=end
+
+
+/**
+ * @lc app=leetcode.cn id=38 lang=java
+ *
+ * [38] 外观数列
+ *
+ * https://leetcode.cn/problems/count-and-say/description/
+ *
+ * algorithms
+ * Medium (60.34%)
+ * Likes:    1006
+ * Dislikes: 0
+ * Total Accepted:    334.4K
+ * Total Submissions: 554.2K
+ * Testcase Example:  '1'
+ *
+ * 给定一个正整数 n ，输出外观数列的第 n 项。
+ * 「外观数列」是一个整数序列，从数字 1 开始，序列中的每一项都是对前一项的描述。
+ * 你可以将其视作是由递归公式定义的数字字符串序列：
+ * countAndSay(1) = "1"
+ * countAndSay(n) 是对 countAndSay(n-1) 的描述，然后转换成另一个数字字符串。
+ * 前五项如下：
+ * 1.     1
+ * 2.     11
+ * 3.     21
+ * 4.     1211
+ * 5.     111221
+ * 第一项是数字 1
+ * 描述前一项，这个数是 1 即 “ 一 个 1 ”，记作 "11"
+ * 描述前一项，这个数是 11 即 “ 二 个 1 ” ，记作 "21"
+ * 描述前一项，这个数是 21 即 “ 一 个 2 + 一 个 1 ” ，记作 "1211"
+ * 描述前一项，这个数是 1211 即 “ 一 个 1 + 一 个 2 + 二 个 1 ” ，记作 "111221"
+ * 要描述一个数字字符串，首先要将字符串分割为 最小 数量的组，每个组都由连续的最多 相同字符
+ * 组成。然后对于每个组，先描述字符的数量，然后描述字符，形成一个描述组。要将描述转换为数字字符串，先将每组中的字符数量用数字替换，再将所有描述组连接起来。
+ *
+ * 示例 1：
+ * 输入：n = 1
+ * 输出："1"
+ * 解释：这是一个基本样例。
+ *
+ * 示例 2：
+ * 输入：n = 4
+ * 输出："1211"
+ * 解释：
+ * countAndSay(1) = "1"
+ * countAndSay(2) = 读 "1" = 一 个 1 = "11"
+ * countAndSay(3) = 读 "11" = 二 个 1 = "21"
+ * countAndSay(4) = 读 "21" = 一 个 2 + 一 个 1 = "12" + "11" = "1211"
+ *
+ * 提示：
+ * 1 <= n <= 30
+ */
+// @lc code=start
+class CountAndSay {
+    public String countAndSay(int n) {
+        if (n == 1) return "1";
+        String strN1 = countAndSay(n - 1);
+        return countAndSay(strN1);
+    }
+
+    public String countAndSay(String strN) {
+        // 左右指针
+        int left = 0;
+        int right = 0;
+        char leftVal = strN.charAt(0);
+        StringBuilder sb = new StringBuilder();
+        for (char c : strN.toCharArray()) {
+            // 新字符不相等,
+            if (c != leftVal) {
+                // 加入相等字符的数量和值
+                sb.append(right - left).append(leftVal);
+                // 把左指针移到新字符
+                left = right;
+                // 左指针的值等于新字符
+                leftVal = c;
+            }
+            // 右指针每次都移动到下 1 格
+            right ++;
+        }
+        // 最后一段字符一定相等, 所以需要再循环外加入最后一段字符
+        sb.append(right - left).append(leftVal);
+        return sb.toString();
     }
 }
 // @lc code=end
