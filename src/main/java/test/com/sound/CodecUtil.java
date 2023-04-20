@@ -11,6 +11,7 @@ import java.io.File;
 import java.io.IOException;
 
 /**
+ * 需要导入工程下 src/main/resources/lib 目录
  * Created by C on 2018/3/30.
  */
 public class CodecUtil {
