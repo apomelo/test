@@ -11,10 +11,15 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class AlgoMath {
     public static void main(String[] args) {
+        // 两数相除
         log.info("DivideTwoIntegers: {}", new DivideTwoIntegers().divide1(10, 3));
         log.info("DivideTwoIntegers: {}", new DivideTwoIntegers().divide1(7, -3));
         log.info("DivideTwoIntegers: {}", new DivideTwoIntegers().divide2(10, 3));
         log.info("DivideTwoIntegers: {}", new DivideTwoIntegers().divide2(7, -3));
+        // 缺失的第一个正数
+        log.info("FirstMissingPositive: {}", new FirstMissingPositive().firstMissingPositive(new int[] {1,2,0}));
+        log.info("FirstMissingPositive: {}", new FirstMissingPositive().firstMissingPositive(new int[] {3,4,-1,1}));
+        log.info("FirstMissingPositive: {}", new FirstMissingPositive().firstMissingPositive(new int[] {7,8,9,11,12}));
     }
 }
 
@@ -164,6 +169,107 @@ class DivideTwoIntegers {
             z >>= 1;
         }
         return true;
+    }
+}
+// @lc code=end
+
+
+/**
+ * @lc app=leetcode.cn id=41 lang=java
+ *
+ * [41] 缺失的第一个正数
+ *
+ * https://leetcode.cn/problems/first-missing-positive/description/
+ *
+ * algorithms
+ * Hard (42.94%)
+ * Likes:    1799
+ * Dislikes: 0
+ * Total Accepted:    287.8K
+ * Total Submissions: 670.2K
+ * Testcase Example:  '[1,2,0]'
+ *
+ * 给你一个未排序的整数数组 nums ，请你找出其中没有出现的最小的正整数。
+ * 请你实现时间复杂度为 O(n) 并且只使用常数级别额外空间的解决方案。
+ *
+ * 示例 1：
+ * 输入：nums = [1,2,0]
+ * 输出：3
+ *
+ * 示例 2：
+ * 输入：nums = [3,4,-1,1]
+ * 输出：2
+ *
+ * 示例 3：
+ * 输入：nums = [7,8,9,11,12]
+ * 输出：1
+ *
+ * 提示：
+ * 1 <= nums.length <= 5 * 10^5
+ * -2^31 <= nums[i] <= 2^31 - 1
+ */
+// @lc code=start
+class FirstMissingPositive {
+    /**
+     * 方法1: 原地 hash 法
+     * 对于一个长度为 N 的数组，其中没有出现的最小正整数只能在 [1,N+1] 中。
+     * 这是因为如果 [1,N] 都出现了，那么答案是 N+1，否则答案是 [1,N] 中没有出现的最小正整数。
+     * 这样一来，我们将所有在 [1,N] 范围内的数放入哈希表，就可以得到最终的答案。
+     * 算法的流程如下：
+     * 1. 我们将数组中所有小于等于 0 的数修改为  N+1；
+     * 2. 我们遍历数组中的每一个数 x，它可能已经被打了标记，因此原本对应的数为 ∣x∣，其中 ∣∣ 为绝对值符号。
+     *    如果 ∣x∣∈[1,N]，那么我们给数组中的第 ∣x∣−1 个位置的数添加一个负号。注意如果它已经有负号，不需要重复添加；
+     * 3. 在遍历完成之后，如果数组中的每一个数都是负数，那么答案是 N+1，否则答案是第一个正数的位置加 1。
+     */
+    public int firstMissingPositive(int[] nums) {
+        int n = nums.length;
+        // 将数组中所有小于等于 0 的数修改为  N+1
+        for (int i = 0; i < n; i ++) {
+            if (nums[i] <= 0) {
+                nums[i] = n + 1;
+            }
+        }
+        // 在索引为 nums[i] 上面打上标记
+        for (int i = 0; i < n; i ++) {
+            // 因为数组中数字可能重复, 所以可能重复打标记, 需要保证标记之后是负数
+            int num = Math.abs(nums[i]);
+            if (num <= n) {
+                nums[num - 1] = -Math.abs(nums[num - 1]);
+            }
+        }
+        // 找到第一个正数索引, 因为上面是在索引 nums[i] - 1 位置打标记, 所以这里应该是索引 + 1
+        for (int i = 0; i < n; i ++) {
+            if (nums[i] > 0) {
+                return i + 1;
+            }
+        }
+        return n + 1;
+    }
+
+    /**
+     * 方法2: 置换
+     * 对数组进行一次遍历，对于遍历到的数 x=nums[i]，如果 x∈[1,N]，我们就知道 x 应当出现在数组中的 x−1 的位置，
+     * 因此交换 nums[i] 和 nums[x−1]，这样 x 就出现在了正确的位置。在完成交换后，新的 nums[i] 可能还在 [1,N] 的范围内，
+     * 我们需要继续进行交换操作，直到 x ∉ [1,N].
+     * 上面的方法可能会陷入死循环。如果 nums[i] 恰好与 nums[x−1] 相等，那么就会无限交换下去。
+     * 此时我们有 nums[i]=x=nums[x−1]，说明 x 已经出现在了正确的位置。因此我们可以跳出循环，开始遍历下一个数。
+     * 每次的交换操作都会使得某一个数交换到正确的位置，因此交换的次数最多为 N，整个方法的时间复杂度为 O(N)。
+     */
+    public int firstMissingPositive2(int[] nums) {
+        int n = nums.length;
+        for (int i = 0; i < n; ++i) {
+            while (nums[i] > 0 && nums[i] <= n && nums[nums[i] - 1] != nums[i]) {
+                int temp = nums[nums[i] - 1];
+                nums[nums[i] - 1] = nums[i];
+                nums[i] = temp;
+            }
+        }
+        for (int i = 0; i < n; ++i) {
+            if (nums[i] != i + 1) {
+                return i + 1;
+            }
+        }
+        return n + 1;
     }
 }
 // @lc code=end
