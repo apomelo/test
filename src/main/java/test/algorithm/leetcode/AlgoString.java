@@ -31,6 +31,9 @@ public class AlgoString {
         // 外观数列
         log.info("CountAndSay: {}", new CountAndSay().countAndSay(1));
         log.info("CountAndSay: {}", new CountAndSay().countAndSay(4));
+        // 字符串相乘
+        log.info("MultiplyStrings: {}", new MultiplyStrings().multiply("2", "3"));
+        log.info("MultiplyStrings: {}", new MultiplyStrings().multiply("123", "456"));
     }
 }
 
@@ -386,6 +389,73 @@ class CountAndSay {
         // 最后一段字符一定相等, 所以需要再循环外加入最后一段字符
         sb.append(right - left).append(leftVal);
         return sb.toString();
+    }
+}
+// @lc code=end
+
+
+/**
+ * @lc app=leetcode.cn id=43 lang=java
+ *
+ * [43] 字符串相乘
+ *
+ * https://leetcode.cn/problems/multiply-strings/description/
+ *
+ * algorithms
+ * Medium (44.53%)
+ * Likes:    1196
+ * Dislikes: 0
+ * Total Accepted:    294.8K
+ * Total Submissions: 662.4K
+ * Testcase Example:  '"2"\n"3"'
+ *
+ * 给定两个以字符串形式表示的非负整数 num1 和 num2，返回 num1 和 num2 的乘积，它们的乘积也表示为字符串形式。
+ * 注意：不能使用任何内置的 BigInteger 库或直接将输入转换为整数。
+ *
+ * 示例 1:
+ * 输入: num1 = "2", num2 = "3"
+ * 输出: "6"
+ *
+ * 示例 2:
+ * 输入: num1 = "123", num2 = "456"
+ * 输出: "56088"
+ *
+ * 提示：
+ * 1 <= num1.length, num2.length <= 200
+ * num1 和 num2 只能由数字组成。
+ * num1 和 num2 都不包含任何前导零，除了数字0本身。
+ */
+// @lc code=start
+class MultiplyStrings {
+    public String multiply(String num1, String num2) {
+        int m = num1.length();
+        int n = num2.length();
+        // 结果最多为 m + n 位数
+        int[] res = new int[m + n];
+        // 从个位数开始逐位相乘
+        for (int i = m - 1; i >= 0; i--) {
+            for (int j = n - 1; j >= 0; j--) {
+                int mul = (num1.charAt(i) - '0') * (num2.charAt(j) - '0');
+                // 乘积在 res 对应的索引位置
+                int p1 = i + j;     // 高位
+                int p2 = i + j + 1; // 低位
+                int sum = res[p2] + mul;
+                res[p1] += sum / 10;
+                res[p2] = sum % 10;
+            }
+        }
+        // 将计算结果转化成字符串
+        // 结果前缀可能存的 0（未使用的位）
+        int i = 0;
+        while (i < res.length && res[i] == 0) {
+            i++;
+        }
+        StringBuilder sb = new StringBuilder();
+        for (; i < res.length; i++) {
+            sb.append(res[i]);
+        }
+        String str = sb.toString();
+        return str.length() == 0 ? "0" : str;
     }
 }
 // @lc code=end

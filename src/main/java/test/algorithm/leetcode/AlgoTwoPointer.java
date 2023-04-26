@@ -12,24 +12,35 @@ import java.util.List;
 @Slf4j
 public class AlgoTwoPointer {
     public static void main(String[] args) {
+        // 盛最多水的容器
         log.info("ContainerWithMostWater: {}", new ContainerWithMostWater().maxArea(new int[] {1,8,6,2,5,4,8,3,7}));
         log.info("ContainerWithMostWater: {}", new ContainerWithMostWater().maxArea(new int[] {1,1}));
+        // 三数之和
         log.info("ThreeSum: {}", new ThreeSum().threeSum(new int[] {-1,0,1,2,-1,-4}));
         log.info("ThreeSum: {}", new ThreeSum().threeSum(new int[] {0,1,1}));
         log.info("ThreeSum: {}", new ThreeSum().threeSum(new int[] {0,0,0}));
+        // 最接近的三数之和
         log.info("ThreeSumClosest: {}", new ThreeSumClosest().threeSumClosest(new int[] {-1,2,1,-4}, 1));
         log.info("ThreeSumClosest: {}", new ThreeSumClosest().threeSumClosest(new int[] {0,0,0}, 1));
         log.info("ThreeSumClosest: {}", new ThreeSumClosest().threeSumClosest(new int[] {1,1,-1}, 0));
         log.info("ThreeSumClosest: {}", new ThreeSumClosest().threeSumClosest(new int[] {0,3,97,102,200}, 300));
+        // 四数之和
         log.info("FourSum: {}", new FourSum().fourSum(new int[] {1,0,-1,0,-2,2}, 0));
         log.info("FourSum: {}", new FourSum().fourSum(new int[] {2,2,2,2,2}, 8));
+        // 删除链表的倒数第 N 个结点
         log.info("RemoveNthNodeFromEndOfList: {}", new RemoveNthNodeFromEndOfList().removeNthFromEnd(RemoveNthNodeFromEndOfList.example1(), 2));
         log.info("RemoveNthNodeFromEndOfList: {}", new RemoveNthNodeFromEndOfList().removeNthFromEnd(RemoveNthNodeFromEndOfList.example2(), 1));
         log.info("RemoveNthNodeFromEndOfList: {}", new RemoveNthNodeFromEndOfList().removeNthFromEnd(RemoveNthNodeFromEndOfList.example3(), 1));
+        // 删除有序数组中的重复项
         log.info("RemoveDuplicatesFromSortedArray: {}", new RemoveDuplicatesFromSortedArray().removeDuplicates(new int[] {1,1,2}));
         log.info("RemoveDuplicatesFromSortedArray: {}", new RemoveDuplicatesFromSortedArray().removeDuplicates(new int[] {0,0,1,1,1,2,2,3,3,4}));
+        // 移除元素
         log.info("RemoveElement: {}", new RemoveElement().removeElement(new int[] {3,2,2,3}, 3));
         log.info("RemoveElement: {}", new RemoveElement().removeElement(new int[] {0,1,2,2,3,0,4,2}, 2));
+        // 接雨水
+        log.info("TrappingRainWater: {}", new TrappingRainWater().trap(new int[] {0,1,0,2,1,0,1,3,2,1,2,1}));
+        log.info("TrappingRainWater: {}", new TrappingRainWater().trap(new int[] {4,2,0,3,2,5}));
+        log.info("TrappingRainWater: {}", new TrappingRainWater().trap(new int[] {3,0,4,0,5}));
     }
 }
 
@@ -671,6 +682,70 @@ class RemoveElement {
             fast ++;
         }
         return slow;
+    }
+}
+// @lc code=end
+
+
+/**
+ * @lc app=leetcode.cn id=42 lang=java
+ *
+ * [42] 接雨水
+ *
+ * https://leetcode.cn/problems/trapping-rain-water/description/
+ *
+ * algorithms
+ * Hard (62.58%)
+ * Likes:    4276
+ * Dislikes: 0
+ * Total Accepted:    672.5K
+ * Total Submissions: 1.1M
+ * Testcase Example:  '[0,1,0,2,1,0,1,3,2,1,2,1]'
+ *
+ * 给定 n 个非负整数表示每个宽度为 1 的柱子的高度图，计算按此排列的柱子，下雨之后能接多少雨水。
+ *
+ * 示例 1：
+ * 输入：height = [0,1,0,2,1,0,1,3,2,1,2,1]
+ * 输出：6
+ * 解释：上面是由数组 [0,1,0,2,1,0,1,3,2,1,2,1] 表示的高度图，在这种情况下，可以接 6 个单位的雨水（蓝色部分表示雨水）。
+ *
+ * 示例 2：
+ * 输入：height = [4,2,0,3,2,5]
+ * 输出：9
+ *
+ * 提示：
+ * n == height.length
+ * 1 <= n <= 2 * 10^4
+ * 0 <= height[i] <= 10^5
+ */
+// @lc code=start
+class TrappingRainWater {
+    public int trap(int[] height) {
+        if (height == null || height.length < 3) {
+            return 0;
+        }
+
+        int n = height.length;
+        int res = 0;
+        // 数组充当备忘录
+        int[] lMax = new int[n];
+        int[] rMax = new int[n];
+        // 初始化 base case
+        lMax[0] = height[0];
+        rMax[n - 1] = height[n - 1];
+        // 从左向右计算 l_max
+        for (int i = 1; i < n; i++) {
+            lMax[i] = Math.max(height[i], lMax[i - 1]);
+        }
+        // 从右向左计算 r_max
+        for (int i = n - 2; i >= 0; i--) {
+            rMax[i] = Math.max(height[i], rMax[i + 1]);
+        }
+        // 计算答案
+        for (int i = 1; i < n - 1; i++) {
+            res += Math.min(lMax[i], rMax[i]) - height[i];
+        }
+        return res;
     }
 }
 // @lc code=end
