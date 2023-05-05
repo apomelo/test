@@ -29,6 +29,19 @@ public class AlgoBackTracking {
         // 组合总和 II
         log.info("CombinationSumII: {}", new CombinationSumII().combinationSum2(new int[] {10,1,2,7,6,1,5}, 8));
         log.info("CombinationSumII: {}", new CombinationSumII().combinationSum2(new int[] {2,5,2,1,2}, 5));
+        // 全排列
+        log.info("Permutations: {}", new Permutations().permute(new int[] {1,2,3}));
+        log.info("Permutations: {}", new Permutations().permute(new int[] {0,1}));
+        log.info("Permutations: {}", new Permutations().permute(new int[] {1}));
+        // 全排列 II
+        log.info("PermutationsII: {}", new PermutationsII().permuteUnique(new int[] {1,1,2}));
+        log.info("PermutationsII: {}", new PermutationsII().permuteUnique(new int[] {1,2,3}));
+        // N 皇后
+        log.info("NQueens: {}", new NQueens().solveNQueens(4));
+        log.info("NQueens: {}", new NQueens().solveNQueens(1));
+        // N 皇后 II
+        log.info("NQueensII: {}", new NQueensII().totalNQueens(4));
+        log.info("NQueensII: {}", new NQueensII().totalNQueens(1));
     }
 }
 
@@ -354,6 +367,378 @@ class CombinationSumII {
             sum -= candidates[i];
             track.removeLast();
         }
+    }
+}
+// @lc code=end
+
+
+/**
+ * @lc app=leetcode.cn id=46 lang=java
+ *
+ * [46] 全排列
+ *
+ * https://leetcode.cn/problems/permutations/description/
+ *
+ * algorithms
+ * Medium (78.87%)
+ * Likes:    2534
+ * Dislikes: 0
+ * Total Accepted:    852.7K
+ * Total Submissions: 1.1M
+ * Testcase Example:  '[1,2,3]'
+ *
+ * 给定一个不含重复数字的数组 nums ，返回其 所有可能的全排列 。你可以 按任意顺序 返回答案。
+ *
+ * 示例 1：
+ * 输入：nums = [1,2,3]
+ * 输出：[[1,2,3],[1,3,2],[2,1,3],[2,3,1],[3,1,2],[3,2,1]]
+ *
+ * 示例 2：
+ * 输入：nums = [0,1]
+ * 输出：[[0,1],[1,0]]
+ *
+ * 示例 3：
+ * 输入：nums = [1]
+ * 输出：[[1]]
+ *
+ * 提示：
+ * 1 <= nums.length <= 6
+ * -10 <= nums[i] <= 10
+ * nums 中的所有整数 互不相同
+ */
+// @lc code=start
+class Permutations {
+    List<List<Integer>> res = new ArrayList<>();
+
+    /**
+     * 主函数，输入一组不重复的数字，返回它们的全排列
+     */
+    public List<List<Integer>> permute(int[] nums) {
+        // 记录「路径」
+        LinkedList<Integer> track = new LinkedList<>();
+        // 「路径」中的元素会被标记为 true，避免重复使用
+        boolean[] used = new boolean[nums.length];
+        backtrack(nums, track, used);
+        return res;
+    }
+
+    /**
+     * 路径：记录在 track 中
+     * 选择列表：nums 中不存在于 track 的那些元素（used[i] 为 false）
+     * 结束条件：nums 中的元素全都在 track 中出现
+     */
+    private void backtrack(int[] nums, LinkedList<Integer> track, boolean[] used) {
+        // 触发结束条件
+        if (track.size() == nums.length) {
+            res.add(new ArrayList<>(track));
+            return;
+        }
+
+        // 回溯主体
+        for (int i = 0; i < nums.length; i++) {
+            // 排除不合法的选择
+            if (used[i]) {
+                // nums[i] 已经在 track 中，跳过
+                continue;
+            }
+            // 选择
+            track.add(nums[i]);
+            used[i] = true;
+            // 进入下一层决策树
+            backtrack(nums, track, used);
+            // 撤销选择
+            track.removeLast();
+            used[i] = false;
+        }
+    }
+}
+// @lc code=end
+
+
+/**
+ * @lc app=leetcode.cn id=47 lang=java
+ *
+ * [47] 全排列 II
+ *
+ * https://leetcode.cn/problems/permutations-ii/description/
+ *
+ * algorithms
+ * Medium (65.48%)
+ * Likes:    1356
+ * Dislikes: 0
+ * Total Accepted:    450.2K
+ * Total Submissions: 687.4K
+ * Testcase Example:  '[1,1,2]'
+ *
+ * 给定一个可包含重复数字的序列 nums ，按任意顺序 返回所有不重复的全排列。
+ *
+ * 示例 1：
+ * 输入：nums = [1,1,2]
+ * 输出：
+ * [[1,1,2],
+ *  [1,2,1],
+ *  [2,1,1]]
+ *
+ * 示例 2：
+ * 输入：nums = [1,2,3]
+ * 输出：[[1,2,3],[1,3,2],[2,1,3],[2,3,1],[3,1,2],[3,2,1]]
+ *
+ * 提示：
+ * 1 <= nums.length <= 8
+ * -10 <= nums[i] <= 10
+ */
+// @lc code=start
+class PermutationsII {
+    List<List<Integer>> res = new ArrayList<>();
+    /**
+     * 主函数，输入一组 可以 重复的数字，返回它们的全排列
+     */
+    public List<List<Integer>> permuteUnique(int[] nums) {
+        // 记录「路径」
+        LinkedList<Integer> track = new LinkedList<>();
+        // 「路径」中的元素会被标记为 true，避免重复使用
+        boolean[] used = new boolean[nums.length];
+        Arrays.sort(nums);
+        backtrack(nums, track, used);
+        return res;
+    }
+
+    /**
+     * 路径：记录在 track 中
+     * 选择列表：nums 中不存在于 track 的那些元素（used[i] 为 false）
+     * 结束条件：nums 中的元素全都在 track 中出现
+     */
+    private void backtrack(int[] nums, LinkedList<Integer> track, boolean[] used) {
+        // 触发结束条件
+        if (track.size() == nums.length) {
+            res.add(new ArrayList<>(track));
+            return;
+        }
+
+        // 回溯算法主体
+        int last = Integer.MIN_VALUE;
+        for (int i = 0; i < nums.length; i++) {
+            // 排除不合法的选择
+            // nums[i] 已经在 track 中，跳过
+            // 和上一个数相同，跳过
+            if (used[i] || nums[i] == last) {
+                continue;
+            }
+            last = nums[i];
+            // 选择
+            track.add(nums[i]);
+            used[i] = true;
+            // 进入下一层决策树
+            backtrack(nums, track, used);
+            // 撤销选择
+            track.removeLast();
+            used[i] = false;
+        }
+    }
+}
+// @lc code=end
+
+
+/**
+ * @lc app=leetcode.cn id=51 lang=java
+ *
+ * [51] N 皇后
+ *
+ * https://leetcode.cn/problems/n-queens/description/
+ *
+ * algorithms
+ * Hard (74.16%)
+ * Likes:    1755
+ * Dislikes: 0
+ * Total Accepted:    303.5K
+ * Total Submissions: 409.4K
+ * Testcase Example:  '4'
+ *
+ * 按照国际象棋的规则，皇后可以攻击与之处在同一行或同一列或同一斜线上的棋子。
+ * n 皇后问题 研究的是如何将 n 个皇后放置在 n×n 的棋盘上，并且使皇后彼此之间不能相互攻击。
+ * 给你一个整数 n ，返回所有不同的 n 皇后问题 的解决方案。
+ * 每一种解法包含一个不同的 n 皇后问题 的棋子放置方案，该方案中 'Q' 和 '.' 分别代表了皇后和空位。
+ *
+ * 示例 1：
+ * 输入：n = 4
+ * 输出：[[".Q..","...Q","Q...","..Q."],["..Q.","Q...","...Q",".Q.."]]
+ * 解释：如上所示，4 皇后问题存在两个不同的解法。
+ *
+ * 示例 2：
+ * 输入：n = 1
+ * 输出：[["Q"]]
+ *
+ * 提示：
+ * 1 <= n <= 9
+ */
+// @lc code=start
+class NQueens {
+    List<List<String>> res = new ArrayList<>();
+
+    /**
+     * 输入棋盘边长 n，返回所有合法的放置
+     */
+    public List<List<String>> solveNQueens(int n) {
+        // '.' 表示空，'Q' 表示皇后，初始化空棋盘。
+        List<String> board = new ArrayList<>();
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < n; i++) {
+            sb.append('.');
+        }
+        for (int i = 0; i < n; i++) {
+            board.add(sb.toString());
+        }
+        backtrack(board, 0);
+        return res;
+    }
+
+    /**
+     * 路径：board 中小于 row 的那些行都已经成功放置了皇后
+     * 选择列表：第 row 行的所有列都是放置皇后的选择
+     * 结束条件：row 超过 board 的最后一行
+     */
+    private void backtrack(List<String> board, int row) {
+        if (row == board.size()) {
+            res.add(new ArrayList<>(board));
+            return;
+        }
+
+        int n = board.get(row).length();
+        for (int col = 0; col < n; col++) {
+            // 排除不合法选择
+            if (!isValid(board, row, col)) {
+                continue;
+            }
+            // 选择
+            char[] arr = board.get(row).toCharArray();
+            arr[col] = 'Q';
+            board.set(row, String.valueOf(arr));
+            // 进入下一层决策树
+            backtrack(board, row + 1);
+            // 撤销选择
+            arr[col] = '.';
+            board.set(row, String.valueOf(arr));
+        }
+    }
+
+    /**
+     * 是否可以在 board[row][col] 放置皇后
+     */
+    private boolean isValid(List<String> board, int row, int col) {
+        int n = board.size();
+        // 检查列是否有皇后互相冲突 (检查到board[row][col]位置)
+        for (int i = 0; i <= row; i++) {
+            if (board.get(i).charAt(col) == 'Q') {
+                return false;
+            }
+        }
+        // 检查左上方是否有皇后相互冲突 (上面已检查过board[row][col]位置)
+        for (int i = row - 1, j = col - 1; i >= 0 && j >= 0; i--, j--) {
+            if (board.get(i).charAt(j) == 'Q') {
+                return false;
+            }
+        }
+        // 检查右上方是否有皇后互相冲突 (上面已检查过board[row][col]位置)
+        for (int i = row - 1, j = col + 1; i >= 0 && j < n; i--, j++) {
+            if (board.get(i).charAt(j) == 'Q') {
+                return false;
+            }
+        }
+        return true;
+    }
+}
+// @lc code=end
+
+
+/*
+ * @lc app=leetcode.cn id=52 lang=java
+ *
+ * [52] N 皇后 II
+ *
+ * https://leetcode.cn/problems/n-queens-ii/description/
+ *
+ * algorithms
+ * Hard (82.42%)
+ * Likes:    431
+ * Dislikes: 0
+ * Total Accepted:    119K
+ * Total Submissions: 144.4K
+ * Testcase Example:  '4'
+ *
+ * n 皇后问题 研究的是如何将 n 个皇后放置在 n × n 的棋盘上，并且使皇后彼此之间不能相互攻击。
+ * 给你一个整数 n ，返回 n 皇后问题 不同的解决方案的数量。
+ *
+ * 示例 1：
+ * 输入：n = 4
+ * 输出：2
+ * 解释：如上图所示，4 皇后问题存在两个不同的解法。
+ *
+ * 示例 2：
+ * 输入：n = 1
+ * 输出：1
+ *
+ * 提示：
+ * 1 <= n <= 9
+ */
+// @lc code=start
+class NQueensII {
+    private int count = 0;
+    public int totalNQueens(int n) {
+        // 初始化路径
+        boolean[][] track = new boolean[n][n];
+        backtrack(track, 0);
+        return count;
+    }
+
+    /**
+     * 路径：track 中小于 row 的那些行都已经成功放置了皇后
+     * 选择列表：第 row 行的所有列都是放置皇后的选择
+     * 结束条件：row 超过 track 的最后一行
+     */
+    private void backtrack(boolean[][] track, int row) {
+        int n = track[0].length;
+        // 触发结束条件
+        if (row == track.length) {
+            count ++;
+            return;
+        }
+
+        // 回溯主体
+        for (int col = 0; col < n; col++) {
+            // 排除不合法的选择
+            if (!isValid(track, row, col)) {
+                continue;
+            }
+            // 选择
+            track[row][col] = true;
+            // 进入下一层决策树
+            backtrack(track, row + 1);
+            // 撤销选择
+            track[row][col] = false;
+        }
+    }
+
+    private boolean isValid(boolean[][] track, int row, int col) {
+        int n = track[0].length;
+        // 检查列是否有皇后互相冲突 (检查到track[row][col]位置)
+        for (int i = 0; i <= row; i ++) {
+            if (track[i][col]) {
+                return false;
+            }
+        }
+        // 检查左上方是否有皇后相互冲突 (上面已检查过track[row][col]位置)
+        for (int i = row - 1, j = col - 1; i >= 0 && j >= 0; i--, j--) {
+            if (track[i][j]) {
+                return false;
+            }
+        }
+        // 检查右上方是否有皇后互相冲突 (上面已检查过track[row][col]位置)
+        for (int i = row - 1, j = col + 1; i >= 0 && j < n; i--, j++) {
+            if (track[i][j]) {
+                return false;
+            }
+        }
+        return true;
     }
 }
 // @lc code=end
