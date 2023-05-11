@@ -20,6 +20,10 @@ public class AlgoMath {
         log.info("FirstMissingPositive: {}", new FirstMissingPositive().firstMissingPositive(new int[] {1,2,0}));
         log.info("FirstMissingPositive: {}", new FirstMissingPositive().firstMissingPositive(new int[] {3,4,-1,1}));
         log.info("FirstMissingPositive: {}", new FirstMissingPositive().firstMissingPositive(new int[] {7,8,9,11,12}));
+        // Pow(x, n)
+        log.info("PowxN: {}", new PowxN().myPow(2.00000, 10));
+        log.info("PowxN: {}", new PowxN().myPow(2.10000, 3));
+        log.info("PowxN: {}", new PowxN().myPow(2.00000, -2));
     }
 }
 
@@ -61,37 +65,48 @@ public class AlgoMath {
  */
 // @lc code=start
 class DivideTwoIntegers {
+    /**
+     * 使用二分查找法计算商：
+     * 在每次循环中，找到当前可以被除的最大倍数。通过不断左移除数，即乘以2的方式，找到最大的倍数，使得该倍数不超过被除数。
+     * 更新被除数：减去当前的最大倍数。
+     * 更新结果：将当前倍数加到结果上。
+     * 重复上述步骤，直到被除数小于除数。
+     */
     public int divide1(int dividend, int divisor) {
-        boolean rev = false;
-        if (dividend > 0) {
-            dividend = -dividend;
-            rev = !rev;
-        }
-        if (divisor > 0) {
-            divisor = -divisor;
-            rev = !rev;
+        // 处理特殊情况
+        if (divisor == 0) {
+            throw new ArithmeticException("Division by zero");
         }
 
-        int mod = divisor;
-        int mid = dividend >> 1;
-        int now = -1;
-        while (mod >= mid) {
-            mod <<= 1;
-            now <<= 1;
+        if (dividend == Integer.MIN_VALUE && divisor == -1) {
+            return Integer.MAX_VALUE;
         }
-        int ans = 0;
-        while (dividend <= divisor) {
-            while (mod < dividend) {
-                mod >>= 1;
-                now >>= 1;
+
+        // 判断结果的正负号
+        boolean isNegative = (dividend < 0 && divisor > 0) || (dividend > 0 && divisor < 0);
+
+        // 将被除数和除数都转换为负数，以避免溢出问题
+        long absDividend = Math.abs((long) dividend);
+        long absDivisor = Math.abs((long) divisor);
+
+        int result = 0;
+        while (absDividend >= absDivisor) {
+            // 找到当前可以被除的最大的倍数
+            long temp = absDivisor; // 当前除数的值
+            int multiple = 1; // 当前倍数的值
+            // 不断左移除数，即乘以2，找到最大的倍数
+            while (absDividend >= (temp << 1)) {
+                temp <<= 1;
+                multiple <<= 1;
             }
-            while (dividend <= mod) {
-                dividend -= mod;
-                ans -= now;
-            }
+
+            // 更新被除数和结果
+            absDividend -= temp; // 更新被除数，减去当前的最大倍数
+            result += multiple; // 更新结果，将当前倍数加到结果上
         }
-        if (ans == Integer.MIN_VALUE && !rev) return Integer.MAX_VALUE;
-        return rev ? -ans : ans;
+
+        // 根据正负号返回结果
+        return isNegative ? -result : result;
     }
 
     public int divide2(int dividend, int divisor) {
@@ -270,6 +285,69 @@ class FirstMissingPositive {
             }
         }
         return n + 1;
+    }
+}
+// @lc code=end
+
+
+/**
+ * @lc app=leetcode.cn id=50 lang=java
+ *
+ * [50] Pow(x, n)
+ *
+ * https://leetcode.cn/problems/powx-n/description/
+ *
+ * algorithms
+ * Medium (38.02%)
+ * Likes:    1171
+ * Dislikes: 0
+ * Total Accepted:    373.2K
+ * Total Submissions: 981.8K
+ * Testcase Example:  '2.00000\n10'
+ *
+ * 实现 pow(x, n) ，即计算 x 的整数 n 次幂函数（即，x^n^ ）。
+ *
+ * 示例 1：
+ * 输入：x = 2.00000, n = 10
+ * 输出：1024.00000
+ *
+ * 示例 2：
+ * 输入：x = 2.10000, n = 3
+ * 输出：9.26100
+ *
+ * 示例 3：
+ * 输入：x = 2.00000, n = -2
+ * 输出：0.25000
+ * 解释：2^-2 = 1/2^2 = 1/4 = 0.25
+ *
+ * 提示：
+ * -100.0 < x < 100.0
+ * -2^31 <= n <= 2^31-1
+ * n 是一个整数
+ * -10^4 <= x^n <= 10^4
+ */
+// @lc code=start
+class PowxN {
+    public double myPow(double x, int n) {
+        if (n == 0) return 1;
+        if (n == Integer.MIN_VALUE) {
+            // 把 x 是 INT_MIN 的情况单独拿出来处理
+            // 避免 -x 整型溢出
+            return myPow(1 / x, -(n + 1)) / x;
+        }
+
+        if (n < 0) {
+            return myPow(1 / x, -n);
+        }
+
+        if (n % 2 == 1) {
+            // n 是奇数
+            return x * myPow(x, n - 1);
+        } else {
+            // n 是偶数
+            double sub = myPow(x, n / 2);
+            return sub * sub;
+        }
     }
 }
 // @lc code=end
