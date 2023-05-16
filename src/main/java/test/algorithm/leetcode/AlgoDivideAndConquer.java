@@ -13,14 +13,18 @@ import java.util.PriorityQueue;
 @Slf4j
 public class AlgoDivideAndConquer {
     public static void main(String[] args) {
-        // 模板
+        // 合并K个升序链表
         log.info("MergeKSortedLists: {}", new MergeKSortedLists().mergeKLists(MergeKSortedLists.example1()));
         log.info("MergeKSortedLists: {}", new MergeKSortedLists().mergeKLists(MergeKSortedLists.example2()));
         log.info("MergeKSortedLists: {}", new MergeKSortedLists().mergeKLists(MergeKSortedLists.example3()));
+        // 最大子数组和
+        log.info("MaximumSubarray: {}", new MaximumSubarray().maxSubArray(new int[] {-2,1,-3,4,-1,2,1,-5,4}));
+        log.info("MaximumSubarray: {}", new MaximumSubarray().maxSubArray(new int[] {1}));
+        log.info("MaximumSubarray: {}", new MaximumSubarray().maxSubArray(new int[] {5,4,-1,7,8}));
     }
 }
 
-/*
+/**
  * @lc app=leetcode.cn id=23 lang=java
  *
  * [23] 合并K个升序链表
@@ -130,3 +134,58 @@ class MergeKSortedLists {
     }
 }
 // @lc code=end
+
+
+/**
+ * @lc app=leetcode.cn id=53 lang=java
+ *
+ * [53] 最大子数组和
+ *
+ * https://leetcode.cn/problems/maximum-subarray/description/
+ *
+ * algorithms
+ * Medium (54.76%)
+ * Likes:    6054
+ * Dislikes: 0
+ * Total Accepted:    1.4M
+ * Total Submissions: 2.5M
+ * Testcase Example:  '[-2,1,-3,4,-1,2,1,-5,4]'
+ *
+ * 给你一个整数数组 nums ，请你找出一个具有最大和的连续子数组（子数组最少包含一个元素），返回其最大和。
+ * 子数组 是数组中的一个连续部分。
+ *
+ * 示例 1：
+ * 输入：nums = [-2,1,-3,4,-1,2,1,-5,4]
+ * 输出：6
+ * 解释：连续子数组 [4,-1,2,1] 的和最大，为 6 。
+ *
+ * 示例 2：
+ * 输入：nums = [1]
+ * 输出：1
+ *
+ * 示例 3：
+ * 输入：nums = [5,4,-1,7,8]
+ * 输出：23
+ *
+ * 提示：
+ * 1 <= nums.length <= 10^5
+ * -10^4 <= nums[i] <= 10^4
+ * 进阶：如果你已经实现复杂度为 O(n) 的解法，尝试使用更为精妙的 分治法 求解。
+ */
+// @lc code=start
+class MaximumSubarray {
+    public int maxSubArray(int[] nums) {
+        int res = Integer.MIN_VALUE >> 1;
+        int[] dp = new int[nums.length + 1];
+        dp[0] = res;
+        for (int i = 0; i < nums.length; i ++) {
+            dp[i + 1] = Math.max(dp[i] + nums[i], nums[i]);
+            if (dp[i + 1] > res) {
+                res = dp[i + 1];
+            }
+        }
+        return res;
+    }
+}
+// @lc code=end
+
