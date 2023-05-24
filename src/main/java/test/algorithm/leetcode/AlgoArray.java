@@ -36,6 +36,9 @@ public class AlgoArray {
         // 螺旋矩阵
         log.info("SpiralMatrix: {}", new SpiralMatrix().spiralOrder(new int[][] {{1,2,3},{4,5,6},{7,8,9}}));
         log.info("SpiralMatrix: {}", new SpiralMatrix().spiralOrder(new int[][] {{1,2,3,4},{5,6,7,8},{9,10,11,12}}));
+        // 螺旋矩阵 II
+        log.info("SpiralMatrixII: {}", (Object) new SpiralMatrixII().generateMatrix(3));
+        log.info("SpiralMatrixII: {}", (Object) new SpiralMatrixII().generateMatrix(1));
     }
 }
 
@@ -289,3 +292,70 @@ class SpiralMatrix {
 }
 // @lc code=end
 
+
+/**
+ * @lc app=leetcode.cn id=59 lang=java
+ *
+ * [59] 螺旋矩阵 II
+ *
+ * https://leetcode.cn/problems/spiral-matrix-ii/description/
+ *
+ * algorithms
+ * Medium (73.17%)
+ * Likes:    1055
+ * Dislikes: 0
+ * Total Accepted:    317.9K
+ * Total Submissions: 435.2K
+ * Testcase Example:  '3'
+ *
+ * 给你一个正整数 n ，生成一个包含 1 到 n^2 所有元素，且元素按顺时针顺序螺旋排列的 n x n 正方形矩阵 matrix 。
+ *
+ * 示例 1：
+ * 输入：n = 3
+ * 输出：[[1,2,3],[8,9,4],[7,6,5]]
+ *
+ * 示例 2：
+ * 输入：n = 1
+ * 输出：[[1]]
+ *
+ * 提示：
+ * 1 <= n <= 20
+ */
+// @lc code=start
+class SpiralMatrixII {
+    public int[][] generateMatrix(int n) {
+        int[][] res = new int[n][n];
+        // 初始化边界
+        int left = 0, right = n - 1, top = 0, bottom = n - 1;
+        int cur = 1;
+        // 循环条件
+        while (left <= right && top <= bottom) {
+            // 遍历上边界
+            for (int j = left; j <= right; j++) {
+                res[top][j] = cur++;
+            }
+            // 遍历右边界
+            for (int i = top + 1; i <= bottom; i++) {
+                res[i][right] = cur++;
+            }
+            // 如果左右边界和上下边界没有相遇，遍历下边界和左边界
+            if (left < right && top < bottom) {
+                // 遍历下边界
+                for (int j = right - 1; j >= left; j--) {
+                    res[bottom][j] = cur++;
+                }
+                // 遍历左边界
+                for (int i = bottom - 1; i > left; i--) {
+                    res[i][left] = cur++;
+                }
+            }
+            // 缩小边界
+            left++;
+            right--;
+            top++;
+            bottom--;
+        }
+        return res;
+    }
+}
+// @lc code=end
