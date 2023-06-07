@@ -15,7 +15,7 @@ public class StringTest {
 //        test1();
 //        test2();
 //        test3();
-        test4();
+        testSplit1();
     }
 
     private static void test1() {
@@ -73,10 +73,22 @@ public class StringTest {
         logger.info("time: {}", end4 - start4);
     }
 
-    private static void test4() {
-        String s1 = "";
-        String[] split = s1.split("#");
-        logger.info("{}", split.length);
-        logger.info("{}", split);
+    private static void testSplit1() {
+        String s1 = "123e";
+        String[] split1 = s1.split("e");
+        logger.info("testSplit1,s1:{}", split1.length);
+        logger.info("testSplit1,s1:{}", (Object) split1);
+        String s2 = "e";
+        String[] split2 = s2.split("e");
+        logger.info("testSplit1,s2:{}", split2.length);
+        logger.info("testSplit1,s2:{}", (Object) split2);
+        String s3 = "";
+        String[] split3 = s3.split("e");
+        logger.info("testSplit1,s3:{}", split3.length);
+        logger.info("testSplit1,s3:{}", (Object) split3);
+        String s4 = "e123";
+        String[] split4 = s4.split("e");
+        logger.info("testSplit1,s4:{}", split4.length);
+        logger.info("testSplit1,s4:{}", (Object) split4);
     }
 }

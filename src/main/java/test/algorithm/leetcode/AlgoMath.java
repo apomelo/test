@@ -24,6 +24,13 @@ public class AlgoMath {
         log.info("PowxN: {}", new PowxN().myPow(2.00000, 10));
         log.info("PowxN: {}", new PowxN().myPow(2.10000, 3));
         log.info("PowxN: {}", new PowxN().myPow(2.00000, -2));
+        // 有效数字
+        log.info("ValidNumber: {}", new ValidNumber().isNumber("0"));
+        log.info("ValidNumber: {}", new ValidNumber().isNumber("e"));
+        log.info("ValidNumber: {}", new ValidNumber().isNumber("."));
+        // x 的平方根
+        log.info("Sqrtx: {}", new Sqrtx().mySqrt(4));
+        log.info("Sqrtx: {}", new Sqrtx().mySqrt(8));
     }
 }
 
@@ -348,6 +355,121 @@ class PowxN {
             double sub = myPow(x, n / 2);
             return sub * sub;
         }
+    }
+}
+// @lc code=end
+
+
+/**
+ * @lc app=leetcode.cn id=65 lang=java
+ *
+ * [65] 有效数字
+ *
+ * https://leetcode.cn/problems/valid-number/description/
+ *
+ * algorithms
+ * Hard (27.58%)
+ * Likes:    354
+ * Dislikes: 0
+ * Total Accepted:    65.3K
+ * Total Submissions: 236.6K
+ * Testcase Example:  '"0"'
+ *
+ * 有效数字（按顺序）可以分成以下几个部分：
+ *      一个 小数 或者 整数
+ *      （可选）一个 'e' 或 'E' ，后面跟着一个 整数
+ * 小数（按顺序）可以分成以下几个部分：
+ *      （可选）一个符号字符（'+' 或 '-'）
+ *      下述格式之一：
+ *      至少一位数字，后面跟着一个点 '.'
+ *      至少一位数字，后面跟着一个点 '.' ，后面再跟着至少一位数字
+ *      一个点 '.' ，后面跟着至少一位数字
+ * 整数（按顺序）可以分成以下几个部分：
+ *      （可选）一个符号字符（'+' 或 '-'）
+ *      至少一位数字
+ *
+ * 部分有效数字列举如下：["2", "0089", "-0.1", "+3.14", "4.", "-.9", "2e10", "-90E3", "3e+7", "+6e-1", "53.5e93", "-123.456e789"]
+ * 部分无效数字列举如下：["abc", "1a", "1e", "e3", "99e2.5", "--6", "-+3", "95a54e53"]
+ * 给你一个字符串 s ，如果 s 是一个 有效数字 ，请返回 true 。
+ *
+ * 示例 1：
+ * 输入：s = "0"
+ * 输出：true
+ *
+ * 示例 2：
+ * 输入：s = "e"
+ * 输出：false
+ *
+ * 示例 3：
+ * 输入：s = "."
+ * 输出：false
+ *
+ * 提示：
+ * 1 <= s.length <= 20
+ * s 仅含英文字母（大写和小写），数字（0-9），加号 '+' ，减号 '-' ，或者点 '.' 。
+ */
+// @lc code=start
+class ValidNumber {
+    public boolean isNumber(String s) {
+        String regex = "^[+-]?(\\d+|\\d+(\\.\\d*)?|\\.\\d+)([eE][+-]?\\d+)?$";
+        return s.matches(regex);
+    }
+}
+// @lc code=end
+
+
+/**
+ * @lc app=leetcode.cn id=69 lang=java
+ *
+ * [69] x 的平方根
+ *
+ * https://leetcode.cn/problems/sqrtx/description/
+ *
+ * algorithms
+ * Easy (38.48%)
+ * Likes:    1352
+ * Dislikes: 0
+ * Total Accepted:    745.2K
+ * Total Submissions: 1.9M
+ * Testcase Example:  '4'
+ *
+ * 给你一个非负整数 x ，计算并返回 x 的 算术平方根 。
+ * 由于返回类型是整数，结果只保留 整数部分 ，小数部分将被 舍去 。
+ * 注意：不允许使用任何内置指数函数和算符，例如 pow(x, 0.5) 或者 x ** 0.5 。
+ *
+ * 示例 1：
+ * 输入：x = 4
+ * 输出：2
+ *
+ * 示例 2：
+ * 输入：x = 8
+ * 输出：2
+ * 解释：8 的算术平方根是 2.82842..., 由于返回类型是整数，小数部分将被舍去。
+ *
+ * 提示：
+ * 0 <= x <= 2^31 - 1
+ */
+// @lc code=start
+class Sqrtx {
+    public int mySqrt(int x) {
+        if (x == 0) {
+            return 0;
+        }
+
+        long left = 1;  // 左边界从1开始
+        long right = x;  // 右边界为x
+
+        while (left < right) {
+            long mid = left + (right - left + 1) / 2;  // 取中间值，向上取整
+
+            if (mid * mid > x) {
+                right = mid - 1;  // 平方大于x，将右边界移动到mid的左侧
+            } else {
+                left = mid;  // 平方小于等于x，将左边界移动到mid
+            }
+        }
+
+        return (int) left;
     }
 }
 // @lc code=end
