@@ -3,6 +3,7 @@ package test.algorithm.leetcode;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
 
 /**
@@ -21,6 +22,9 @@ public class AlgoMathString {
         log.info("RomanToInteger: {}", new RomanToInteger().romanToInt("LVIII"));
         log.info("RomanToInteger: {}", new RomanToInteger().romanToInt("MCMXCIV"));
         log.info("RomanToInteger: {}", new RomanToInteger().romanToInt("MMIV"));
+        // 二进制求和
+        log.info("AddBinary: {}", new AddBinary().addBinary("11", "1"));
+        log.info("AddBinary: {}", new AddBinary().addBinary("1010", "1011"));
     }
 }
 
@@ -200,6 +204,73 @@ class RomanToInteger {
             }
         }
         return res;
+    }
+}
+// @lc code=end
+
+
+/**
+ * @lc app=leetcode.cn id=67 lang=java
+ *
+ * [67] 二进制求和
+ *
+ * https://leetcode.cn/problems/add-binary/description/
+ *
+ * algorithms
+ * Easy (53.01%)
+ * Likes:    1032
+ * Dislikes: 0
+ * Total Accepted:    326.1K
+ * Total Submissions: 615.5K
+ * Testcase Example:  '"11"\n"1"'
+ *
+ * 给你两个二进制字符串 a 和 b ，以二进制字符串的形式返回它们的和。
+ *
+ * 示例 1：
+ * 输入:a = "11", b = "1"
+ * 输出："100"
+ *
+ * 示例 2：
+ * 输入：a = "1010", b = "1011"
+ * 输出："10101"
+ *
+ * 提示：
+ * 1 <= a.length, b.length <= 10^4
+ * a 和 b 仅由字符 '0' 或 '1' 组成
+ * 字符串如果不是 "0" ，就不含前导零
+ */
+// @lc code=start
+class AddBinary {
+    public String addBinary(String a, String b) {
+        int radix = 2;
+        int carry = 0;
+        // 用队列存本位计算的结果
+        LinkedList<Integer> list = new LinkedList<>();
+        // a, b 两个字符串的指针
+        int i = a.length() - 1;
+        int j = b.length() - 1;
+        while (i >= 0 || j >= 0) {
+            // 按位依次相加
+            int cur = carry;
+            if (i >= 0) {
+                cur += a.charAt(i) - '0';
+                i--;
+            }
+            if (j >= 0) {
+                cur += b.charAt(j) - '0';
+                j--;
+            }
+            carry = cur / radix;
+            list.addFirst(cur % radix);
+        }
+        // 最后还有进位，插入队列头
+        if (carry > 0) {
+            list.addFirst(carry);
+        }
+        // 转换为字符串
+        StringBuilder res = new StringBuilder();
+        list.forEach(res::append);
+        return res.toString();
     }
 }
 // @lc code=end
