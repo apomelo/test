@@ -3,6 +3,7 @@ package test.algorithm.leetcode;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -39,6 +40,11 @@ public class AlgoArray {
         // 螺旋矩阵 II
         log.info("SpiralMatrixII: {}", (Object) new SpiralMatrixII().generateMatrix(3));
         log.info("SpiralMatrixII: {}", (Object) new SpiralMatrixII().generateMatrix(1));
+        // 加一
+        log.info("PlusOne: {}", new PlusOne().plusOne(new int[] {1,2,3}));
+        log.info("PlusOne: {}", new PlusOne().plusOne(new int[] {4,3,2,1}));
+        log.info("PlusOne: {}", new PlusOne().plusOne(new int[] {0}));
+        log.info("PlusOne: {}", new PlusOne().plusOne(new int[] {9}));
     }
 }
 
@@ -356,6 +362,71 @@ class SpiralMatrixII {
             bottom--;
         }
         return res;
+    }
+}
+// @lc code=end
+
+
+/**
+ * @lc app=leetcode.cn id=66 lang=java
+ *
+ * [66] 加一
+ *
+ * https://leetcode.cn/problems/plus-one/description/
+ *
+ * algorithms
+ * Easy (45.17%)
+ * Likes:    1234
+ * Dislikes: 0
+ * Total Accepted:    635.3K
+ * Total Submissions: 1.4M
+ * Testcase Example:  '[1,2,3]'
+ *
+ * 给定一个由 整数 组成的 非空 数组所表示的非负整数，在该数的基础上加一。
+ * 最高位数字存放在数组的首位， 数组中每个元素只存储单个数字。
+ * 你可以假设除了整数 0 之外，这个整数不会以零开头。
+ *
+ * 示例 1：
+ *
+ * 输入：digits = [1,2,3]
+ * 输出：[1,2,4]
+ * 解释：输入数组表示数字 123。
+ *
+ * 示例 2：
+ * 输入：digits = [4,3,2,1]
+ * 输出：[4,3,2,2]
+ * 解释：输入数组表示数字 4321。
+ *
+ * 示例 3：
+ * 输入：digits = [0]
+ * 输出：[1]
+ *
+ * 提示：
+ * 1 <= digits.length <= 100
+ * 0 <= digits[i] <= 9
+ */
+// @lc code=start
+class PlusOne {
+    public int[] plusOne(int[] digits) {
+        if (digits.length == 0) {
+            return digits;
+        }
+        int radix = 10;
+        int carry = 0;
+        LinkedList<Integer> res = new LinkedList<>();
+        for (int i = digits.length - 1; i >= 0; i--) {
+            int cur = digits[i];
+            if (i == digits.length - 1) {
+                cur ++;
+            }
+            cur += carry;
+            carry = cur / radix;
+            res.addFirst(cur % radix);
+        }
+        if (carry > 0) {
+            res.addFirst(carry);
+        }
+        return res.stream().mapToInt(i -> i).toArray();
     }
 }
 // @lc code=end
