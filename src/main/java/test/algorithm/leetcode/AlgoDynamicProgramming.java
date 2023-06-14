@@ -29,6 +29,12 @@ public class AlgoDynamicProgramming {
         // 最小路径和
         log.info("MinimumPathSum: {}", new MinimumPathSum().minPathSum(new int[][]{{1,3,1},{1,5,1},{4,2,1}}));
         log.info("MinimumPathSum: {}", new MinimumPathSum().minPathSum(new int[][]{{1,2,3},{4,5,6}}));
+        // 爬楼梯
+        log.info("ClimbingStairs: {}", new ClimbingStairs().climbStairs(2));
+        log.info("ClimbingStairs: {}", new ClimbingStairs().climbStairs(3));
+        // 编辑距离
+        log.info("EditDistance: {}", new EditDistance().minDistance("horse", "ros"));
+        log.info("EditDistance: {}", new EditDistance().minDistance("intention", "execution"));
     }
 }
 
@@ -312,6 +318,146 @@ class MinimumPathSum {
             }
         }
         return dp[m - 1][n - 1];
+    }
+}
+// @lc code=end
+
+
+/**
+ * @lc app=leetcode.cn id=70 lang=java
+ *
+ * [70] 爬楼梯
+ *
+ * https://leetcode.cn/problems/climbing-stairs/description/
+ *
+ * algorithms
+ * Easy (54.05%)
+ * Likes:    3073
+ * Dislikes: 0
+ * Total Accepted:    1.2M
+ * Total Submissions: 2.2M
+ * Testcase Example:  '2'
+ *
+ * 假设你正在爬楼梯。需要 n 阶你才能到达楼顶。
+ * 每次你可以爬 1 或 2 个台阶。你有多少种不同的方法可以爬到楼顶呢？
+ *
+ * 示例 1：
+ * 输入：n = 2
+ * 输出：2
+ * 解释：有两种方法可以爬到楼顶。
+ * 1. 1 阶 + 1 阶
+ * 2. 2 阶
+ *
+ * 示例 2：
+ * 输入：n = 3
+ * 输出：3
+ * 解释：有三种方法可以爬到楼顶。
+ * 1. 1 阶 + 1 阶 + 1 阶
+ * 2. 1 阶 + 2 阶
+ * 3. 2 阶 + 1 阶
+ *
+ * 提示：
+ * 1 <= n <= 45
+ */
+// @lc code=start
+class ClimbingStairs {
+    public int climbStairs(int n) {
+        if (n <= 2) {
+            return n;
+        }
+        int[] dp = new int[n + 1];
+        dp[1] = 1;
+        dp[2] = 2;
+        for (int i = 3; i <= n; i++) {
+            dp[i] = dp[i - 1] + dp[i - 2];
+        }
+        return dp[n];
+    }
+}
+// @lc code=end
+
+
+/**
+ * @lc app=leetcode.cn id=72 lang=java
+ *
+ * [72] 编辑距离
+ *
+ * https://leetcode.cn/problems/edit-distance/description/
+ *
+ * algorithms
+ * Hard (62.79%)
+ * Likes:    2999
+ * Dislikes: 0
+ * Total Accepted:    373.3K
+ * Total Submissions: 594.5K
+ * Testcase Example:  '"horse"\n"ros"'
+ *
+ * 给你两个单词 word1 和 word2， 请返回将 word1 转换成 word2 所使用的最少操作数  。
+ * 你可以对一个单词进行如下三种操作：
+ * 插入一个字符
+ * 删除一个字符
+ * 替换一个字符
+ *
+ * 示例 1：
+ * 输入：word1 = "horse", word2 = "ros"
+ * 输出：3
+ * 解释：
+ * horse -> rorse (将 'h' 替换为 'r')
+ * rorse -> rose (删除 'r')
+ * rose -> ros (删除 'e')
+ *
+ * 示例 2：
+ * 输入：word1 = "intention", word2 = "execution"
+ * 输出：5
+ * 解释：
+ * intention -> inention (删除 't')
+ * inention -> enention (将 'i' 替换为 'e')
+ * enention -> exention (将 'n' 替换为 'x')
+ * exention -> exection (将 'n' 替换为 'c')
+ * exection -> execution (插入 'u')
+ *
+ * 提示：
+ * 0 <= word1.length, word2.length <= 500
+ * word1 和 word2 由小写英文字母组成
+ */
+// @lc code=start
+class EditDistance {
+    public int minDistance(String word1, String word2) {
+        int m = word1.length();
+        int n = word2.length();
+
+        // 创建一个二维数组dp，用于存储最小编辑距离
+        // 表示将 word1 的前 i 个字符转换为 word2 的前 j 个字符所需的最小编辑距离
+        int[][] dp = new int[m + 1][n + 1];
+
+        // 初始化边界条件
+        // 当 word2 为空字符串时，将 word1 转换为空字符串需要删除 word1 的字符，所以 dp[i][0] 初始化为 i。
+        for (int i = 0; i <= m; i++) {
+            dp[i][0] = i;
+        }
+        // 当 word1 为空字符串时，将其转换为 word2 需要插入 word2 的字符，所以 dp[0][j] 初始化为 j。
+        for (int j = 0; j <= n; j++) {
+            dp[0][j] = j;
+        }
+
+        // 动态规划求解最小编辑距离
+        for (int i = 1; i <= m; i++) {
+            for (int j = 1; j <= n; j++) {
+                // 如果当前字符相等，不需要进行编辑操作，继承前一个状态的最小编辑距离
+                if (word1.charAt(i - 1) == word2.charAt(j - 1)) {
+                    dp[i][j] = dp[i - 1][j - 1];
+                } else {
+                    // 如果当前字符不相等，考虑三种编辑操作的情况（插入、删除、替换）
+                    int insert = dp[i][j - 1] + 1;  // 插入操作
+                    int delete = dp[i - 1][j] + 1;  // 删除操作
+                    int replace = dp[i - 1][j - 1] + 1;  // 替换操作
+                    dp[i][j] = Math.min(Math.min(insert, delete), replace);
+                }
+            }
+        }
+
+        // 返回最终的最小编辑距离
+        return dp[m][n];
     }
 }
 // @lc code=end
