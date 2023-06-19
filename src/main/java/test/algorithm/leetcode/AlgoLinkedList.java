@@ -10,17 +10,22 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class AlgoLinkedList {
     public static void main(String[] args) {
-        // 模板
+        // 合并两个有序链表
         log.info("MergeTwoSortedLists: {}", new MergeTwoSortedLists().mergeTwoLists(MergeTwoSortedLists.example1(), MergeTwoSortedLists.example2()));
         log.info("MergeTwoSortedLists: {}", new MergeTwoSortedLists().mergeTwoLists(MergeTwoSortedLists.example3(), MergeTwoSortedLists.example3()));
         log.info("MergeTwoSortedLists: {}", new MergeTwoSortedLists().mergeTwoLists(MergeTwoSortedLists.example3(), MergeTwoSortedLists.example4()));
+        // 两两交换链表中的节点
         log.info("SwapNodesInPairs: {}", new SwapNodesInPairs().swapPairs1(SwapNodesInPairs.example1()));
         log.info("SwapNodesInPairs: {}", new SwapNodesInPairs().swapPairs1(SwapNodesInPairs.example2()));
         log.info("SwapNodesInPairs: {}", new SwapNodesInPairs().swapPairs1(SwapNodesInPairs.example3()));
         log.info("SwapNodesInPairs: {}", new SwapNodesInPairs().swapPairs2(SwapNodesInPairs.example1()));
+        // K 个一组翻转链表
         log.info("ReverseNodesInKGroup: {}", new ReverseNodesInKGroup().reverseKGroup(ReverseNodesInKGroup.example1(), 2));
         log.info("ReverseNodesInKGroup: {}", new ReverseNodesInKGroup().reverseKGroup(ReverseNodesInKGroup.example1(), 3));
         log.info("ReverseNodesInKGroup: {}", new ReverseNodesInKGroup().reverseKGroup(ReverseNodesInKGroup.example2(), 2));
+        // 旋转链表
+        log.info("RotateList: {}", new RotateList().rotateRight(RotateList.example1(), 2));
+        log.info("RotateList: {}", new RotateList().rotateRight(RotateList.example2(), 4));
     }
 }
 
@@ -321,6 +326,104 @@ class ReverseNodesInKGroup {
 
     public static ListNode example2() {
         return new ListNode(1, new ListNode(2));
+    }
+}
+// @lc code=end
+
+
+/**
+ * @lc app=leetcode.cn id=61 lang=java
+ *
+ * [61] 旋转链表
+ *
+ * https://leetcode.cn/problems/rotate-list/description/
+ *
+ * algorithms
+ * Medium (41.47%)
+ * Likes:    927
+ * Dislikes: 0
+ * Total Accepted:    314.6K
+ * Total Submissions: 759K
+ * Testcase Example:  '[1,2,3,4,5]\n2'
+ *
+ * 给你一个链表的头节点 head ，旋转链表，将链表每个节点向右移动 k 个位置。
+ *
+ * 示例 1：
+ * 输入：head = [1,2,3,4,5], k = 2
+ * 输出：[4,5,1,2,3]
+ *
+ * 示例 2：
+ * 输入：head = [0,1,2], k = 4
+ * 输出：[2,0,1]
+ *
+ * 提示：
+ * 链表中节点的数目在范围 [0, 500] 内
+ * -100 <= Node.val <= 100
+ * 0 <= k <= 2 * 10^9
+ */
+// @lc code=start
+class RotateList {
+    public ListNode rotateRight(ListNode head, int k) {
+        // 判断链表长度为 0 或 1 的情况（长度为 0 时会导致下面计算翻转长度出现除数为 0）
+        if (head == null || head.next == null) {
+            return head;
+        }
+        // 先计算链表长度
+        int length = 0;
+        ListNode p = head;
+        while (p != null) {
+            p = p.next;
+            length ++;
+        }
+        // 计算需要翻转的长度
+        int rotateLength = k % length;
+        // 不需要翻转
+        if (rotateLength == 0) {
+            return head;
+        }
+
+        // 双指针
+        ListNode left = head, right = head;
+        // 右指针先向前走翻转长度
+        for (int i = 0; i < rotateLength; i++) {
+            right = right.next;
+        }
+        // 左右指针同时走，右指针到达末尾
+        while (right.next != null) {
+            left = left.next;
+            right = right.next;
+        }
+
+        // 重新拼接链表
+        ListNode res = left.next;
+        left.next = null;
+        right.next = head;
+
+        return res;
+    }
+
+    /**
+     * Definition for singly-linked list.
+     */
+    private static class ListNode {
+        int val;
+        ListNode next;
+        ListNode() {}
+        ListNode(int val) { this.val = val; }
+        ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+
+        @Override
+        public String toString() {
+            return val + ", " + next;
+        }
+    }
+
+    public static ListNode example1() {
+        return new ListNode(1, new ListNode(2, new ListNode(3, new ListNode(4, new ListNode(5)))));
+    }
+
+    public static ListNode example2() {
+        return new ListNode(0, new ListNode(1, new ListNode(2)));
     }
 }
 // @lc code=end

@@ -3,6 +3,7 @@ package test.algorithm.leetcode;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * 字符串
@@ -35,6 +36,19 @@ public class AlgoString {
         log.info("GroupAnagrams: {}", new GroupAnagrams().groupAnagrams(new String[] {"eat", "tea", "tan", "ate", "nat", "bat"}));
         log.info("GroupAnagrams: {}", new GroupAnagrams().groupAnagrams(new String[] {}));
         log.info("GroupAnagrams: {}", new GroupAnagrams().groupAnagrams(new String[] {"a"}));
+        // 最后一个单词的长度
+        log.info("LengthOfLastWord: {}", new LengthOfLastWord().lengthOfLastWord("Hello World"));
+        log.info("LengthOfLastWord: {}", new LengthOfLastWord().lengthOfLastWord("   fly me   to   the moon  "));
+        log.info("LengthOfLastWord: {}", new LengthOfLastWord().lengthOfLastWord("luffy is still joyboy"));
+        // 文本左右对齐
+        log.info("TextJustification: {}", new TextJustification().fullJustify(new String[] {"This", "is", "an", "example", "of", "text", "justification."}, 16));
+        log.info("TextJustification: {}", new TextJustification().fullJustify(new String[] {"What","must","be","acknowledgment","shall","be"}, 16));
+        log.info("TextJustification: {}", new TextJustification().fullJustify(new String[] {"Science","is","what","we","understand","well","enough","to","explain","to","a","computer.","Art","is","everything","else","we","do"}, 20));
+        // 简化路径
+        log.info("SimplifyPath: {}", new SimplifyPath().simplifyPath("/home/"));
+        log.info("SimplifyPath: {}", new SimplifyPath().simplifyPath("/../"));
+        log.info("SimplifyPath: {}", new SimplifyPath().simplifyPath("/home//foo/"));
+        log.info("SimplifyPath: {}", new SimplifyPath().simplifyPath("/a/./b/../../c/"));
     }
 }
 
@@ -523,6 +537,279 @@ class GroupAnagrams {
             count[delta]++;
         }
         return new String(count);
+    }
+}
+// @lc code=end
+
+
+/**
+ * @lc app=leetcode.cn id=58 lang=java
+ *
+ * [58] 最后一个单词的长度
+ *
+ * https://leetcode.cn/problems/length-of-last-word/description/
+ *
+ * algorithms
+ * Easy (42.55%)
+ * Likes:    588
+ * Dislikes: 0
+ * Total Accepted:    431.5K
+ * Total Submissions: 1M
+ * Testcase Example:  '"Hello World"'
+ *
+ * 给你一个字符串 s，由若干单词组成，单词前后用一些空格字符隔开。返回字符串中 最后一个 单词的长度。
+ * 单词 是指仅由字母组成、不包含任何空格字符的最大子字符串。
+ *
+ * 示例 1：
+ * 输入：s = "Hello World"
+ * 输出：5
+ * 解释：最后一个单词是“World”，长度为5。
+ *
+ * 示例 2：
+ * 输入：s = "   fly me   to   the moon  "
+ * 输出：4
+ * 解释：最后一个单词是“moon”，长度为4。
+ *
+ * 示例 3：
+ * 输入：s = "luffy is still joyboy"
+ * 输出：6
+ * 解释：最后一个单词是长度为6的“joyboy”。
+ *
+ * 提示：
+ * 1 <= s.length <= 10^4
+ * s 仅有英文字母和空格 ' ' 组成
+ * s 中至少存在一个单词
+ */
+// @lc code=start
+class LengthOfLastWord {
+    public int lengthOfLastWord(String s) {
+        String[] split = s.trim().split("\\s+");
+        int n = split.length;
+        return split[n - 1].length();
+    }
+}
+// @lc code=end
+
+
+/**
+ * @lc app=leetcode.cn id=68 lang=java
+ *
+ * [68] 文本左右对齐
+ *
+ * https://leetcode.cn/problems/text-justification/description/
+ *
+ * algorithms
+ * Hard (52.23%)
+ * Likes:    345
+ * Dislikes: 0
+ * Total Accepted:    54.7K
+ * Total Submissions: 104.7K
+ * Testcase Example:  '["This", "is", "an", "example", "of", "text", "justification."]\n16'
+ *
+ * 给定一个单词数组 words 和一个长度 maxWidth ，重新排版单词，使其成为每行恰好有 maxWidth 个字符，且左右两端对齐的文本。
+ * 你应该使用 “贪心算法” 来放置给定的单词；也就是说，尽可能多地往每行中放置单词。必要时可用空格 ' ' 填充，使得每行恰好有 maxWidth
+ * 个字符。
+ * 要求尽可能均匀分配单词间的空格数量。如果某一行单词间的空格不能均匀分配，则左侧放置的空格数要多于右侧的空格数。
+ * 文本的最后一行应为左对齐，且单词之间不插入额外的空格。
+ *
+ * 注意:
+ * 单词是指由非空格字符组成的字符序列。
+ * 每个单词的长度大于 0，小于等于 maxWidth。
+ * 输入单词数组 words 至少包含一个单词。
+ *
+ * 示例 1:
+ * 输入: words = ["This", "is", "an", "example", "of", "text", "justification."],
+ * maxWidth = 16
+ * 输出:
+ * [
+ * "This    is    an",
+ * "example  of text",
+ * "justification.  "
+ * ]
+ *
+ * 示例 2:
+ * 输入:words = ["What","must","be","acknowledgment","shall","be"], maxWidth = 16
+ * 输出:
+ * [
+ * "What   must   be",
+ * "acknowledgment  ",
+ * "shall be        "
+ * ]
+ * 解释: 注意最后一行的格式应为 "shall be    " 而不是 "shall     be",
+ * 因为最后一行应为左对齐，而不是左右两端对齐。
+ *      第二行同样为左对齐，这是因为这行只包含一个单词。
+ *
+ * 示例 3:
+ * 输入:words =
+ * ["Science","is","what","we","understand","well","enough","to","explain","to","a","computer.","Art","is","everything","else","we","do"]，maxWidth
+ * = 20
+ * 输出:
+ * [
+ * "Science  is  what we",
+ * "understand      well",
+ * "enough to explain to",
+ * "a  computer.  Art is",
+ * "everything  else  we",
+ * "do                  "
+ * ]
+ *
+ * 提示:
+ * 1 <= words.length <= 300
+ * 1 <= words[i].length <= 20
+ * words[i] 由小写英文字母和符号组成
+ * 1 <= maxWidth <= 100
+ * words[i].length <= maxWidth
+ */
+// @lc code=start
+class TextJustification {
+    public List<String> fullJustify(String[] words, int maxWidth) {
+        List<String> res = new ArrayList<>();
+        int p = 0;
+        while (p < words.length) {
+            // 找到最多能放多少单词
+            int[] maxNum = findMaxNum(words, maxWidth, p);
+            // 单词数量
+            int wordNum = maxNum[0];
+            // 当前行的字符总长度
+            int wordWidth = maxNum[1];
+            // 当前行剩余的空格槽数量
+            int spaceNum = maxWidth - wordWidth;
+            // 当前行
+            StringBuilder line = new StringBuilder(words[p]);
+            // 当前行只有一个单词或已经是最后一行（左对齐）
+            if (wordNum == 1 || p + wordNum == words.length) {
+                for (int i = p + 1; i < p + wordNum; i++) {
+                    addSpace(line, 1);
+                    spaceNum--;
+                    line.append(words[i]);
+                }
+                // 在当前行末尾添加剩余的空格
+                addSpace(line, spaceNum);
+            } else {
+                // 每个空格槽应分配的空格数
+                int eachSpaceNum = spaceNum / (wordNum - 1);
+                // 需要额外分配的空格数
+                int extSpaceNum = spaceNum % (wordNum - 1);
+                for (int i = p + 1; i < p + wordNum; i++) {
+                    addSpace(line, eachSpaceNum);
+                    // 均匀分配额外的空格
+                    if (extSpaceNum > 0) {
+                        addSpace(line, 1);
+                        extSpaceNum--;
+                    }
+                    line.append(words[i]);
+                }
+            }
+            res.add(line.toString());
+            p += wordNum;
+        }
+        return res;
+    }
+
+    private int[] findMaxNum(String[] words, int maxWidth, int p) {
+        // 当前行的单词数量
+        int wordNum = 0;
+        // 当前行的字符总长度
+        int wordWidth = 0;
+        // 尽可能多地将单词加入当前行，直到达到最大宽度
+        for (int i = p; i < words.length; i++) {
+            int curLength = words[i].length();
+            if (wordWidth + curLength + wordNum > maxWidth) {
+                break;
+            }
+            // 当前行的单词数量 +1
+            wordNum ++;
+            // 当前行的字符总长度
+            wordWidth += curLength;
+        }
+        return new int[] {wordNum, wordWidth};
+    }
+
+    private void addSpace(StringBuilder sb, int num) {
+        for (int i = 0; i < num; i++) {
+            sb.append(" ");
+        }
+    }
+}
+// @lc code=end
+
+
+/**
+ * @lc app=leetcode.cn id=71 lang=java
+ *
+ * [71] 简化路径
+ *
+ * https://leetcode.cn/problems/simplify-path/description/
+ *
+ * algorithms
+ * Medium (44.19%)
+ * Likes:    608
+ * Dislikes: 0
+ * Total Accepted:    183.8K
+ * Total Submissions: 416K
+ * Testcase Example:  '"/home/"'
+ *
+ * 给你一个字符串 path ，表示指向某一文件或目录的 Unix 风格 绝对路径 （以 '/' 开头），请你将其转化为更加简洁的规范路径。
+ * 在 Unix 风格的文件系统中，一个点（.）表示当前目录本身；此外，两个点 （..）
+ * 表示将目录切换到上一级（指向父目录）；两者都可以是复杂相对路径的组成部分。任意多个连续的斜杠（即，'//'）都被视为单个斜杠 '/' 。
+ * 对于此问题，任何其他格式的点（例如，'...'）均被视为文件/目录名称。
+ *
+ * 请注意，返回的 规范路径 必须遵循下述格式：
+ * 始终以斜杠 '/' 开头。
+ * 两个目录名之间必须只有一个斜杠 '/' 。
+ * 最后一个目录名（如果存在）不能 以 '/' 结尾。
+ * 此外，路径仅包含从根目录到目标文件或目录的路径上的目录（即，不含 '.' 或 '..'）。
+ *
+ * 返回简化后得到的 规范路径 。
+ *
+ * 示例 1：
+ * 输入：path = "/home/"
+ * 输出："/home"
+ * 解释：注意，最后一个目录名后面没有斜杠。
+ *
+ * 示例 2：
+ * 输入：path = "/../"
+ * 输出："/"
+ * 解释：从根目录向上一级是不可行的，因为根目录是你可以到达的最高级。
+ *
+ * 示例 3：
+ * 输入：path = "/home//foo/"
+ * 输出："/home/foo"
+ * 解释：在规范路径中，多个连续斜杠需要用一个斜杠替换。
+ *
+ * 示例 4：
+ * 输入：path = "/a/./b/../../c/"
+ * 输出："/c"
+ *
+ * 提示：
+ * 1 <= path.length <= 3000
+ * path 由英文字母，数字，'.'，'/' 或 '_' 组成。
+ * path 是一个有效的 Unix 风格绝对路径。
+ */
+// @lc code=start
+class SimplifyPath {
+    public String simplifyPath(String path) {
+        Stack<String> stk = new Stack<>();
+        String regex = "/";
+        String[] parts = path.split(regex);
+        // 借助栈计算最终的文件夹路径
+        for (String part : parts) {
+            if (part.isEmpty() || part.equals(".")) {
+                continue;
+            }
+            if (part.equals("..")) {
+                if (!stk.isEmpty()) stk.pop();
+                continue;
+            }
+            stk.push(part);
+        }
+        // 栈中存储的文件夹组成路径
+        String res = "";
+        while (!stk.isEmpty()) {
+            // 先进栈的路径在前面
+            res = "/" + stk.pop() + res;
+        }
+        return res.isEmpty() ? "/" : res;
     }
 }
 // @lc code=end

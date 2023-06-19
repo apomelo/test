@@ -205,14 +205,13 @@ public class HashMapTest {
         log.info("target: {}", target);
         log.info("---------- testPutAllIfAbsent end ----------");
     }
-}
 
-@Data
-@ToString
-@NoArgsConstructor
-@AllArgsConstructor
-class A {
-    private int type;
-    private int value;
-    private int time;
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    static class A {
+        private int type;
+        private int value;
+        private int time;
+    }
 }
