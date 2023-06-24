@@ -44,6 +44,7 @@
         <javassist.version>3.29.0-GA</javassist.version>
         <alipay-sdk.version>4.33.1.ALL</alipay-sdk.version>
         <guava.version>31.1-jre</guava.version>
+        <jol-core.version>0.17</jol-core.version>
     </properties>
 
     <parent>
@@ -264,6 +265,13 @@
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
         </dependency>
+
+        <!-- jol-core -->
+        <dependency>
+            <groupId>org.openjdk.jol</groupId>
+            <artifactId>jol-core</artifactId>
+<!--            <scope>provided</scope>-->
+        </dependency>
     </dependencies>
 
     <dependencyManagement>
@@ -468,6 +476,14 @@
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
                 <version>${guava.version}</version>
+            </dependency>
+
+            <!-- jol-core -->
+            <dependency>
+                <groupId>org.openjdk.jol</groupId>
+                <artifactId>jol-core</artifactId>
+                <version>${jol-core.version}</version>
+<!--                <scope>provided</scope>-->
             </dependency>
         </dependencies>
     </dependencyManagement>
