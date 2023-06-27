@@ -41,6 +41,13 @@ public class AlgoTwoPointer {
         log.info("TrappingRainWater: {}", new TrappingRainWater().trap(new int[] {0,1,0,2,1,0,1,3,2,1,2,1}));
         log.info("TrappingRainWater: {}", new TrappingRainWater().trap(new int[] {4,2,0,3,2,5}));
         log.info("TrappingRainWater: {}", new TrappingRainWater().trap(new int[] {3,0,4,0,5}));
+        // 颜色分类
+        int[] sortColorsExample1 = new int[] {2,0,2,1,1,0};
+        new SortColors().sortColors(sortColorsExample1);
+        log.info("SortColors: {}", sortColorsExample1);
+        int[] sortColorsExample2 = new int[] {2,0,1};
+        new SortColors().sortColors(sortColorsExample2);
+        log.info("SortColors: {}", sortColorsExample2);
     }
 }
 
@@ -746,6 +753,72 @@ class TrappingRainWater {
             res += Math.min(lMax[i], rMax[i]) - height[i];
         }
         return res;
+    }
+}
+// @lc code=end
+
+
+/**
+ * @lc app=leetcode.cn id=75 lang=java
+ *
+ * [75] 颜色分类
+ *
+ * https://leetcode.cn/problems/sort-colors/description/
+ *
+ * algorithms
+ * Medium (60.41%)
+ * Likes:    1611
+ * Dislikes: 0
+ * Total Accepted:    542.9K
+ * Total Submissions: 898.5K
+ * Testcase Example:  '[2,0,2,1,1,0]'
+ *
+ * 给定一个包含红色、白色和蓝色、共 n 个元素的数组 nums ，原地对它们进行排序，使得相同颜色的元素相邻，并按照红色、白色、蓝色顺序排列。
+ * 我们使用整数 0、 1 和 2 分别表示红色、白色和蓝色。
+ * 必须在不使用库内置的 sort 函数的情况下解决这个问题。
+ *
+ * 示例 1：
+ * 输入：nums = [2,0,2,1,1,0]
+ * 输出：[0,0,1,1,2,2]
+ *
+ * 示例 2：
+ * 输入：nums = [2,0,1]
+ * 输出：[0,1,2]
+ *
+ * 提示：
+ * n == nums.length
+ * 1 <= n <= 300
+ * nums[i] 为 0、1 或 2
+ *
+ * 进阶：
+ * 你能想出一个仅使用常数空间的一趟扫描算法吗？
+ */
+// @lc code=start
+class SortColors {
+    public void sortColors(int[] nums) {
+        // 定义左指针和右指针
+        int left = 0, right = nums.length - 1;
+        // 当前指针初始值为0
+        int cur = 0;
+        // 只要当前指针不超过右指针，就继续处理 (注意边界是 <=)
+        while (cur <= right) {
+            if (nums[cur] == 0) {
+                // 将当前指针指向的元素与左指针指向的元素交换，并将左指针和当前指针均加1
+                swap(nums, cur++, left++);
+            } else if (nums[cur] == 2) {
+                // 将当前指针指向的元素与右指针指向的元素交换，并将右指针减1 (不移动当前指针)
+                swap(nums, cur, right--);
+            } else {
+                // 将当前指针加1
+                cur++;
+            }
+        }
+    }
+
+    private void swap(int[] nums, int i, int j) {
+        int temp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = temp;
     }
 }
 // @lc code=end
