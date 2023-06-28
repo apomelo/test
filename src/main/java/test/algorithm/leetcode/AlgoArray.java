@@ -45,6 +45,13 @@ public class AlgoArray {
         log.info("PlusOne: {}", new PlusOne().plusOne(new int[] {4,3,2,1}));
         log.info("PlusOne: {}", new PlusOne().plusOne(new int[] {0}));
         log.info("PlusOne: {}", new PlusOne().plusOne(new int[] {9}));
+        // 矩阵置零
+        int[][] setMatrixZeroesExample1 = new int[][] {{1,1,1},{1,0,1},{1,1,1}};
+        new SetMatrixZeroes().setZeroes(setMatrixZeroesExample1);
+        log.info("SetMatrixZeroes: {}", (Object) setMatrixZeroesExample1);
+        int[][] setMatrixZeroesExample2 = new int[][] {{0,1,2,0},{3,4,5,2},{1,3,1,5}};
+        new SetMatrixZeroes().setZeroes(setMatrixZeroesExample2);
+        log.info("SetMatrixZeroes: {}", (Object) setMatrixZeroesExample2);
     }
 }
 
@@ -427,6 +434,139 @@ class PlusOne {
             res.addFirst(carry);
         }
         return res.stream().mapToInt(i -> i).toArray();
+    }
+}
+// @lc code=end
+
+
+/**
+ * @lc app=leetcode.cn id=73 lang=java
+ *
+ * [73] 矩阵置零
+ *
+ * https://leetcode.cn/problems/set-matrix-zeroes/description/
+ *
+ * algorithms
+ * Medium (63.14%)
+ * Likes:    887
+ * Dislikes: 0
+ * Total Accepted:    255.1K
+ * Total Submissions: 403.9K
+ * Testcase Example:  '[[1,1,1],[1,0,1],[1,1,1]]'
+ *
+ * 给定一个 m x n 的矩阵，如果一个元素为 0 ，则将其所在行和列的所有元素都设为 0 。请使用 原地 算法。
+ *
+ * 示例 1：
+ * 输入：matrix = [[1,1,1],[1,0,1],[1,1,1]]
+ * 输出：[[1,0,1],[0,0,0],[1,0,1]]
+ *
+ * 示例 2：
+ * 输入：matrix = [[0,1,2,0],[3,4,5,2],[1,3,1,5]]
+ * 输出：[[0,0,0,0],[0,4,5,0],[0,3,1,0]]
+ *
+ * 提示：
+ * m == matrix.length
+ * n == matrix[0].length
+ * 1 <= m, n <= 200
+ * -2^31 <= matrix[i][j] <= 2^31 - 1
+ *
+ * 进阶：
+ * 一个直观的解决方案是使用  O(mn) 的额外空间，但这并不是一个好的解决方案。
+ * 一个简单的改进方案是使用 O(m + n) 的额外空间，但这仍然不是最好的解决方案。
+ * 你能想出一个仅使用常量空间的解决方案吗？
+ */
+// @lc code=start
+class SetMatrixZeroes {
+    /**
+     * 方法1: 用第一行和第一列作为标记
+     */
+    public void setZeroes(int[][] matrix) {
+        int m = matrix.length;
+        int n = matrix[0].length;
+        boolean rowZero = false;
+        boolean colZero = false;
+
+        // 检查第一行是否有0
+        for (int j = 0; j < n; j++) {
+            if (matrix[0][j] == 0) {
+                rowZero = true;
+                break;
+            }
+        }
+        // 检查第一列是否有0
+        for (int i = 0; i < m; i++) {
+            if (matrix[i][0] == 0) {
+                colZero = true;
+                break;
+            }
+        }
+
+        // 遍历矩阵，将对应的第一行和第一列的元素设置为0作为标记
+        for (int i = 1; i < m; i++) {
+            for (int j = 1; j < n; j++) {
+                if (matrix[i][j] == 0) {
+                    matrix[i][0] = 0;
+                    matrix[0][j] = 0;
+                }
+            }
+        }
+        // 根据第一行和第一列的标记，将对应的行和列设置为0
+        for (int i = 1; i < m; i++) {
+            for (int j = 1; j < n; j++) {
+                if (matrix[i][0] == 0 || matrix[0][j] == 0) {
+                    matrix[i][j] = 0;
+                }
+            }
+        }
+        // 根据标记，将第一行和第一列设置为0
+        if (rowZero) {
+            for (int j = 0; j < n; j++) {
+                matrix[0][j] = 0;
+            }
+        }
+        if (colZero) {
+            for (int i = 0; i < m; i++) {
+                matrix[i][0] = 0;
+            }
+        }
+    }
+
+    /**
+     * 方法2: 存储哪一行哪一列需要清零
+     */
+    public void setZeroes2(int[][] matrix) {
+        int m = matrix.length;
+        int n = matrix[0].length;
+
+        // 创建两个数组来记录哪些行和列需要被设置为0
+        boolean[] rowZeroes = new boolean[m];
+        boolean[] colZeroes = new boolean[n];
+
+        // 遍历矩阵，将为0的行和列记录下来
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (matrix[i][j] == 0) {
+                    rowZeroes[i] = true;
+                    colZeroes[j] = true;
+                }
+            }
+        }
+
+        // 根据记录的信息，将对应的行和列设置为0
+        for (int i = 0; i < m; i++) {
+            if (rowZeroes[i]) {
+                for (int j = 0; j < n; j++) {
+                    matrix[i][j] = 0;
+                }
+            }
+        }
+        for (int j = 0; j < n; j++) {
+            if (colZeroes[j]) {
+                for (int i = 0; i < m; i++) {
+                    matrix[i][j] = 0;
+                }
+            }
+        }
     }
 }
 // @lc code=end
