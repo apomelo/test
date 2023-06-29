@@ -2,10 +2,7 @@ package test.algorithm.leetcode;
 
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 /**
  * 回溯
@@ -46,6 +43,16 @@ public class AlgoBackTracking {
         log.info("PermutationSequence: {}", new PermutationSequence().getPermutation(3, 3));
         log.info("PermutationSequence: {}", new PermutationSequence().getPermutation(4, 9));
         log.info("PermutationSequence: {}", new PermutationSequence().getPermutation(3, 1));
+        // 组合
+        log.info("Combinations: {}", new Combinations().combine(4, 2));
+        log.info("Combinations: {}", new Combinations().combine(1, 1));
+        // 子集
+        log.info("Subsets: {}", new Subsets().subsets(new int[] {1,2,3}));
+        log.info("Subsets: {}", new Subsets().subsets(new int[] {0}));
+        // 单词搜索
+        log.info("WordSearch: {}", new WordSearch().exist(new char[][] {{'A','B','C','E'},{'S','F','C','S'},{'A','D','E','E'}}, "ABCCED"));
+        log.info("WordSearch: {}", new WordSearch().exist(new char[][] {{'A','B','C','E'},{'S','F','C','S'},{'A','D','E','E'}}, "SEE"));
+        log.info("WordSearch: {}", new WordSearch().exist(new char[][] {{'A','B','C','E'},{'S','F','C','S'},{'A','D','E','E'}}, "ABCB"));
     }
 }
 
@@ -828,6 +835,231 @@ class PermutationSequence {
             track.deleteCharAt(track.length() - 1);
             used[i - 1] = false;
         }
+    }
+}
+// @lc code=end
+
+
+/**
+ * @lc app=leetcode.cn id=77 lang=java
+ *
+ * [77] 组合
+ *
+ * https://leetcode.cn/problems/combinations/description/
+ *
+ * algorithms
+ * Medium (77.11%)
+ * Likes:    1413
+ * Dislikes: 0
+ * Total Accepted:    550.9K
+ * Total Submissions: 714.3K
+ * Testcase Example:  '4\n2'
+ *
+ * 给定两个整数 n 和 k，返回范围 [1, n] 中所有可能的 k 个数的组合。
+ * 你可以按 任何顺序 返回答案。
+ *
+ * 示例 1：
+ * 输入：n = 4, k = 2
+ * 输出：
+ * [
+ *   [2,4],
+ *   [3,4],
+ *   [2,3],
+ *   [1,2],
+ *   [1,3],
+ *   [1,4],
+ * ]
+ *
+ * 示例 2：
+ * 输入：n = 1, k = 1
+ * 输出：[[1]]
+ *
+ * 提示：
+ * 1 <= n <= 20
+ * 1 <= k <= n
+ */
+// @lc code=start
+class Combinations {
+    private List<List<Integer>> res = new ArrayList<>();
+
+    public List<List<Integer>> combine(int n, int k) {
+        if (n < k) {
+            return res;
+        }
+        Set<Integer> back = new HashSet<>();
+        backtrack(n, k, 1, back);
+        return res;
+    }
+
+    private void backtrack(int n, int k, int cur, Set<Integer> back) {
+        // 满足条件
+        if (back.size() == k) {
+            res.add(new ArrayList<>(back));
+        }
+
+        // 回溯
+        for (int i = cur; i <= n; i++) {
+            // 排除不合法的选择: 已在本次路径中
+            if (back.contains(i)) {
+                continue;
+            }
+            // 选择
+            back.add(i);
+            // 进入下一层决策树
+            backtrack(n, k, i + 1, back);
+            // 撤销选择
+            back.remove(i);
+        }
+    }
+}
+// @lc code=end
+
+
+/**
+ * @lc app=leetcode.cn id=78 lang=java
+ *
+ * [78] 子集
+ *
+ * https://leetcode.cn/problems/subsets/description/
+ *
+ * algorithms
+ * Medium (81.11%)
+ * Likes:    2069
+ * Dislikes: 0
+ * Total Accepted:    640.3K
+ * Total Submissions: 789.5K
+ * Testcase Example:  '[1,2,3]'
+ *
+ * 给你一个整数数组 nums ，数组中的元素 互不相同 。返回该数组所有可能的子集（幂集）。
+ * 解集 不能 包含重复的子集。你可以按 任意顺序 返回解集。
+ *
+ * 示例 1：
+ * 输入：nums = [1,2,3]
+ * 输出：[[],[1],[2],[1,2],[3],[1,3],[2,3],[1,2,3]]
+ *
+ * 示例 2：
+ * 输入：nums = [0]
+ * 输出：[[],[0]]
+ *
+ * 提示：
+ * 1 <= nums.length <= 10
+ * -10 <= nums[i] <= 10
+ * nums 中的所有元素 互不相同
+ */
+// @lc code=start
+class Subsets {
+    private List<List<Integer>> res = new ArrayList<>();
+
+    public List<List<Integer>> subsets(int[] nums) {
+        List<Integer> back = new ArrayList<>();
+        backtrack(nums, 0, back);
+        return res;
+    }
+
+    private void backtrack(int[] nums, int cur, List<Integer> back) {
+        // 不需要判断退出条件
+        // 加入结果集
+        res.add(new ArrayList<>(back));
+
+        // 回溯
+        for (int i = cur; i < nums.length; i++) {
+            // 选择
+            back.add(nums[i]);
+            // 进入下一层决策树
+            backtrack(nums, i + 1, back);
+            // 撤销选择
+            back.remove(back.size() - 1);
+        }
+    }
+}
+// @lc code=end
+
+
+/**
+ * @lc app=leetcode.cn id=79 lang=java
+ *
+ * [79] 单词搜索
+ *
+ * https://leetcode.cn/problems/word-search/description/
+ *
+ * algorithms
+ * Medium (46.26%)
+ * Likes:    1621
+ * Dislikes: 0
+ * Total Accepted:    434.6K
+ * Total Submissions: 939.5K
+ * Testcase Example:  '[["A","B","C","E"],["S","F","C","S"],["A","D","E","E"]]\n"ABCCED"'
+ *
+ * 给定一个 m x n 二维字符网格 board 和一个字符串单词 word 。如果 word 存在于网格中，返回 true ；否则，返回 false。
+ * 单词必须按照字母顺序，通过相邻的单元格内的字母构成，其中“相邻”单元格是那些水平相邻或垂直相邻的单元格。同一个单元格内的字母不允许被重复使用。
+ *
+ * 示例 1：
+ * 输入：board = [["A","B","C","E"],["S","F","C","S"],["A","D","E","E"]], word =
+ * "ABCCED"
+ * 输出：true
+ *
+ * 示例 2：
+ * 输入：board = [["A","B","C","E"],["S","F","C","S"],["A","D","E","E"]], word =
+ * "SEE"
+ * 输出：true
+ *
+ * 示例 3：
+ * 输入：board = [["A","B","C","E"],["S","F","C","S"],["A","D","E","E"]], word =
+ * "ABCB"
+ * 输出：false
+ *
+ * 提示：
+ * m == board.length
+ * n = board[i].length
+ * 1 <= m, n <= 6
+ * 1 <= word.length <= 15
+ * board 和 word 仅由大小写英文字母组成
+ *
+ * 进阶：你可以使用搜索剪枝的技术来优化解决方案，使其在 board 更大的情况下可以更快解决问题？
+ */
+// @lc code=start
+class WordSearch {
+    private boolean found = false;
+    private int[][] dir = new int[][] {{-1, 0}, {0, 1}, {1, 0}, {0, -1}};
+    public boolean exist(char[][] board, String word) {
+        int m = board.length, n = board[0].length;
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                dfs(board, i, j, word, 0);
+                if (found) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    // 从 (i, j) 开始向四周搜索，试图匹配 word[p..]
+    void dfs(char[][] board, int i, int j, String word, int p) {
+        if (p == word.length()) {
+            // 整个 word 已经被匹配完，找到了一个答案
+            found = true;
+            return;
+        }
+        if (found) {
+            // 已经找到了一个答案，不用再搜索了
+            return;
+        }
+        int m = board.length, n = board[0].length;
+        if (i < 0 || j < 0 || i >= m || j >= n) {
+            return;
+        }
+        if (board[i][j] != word.charAt(p)) {
+            return;
+        }
+
+        // 已经匹配过的字符，我们给它添一个负号作为标记，避免走回头路
+        board[i][j] = (char)(-board[i][j]);
+        // word[p] 被 board[i][j] 匹配，开始向四周搜索 word[p+1..]
+        for (int k = 0; k < 4; k++) {
+            dfs(board, i + dir[k][0], j + dir[k][1], word, p + 1);
+        }
+        board[i][j] = (char)(-board[i][j]);
     }
 }
 // @lc code=end
