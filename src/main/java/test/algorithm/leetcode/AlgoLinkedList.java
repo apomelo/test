@@ -26,6 +26,30 @@ public class AlgoLinkedList {
         // 旋转链表
         log.info("RotateList: {}", new RotateList().rotateRight(RotateList.example1(), 2));
         log.info("RotateList: {}", new RotateList().rotateRight(RotateList.example2(), 4));
+        // 删除排序链表中的重复元素 II
+        log.info("RemoveDuplicatesFromSortedListII: {}", new RemoveDuplicatesFromSortedListII().deleteDuplicates(RemoveDuplicatesFromSortedListII.example1()));
+        log.info("RemoveDuplicatesFromSortedListII: {}", new RemoveDuplicatesFromSortedListII().deleteDuplicates(RemoveDuplicatesFromSortedListII.example2()));
+        log.info("RemoveDuplicatesFromSortedListII: {}", new RemoveDuplicatesFromSortedListII().deleteDuplicates(RemoveDuplicatesFromSortedListII.example3()));
+        log.info("RemoveDuplicatesFromSortedListII: {}", new RemoveDuplicatesFromSortedListII().deleteDuplicates(RemoveDuplicatesFromSortedListII.example4()));
+        // 删除排序链表中的重复元素
+        log.info("RemoveDuplicatesFromSortedList: {}", new RemoveDuplicatesFromSortedList().deleteDuplicates(RemoveDuplicatesFromSortedList.example1()));
+        log.info("RemoveDuplicatesFromSortedList: {}", new RemoveDuplicatesFromSortedList().deleteDuplicates(RemoveDuplicatesFromSortedList.example2()));
+    }
+}
+
+/**
+ * Definition for singly-linked list.
+ */
+class ListNode {
+    int val;
+    ListNode next;
+    ListNode() {}
+    ListNode(int val) { this.val = val; }
+    ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+
+    @Override
+    public String toString() {
+        return val + ", " + next;
     }
 }
 
@@ -92,22 +116,6 @@ class MergeTwoSortedLists {
             p.next = p2;
         }
         return dummy.next;
-    }
-
-    /**
-     * Definition for singly-linked list.
-     */
-    private static class ListNode {
-        int val;
-        ListNode next;
-        ListNode() {}
-        ListNode(int val) { this.val = val; }
-        ListNode(int val, ListNode next) { this.val = val; this.next = next; }
-
-        @Override
-        public String toString() {
-            return val + ", " + next;
-        }
     }
 
     public static ListNode example1() {
@@ -207,22 +215,6 @@ class SwapNodesInPairs {
         return second;
     }
 
-    /**
-     * Definition for singly-linked list.
-     */
-    private static class ListNode {
-        int val;
-        ListNode next;
-        ListNode() {}
-        ListNode(int val) { this.val = val; }
-        ListNode(int val, ListNode next) { this.val = val; this.next = next; }
-
-        @Override
-        public String toString() {
-            return val + ", " + next;
-        }
-    }
-
     public static ListNode example1() {
         return new ListNode(1, new ListNode(2, new ListNode(3, new ListNode(4))));
     }
@@ -301,23 +293,6 @@ class ReverseNodesInKGroup {
         }
         first.next = reverseKGroup(other, k);
         return p1;
-    }
-
-
-    /**
-     * Definition for singly-linked list.
-     */
-    private static class ListNode {
-        int val;
-        ListNode next;
-        ListNode() {}
-        ListNode(int val) { this.val = val; }
-        ListNode(int val, ListNode next) { this.val = val; this.next = next; }
-
-        @Override
-        public String toString() {
-            return val + ", " + next;
-        }
     }
 
     public static ListNode example1() {
@@ -402,28 +377,155 @@ class RotateList {
         return res;
     }
 
-    /**
-     * Definition for singly-linked list.
-     */
-    private static class ListNode {
-        int val;
-        ListNode next;
-        ListNode() {}
-        ListNode(int val) { this.val = val; }
-        ListNode(int val, ListNode next) { this.val = val; this.next = next; }
-
-        @Override
-        public String toString() {
-            return val + ", " + next;
-        }
-    }
-
     public static ListNode example1() {
         return new ListNode(1, new ListNode(2, new ListNode(3, new ListNode(4, new ListNode(5)))));
     }
 
     public static ListNode example2() {
         return new ListNode(0, new ListNode(1, new ListNode(2)));
+    }
+}
+// @lc code=end
+
+
+/**
+ * @lc app=leetcode.cn id=82 lang=java
+ *
+ * [82] 删除排序链表中的重复元素 II
+ *
+ * https://leetcode.cn/problems/remove-duplicates-from-sorted-list-ii/description/
+ *
+ * algorithms
+ * Medium (53.53%)
+ * Likes:    1144
+ * Dislikes: 0
+ * Total Accepted:    345.5K
+ * Total Submissions: 645.3K
+ * Testcase Example:  '[1,2,3,3,4,4,5]'
+ *
+ * 给定一个已排序的链表的头 head ， 删除原始链表中所有重复数字的节点，只留下不同的数字 。返回 已排序的链表 。
+ *
+ * 示例 1：
+ * 输入：head = [1,2,3,3,4,4,5]
+ * 输出：[1,2,5]
+ *
+ * 示例 2：
+ * 输入：head = [1,1,1,2,3]
+ * 输出：[2,3]
+ *
+ * 提示：
+ * 链表中节点数目在范围 [0, 300] 内
+ * -100 <= Node.val <= 100
+ * 题目数据保证链表已经按升序 排列
+ */
+// @lc code=start
+class RemoveDuplicatesFromSortedListII {
+    public ListNode deleteDuplicates(ListNode head) {
+        // 创建一个虚拟头节点，方便处理头节点重复的情况
+        ListNode dummy = new ListNode(0);
+        dummy.next = head;
+
+        // 定义前驱节点和当前节点
+        ListNode prev = dummy;
+        ListNode cur = head;
+
+        while (cur != null) {
+            // 判断当前节点是否是重复节点
+            if (cur.next != null && cur.val == cur.next.val) {
+                // 找到下一个不重复的节点
+                while (cur.next != null && cur.val == cur.next.val) {
+                    cur = cur.next;
+                }
+                // 删除重复节点，prev.next 指向下一个不重复的节点
+                prev.next = cur.next;
+            } else {
+                // 当前节点不是重复节点，移动 prev 指针到当前节点
+                prev = prev.next;
+            }
+            // 移动当前节点指针到下一个节点
+            cur = cur.next;
+        }
+
+        return dummy.next;
+    }
+
+    public static ListNode example1() {
+        return new ListNode(1, new ListNode(2, new ListNode(3, new ListNode(3, new ListNode(4, new ListNode(4, new ListNode(5)))))));
+    }
+
+    public static ListNode example2() {
+        return new ListNode(1, new ListNode(1, new ListNode(1, new ListNode(2, new ListNode(3)))));
+    }
+
+    public static ListNode example3() {
+        return new ListNode(1, new ListNode(1));
+    }
+
+    public static ListNode example4() {
+        return new ListNode(1);
+    }
+}
+// @lc code=end
+
+
+/**
+ * @lc app=leetcode.cn id=83 lang=java
+ *
+ * [83] 删除排序链表中的重复元素
+ *
+ * https://leetcode.cn/problems/remove-duplicates-from-sorted-list/description/
+ *
+ * algorithms
+ * Easy (53.10%)
+ * Likes:    1013
+ * Dislikes: 0
+ * Total Accepted:    587.3K
+ * Total Submissions: 1.1M
+ * Testcase Example:  '[1,1,2]'
+ *
+ * 给定一个已排序的链表的头 head ， 删除所有重复的元素，使每个元素只出现一次 。返回 已排序的链表 。
+ *
+ * 示例 1：
+ * 输入：head = [1,1,2]
+ * 输出：[1,2]
+ *
+ * 示例 2：
+ * 输入：head = [1,1,2,3,3]
+ * 输出：[1,2,3]
+ *
+ * 提示：
+ * 链表中节点数目在范围 [0, 300] 内
+ * -100 <= Node.val <= 100
+ * 题目数据保证链表已经按升序 排列
+ */
+// @lc code=start
+class RemoveDuplicatesFromSortedList {
+    public ListNode deleteDuplicates(ListNode head) {
+        if (head == null) {
+            return null;
+        }
+        ListNode slow = head, fast = head;
+        while (fast != null) {
+            if (fast.val != slow.val) {
+                // nums[slow] = nums[fast];
+                slow.next = fast;
+                // slow++;
+                slow = slow.next;
+            }
+            // fast++
+            fast = fast.next;
+        }
+        // 断开与后面重复元素的连接
+        slow.next = null;
+        return head;
+    }
+
+    public static ListNode example1() {
+        return new ListNode(1, new ListNode(1, new ListNode(2)));
+    }
+
+    public static ListNode example2() {
+        return new ListNode(1, new ListNode(1, new ListNode(2, new ListNode(3, new ListNode(3)))));
     }
 }
 // @lc code=end
