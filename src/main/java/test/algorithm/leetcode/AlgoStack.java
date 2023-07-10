@@ -14,10 +14,13 @@ import java.util.Stack;
 @Slf4j
 public class AlgoStack {
     public static void main(String[] args) {
-        // 模板
+        // 有效的括号
         log.info("ValidParentheses: {}", new ValidParentheses().isValid("()[]{}"));
         log.info("ValidParentheses: {}", new ValidParentheses().isValid("(]"));
         log.info("ValidParentheses: {}", new ValidParentheses().isValid("([)]"));
+        // 柱状图中最大的矩形
+        log.info("LargestRectangleInHistogram: {}", new LargestRectangleInHistogram().largestRectangleArea(new int[] {2,1,5,6,2,3}));
+        log.info("LargestRectangleInHistogram: {}", new LargestRectangleInHistogram().largestRectangleArea(new int[] {2,4}));
     }
 }
 
@@ -81,6 +84,81 @@ class ValidParentheses {
             }
         }
         return stack.empty();
+    }
+}
+// @lc code=end
+
+
+/**
+ * @lc app=leetcode.cn id=84 lang=java
+ *
+ * [84] 柱状图中最大的矩形
+ *
+ * https://leetcode.cn/problems/largest-rectangle-in-histogram/description/
+ *
+ * algorithms
+ * Hard (45.00%)
+ * Likes:    2482
+ * Dislikes: 0
+ * Total Accepted:    349.6K
+ * Total Submissions: 776.7K
+ * Testcase Example:  '[2,1,5,6,2,3]'
+ *
+ * 给定 n 个非负整数，用来表示柱状图中各个柱子的高度。每个柱子彼此相邻，且宽度为 1 。
+ * 求在该柱状图中，能够勾勒出来的矩形的最大面积。
+ *
+ * 示例 1:
+ * 输入：heights = [2,1,5,6,2,3]
+ * 输出：10
+ * 解释：最大的矩形为图中红色区域，面积为 10
+ *
+ * 示例 2：
+ * 输入： heights = [2,4]
+ * 输出： 4
+ *
+ * 提示：
+ * 1 <= heights.length <=10^5
+ * 0 <= heights[i] <= 10^4
+ */
+// @lc code=start
+class LargestRectangleInHistogram {
+    public int largestRectangleArea(int[] heights) {
+        int n = heights.length;
+        int[] left = new int[n]; // 记录每个柱形条左边第一个小于它的柱形条的索引
+        int[] right = new int[n]; // 记录每个柱形条右边第一个小于它的柱形条的索引
+
+        Stack<Integer> stack = new Stack<>(); // 单调递增栈，存储柱形条的索引
+
+        // 遍历数组，找到每个柱形条左边第一个小于它的柱形条的索引
+        for (int i = 0; i < n; i++) {
+            while (!stack.isEmpty() && heights[stack.peek()] >= heights[i]) {
+                stack.pop();
+            }
+            left[i] = stack.isEmpty() ? -1 : stack.peek();
+            stack.push(i);
+        }
+
+        stack.clear(); // 清空栈，用于下一次遍历
+
+        // 遍历数组，找到每个柱形条右边第一个小于它的柱形条的索引
+        for (int i = n - 1; i >= 0; i--) {
+            while (!stack.isEmpty() && heights[stack.peek()] >= heights[i]) {
+                stack.pop();
+            }
+            right[i] = stack.isEmpty() ? n : stack.peek();
+            stack.push(i);
+        }
+
+        int maxArea = 0; // 记录最大面积
+
+        // 计算每个柱形条作为矩形的宽度，并计算对应的面积
+        for (int i = 0; i < n; i++) {
+            int width = right[i] - left[i] - 1; // 矩形的宽度为右边界索引减去左边界索引减一
+            int area = heights[i] * width; // 计算矩形的面积
+            maxArea = Math.max(maxArea, area); // 更新最大面积
+        }
+
+        return maxArea;
     }
 }
 // @lc code=end
