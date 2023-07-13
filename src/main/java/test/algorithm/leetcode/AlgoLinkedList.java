@@ -34,6 +34,9 @@ public class AlgoLinkedList {
         // 删除排序链表中的重复元素
         log.info("RemoveDuplicatesFromSortedList: {}", new RemoveDuplicatesFromSortedList().deleteDuplicates(RemoveDuplicatesFromSortedList.example1()));
         log.info("RemoveDuplicatesFromSortedList: {}", new RemoveDuplicatesFromSortedList().deleteDuplicates(RemoveDuplicatesFromSortedList.example2()));
+        // 分隔链表
+        log.info("PartitionList: {}", new PartitionList().partition(PartitionList.example1(), 3));
+        log.info("PartitionList: {}", new PartitionList().partition(PartitionList.example2(), 2));
     }
 }
 
@@ -526,6 +529,73 @@ class RemoveDuplicatesFromSortedList {
 
     public static ListNode example2() {
         return new ListNode(1, new ListNode(1, new ListNode(2, new ListNode(3, new ListNode(3)))));
+    }
+}
+// @lc code=end
+
+
+/**
+ * @lc app=leetcode.cn id=86 lang=java
+ *
+ * [86] 分隔链表
+ *
+ * https://leetcode.cn/problems/partition-list/description/
+ *
+ * algorithms
+ * Medium (64.17%)
+ * Likes:    729
+ * Dislikes: 0
+ * Total Accepted:    222.1K
+ * Total Submissions: 346K
+ * Testcase Example:  '[1,4,3,2,5,2]\n3'
+ *
+ * 给你一个链表的头节点 head 和一个特定值 x ，请你对链表进行分隔，使得所有 小于 x 的节点都出现在 大于或等于 x 的节点之前。
+ * 你应当 保留 两个分区中每个节点的初始相对位置。
+ *
+ * 示例 1：
+ * 输入：head = [1,4,3,2,5,2], x = 3
+ * 输出：[1,2,2,4,3,5]
+ *
+ * 示例 2：
+ * 输入：head = [2,1], x = 2
+ * 输出：[1,2]
+ *
+ * 提示：
+ * 链表中节点的数目在范围 [0, 200] 内
+ * -100 <= Node.val <= 100
+ * -200 <= x <= 200
+ */
+// @lc code=start
+class PartitionList {
+    public ListNode partition(ListNode head, int x) {
+        ListNode beforeHead = new ListNode(0); // 小于 x 的节点链表的头节点
+        ListNode before = beforeHead; // 小于 x 的节点链表的当前节点
+        ListNode afterHead = new ListNode(0); // 大于等于 x 的节点链表的头节点
+        ListNode after = afterHead; // 大于等于 x 的节点链表的当前节点
+
+        while (head != null) {
+            if (head.val < x) {
+                before.next = head;
+                before = before.next;
+            } else {
+                after.next = head;
+                after = after.next;
+            }
+            head = head.next;
+        }
+
+        after.next = null; // 断开大于等于 x 的节点链表的最后一个节点，避免出现环
+        before.next = afterHead.next; // 连接小于 x 的节点链表和大于等于 x 的节点链表
+
+        return beforeHead.next; // 返回新的链表头节点
+    }
+
+    public static ListNode example1() {
+        return new ListNode(1, new ListNode(4, new ListNode(3, new ListNode(2, new ListNode(5, new ListNode(2))))));
+    }
+
+    public static ListNode example2() {
+        return new ListNode(2, new ListNode(1));
     }
 }
 // @lc code=end
