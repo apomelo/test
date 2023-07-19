@@ -53,6 +53,12 @@ public class AlgoBackTracking {
         log.info("WordSearch: {}", new WordSearch().exist(new char[][] {{'A','B','C','E'},{'S','F','C','S'},{'A','D','E','E'}}, "ABCCED"));
         log.info("WordSearch: {}", new WordSearch().exist(new char[][] {{'A','B','C','E'},{'S','F','C','S'},{'A','D','E','E'}}, "SEE"));
         log.info("WordSearch: {}", new WordSearch().exist(new char[][] {{'A','B','C','E'},{'S','F','C','S'},{'A','D','E','E'}}, "ABCB"));
+        // 格雷编码
+        log.info("GrayCode: {}", new GrayCode().grayCode(2));
+        log.info("GrayCode: {}", new GrayCode().grayCode(1));
+        // 子集 II
+        log.info("SubsetsII: {}", new SubsetsII().subsetsWithDup(new int[] {1,2,2}));
+        log.info("SubsetsII: {}", new SubsetsII().subsetsWithDup(new int[] {0}));
     }
 }
 
@@ -1060,6 +1066,144 @@ class WordSearch {
             dfs(board, i + dir[k][0], j + dir[k][1], word, p + 1);
         }
         board[i][j] = (char)(-board[i][j]);
+    }
+}
+// @lc code=end
+
+
+/**
+ * @lc app=leetcode.cn id=89 lang=java
+ *
+ * [89] 格雷编码
+ *
+ * https://leetcode.cn/problems/gray-code/description/
+ *
+ * algorithms
+ * Medium (75.52%)
+ * Likes:    633
+ * Dislikes: 0
+ * Total Accepted:    119.6K
+ * Total Submissions: 158.3K
+ * Testcase Example:  '2'
+ *
+ * n 位格雷码序列 是一个由 2^n 个整数组成的序列，其中：
+ * 每个整数都在范围 [0, 2^n - 1] 内（含 0 和 2^n - 1）
+ * 第一个整数是 0
+ * 一个整数在序列中出现 不超过一次
+ * 每对 相邻 整数的二进制表示 恰好一位不同 ，且
+ * 第一个 和 最后一个 整数的二进制表示 恰好一位不同
+ *
+ * 给你一个整数 n ，返回任一有效的 n 位格雷码序列 。
+ *
+ * 示例 1：
+ * 输入：n = 2
+ * 输出：[0,1,3,2]
+ * 解释：
+ * [0,1,3,2] 的二进制表示是 [00,01,11,10] 。
+ * - 00 和 01 有一位不同
+ * - 01 和 11 有一位不同
+ * - 11 和 10 有一位不同
+ * - 10 和 00 有一位不同
+ * [0,2,3,1] 也是一个有效的格雷码序列，其二进制表示是 [00,10,11,01] 。
+ * - 00 和 10 有一位不同
+ * - 10 和 11 有一位不同
+ * - 11 和 01 有一位不同
+ * - 01 和 00 有一位不同
+ *
+ * 示例 2：
+ * 输入：n = 1
+ * 输出：[0,1]
+ *
+ * 提示：
+ * 1 <= n <= 16
+ */
+// @lc code=start
+class GrayCode {
+    public List<Integer> grayCode(int n) {
+        List<Integer> res = new ArrayList<>();
+        // 初始值为 0
+        res.add(0);
+
+        for (int i = 0; i < n; i++) {
+            int size = res.size();
+            // 将当前结果集的元素逆序添加到结果集中，并在每个元素前面加上 1
+            // 如 i = 2 时, 给 0 前面加 1 的操作: 00 -> 100
+            // 如 i = 3 时, 给 0 前面加 1 的操作: 000 -> 1000
+            for (int j = size - 1; j >= 0; j--) {
+                res.add(res.get(j) | 1 << i);
+            }
+        }
+        return res;
+    }
+}
+// @lc code=end
+
+
+/**
+ * @lc app=leetcode.cn id=90 lang=java
+ *
+ * [90] 子集 II
+ *
+ * https://leetcode.cn/problems/subsets-ii/description/
+ *
+ * algorithms
+ * Medium (63.60%)
+ * Likes:    1120
+ * Dislikes: 0
+ * Total Accepted:    309.6K
+ * Total Submissions: 486.7K
+ * Testcase Example:  '[1,2,2]'
+ *
+ * 给你一个整数数组 nums ，其中可能包含重复元素，请你返回该数组所有可能的子集（幂集）。
+ * 解集 不能 包含重复的子集。返回的解集中，子集可以按 任意顺序 排列。
+ *
+ * 示例 1：
+ * 输入：nums = [1,2,2]
+ * 输出：[[],[1],[1,2],[1,2,2],[2],[2,2]]
+ *
+ * 示例 2：
+ * 输入：nums = [0]
+ * 输出：[[],[0]]
+ *
+ * 提示：
+ * 1 <= nums.length <= 10
+ * -10 <= nums[i] <= 10
+ */
+// @lc code=start
+class SubsetsII {
+    private List<List<Integer>> res = new ArrayList<>();
+
+    public List<List<Integer>> subsetsWithDup(int[] nums) {
+        // 排序
+        Arrays.sort(nums);
+        // 记录「路径」
+        List<Integer> track = new ArrayList<>();
+        // 回溯
+        backtrack(nums, 0, track);
+        return res;
+    }
+
+    private void backtrack(int[] nums, int start, List<Integer> track) {
+        // 加入结果集
+        res.add(new ArrayList<>(track));
+        // 判断退出条件
+        if (start >= nums.length) {
+            return;
+        }
+
+        // 回溯主体
+        for (int i = start; i < nums.length; i++) {
+            // 剪枝逻辑，值相同的相邻树枝，只遍历第一条
+            if (i > start && nums[i] == nums[i - 1]) {
+                continue;
+            }
+            // 选择
+            track.add(nums[i]);
+            // 进入下一层决策树
+            backtrack(nums, i + 1, track);
+            // 撤销选择
+            track.remove(track.size() - 1);
+        }
     }
 }
 // @lc code=end

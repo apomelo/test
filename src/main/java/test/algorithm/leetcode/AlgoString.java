@@ -53,6 +53,10 @@ public class AlgoString {
         log.info("MinimumWindowSubstring: {}", new MinimumWindowSubstring().minWindow("ADOBECODEBANC", "ABC"));
         log.info("MinimumWindowSubstring: {}", new MinimumWindowSubstring().minWindow("a", "a"));
         log.info("MinimumWindowSubstring: {}", new MinimumWindowSubstring().minWindow("a", "aa"));
+        // 扰乱字符串
+        log.info("ScrambleString: {}", new ScrambleString().isScramble("great", "rgeat"));
+        log.info("ScrambleString: {}", new ScrambleString().isScramble("abcde", "caebd"));
+        log.info("ScrambleString: {}", new ScrambleString().isScramble("a", "a"));
     }
 }
 
@@ -916,6 +920,161 @@ class MinimumWindowSubstring {
 
         // 返回最小覆盖子串
         return len == Integer.MAX_VALUE ? "" : s.substring(start, start + len);
+    }
+}
+// @lc code=end
+
+
+/**
+ * @lc app=leetcode.cn id=87 lang=java
+ *
+ * [87] 扰乱字符串
+ *
+ * https://leetcode.cn/problems/scramble-string/description/
+ *
+ * algorithms
+ * Hard (47.35%)
+ * Likes:    526
+ * Dislikes: 0
+ * Total Accepted:    58.2K
+ * Total Submissions: 122.8K
+ * Testcase Example:  '"great"\n"rgeat"'
+ *
+ * 使用下面描述的算法可以扰乱字符串 s 得到字符串 t ：
+ * 如果字符串的长度为 1 ，算法停止
+ * 如果字符串的长度 > 1 ，执行下述步骤：
+ * 在一个随机下标处将字符串分割成两个非空的子字符串。即，如果已知字符串 s ，则可以将其分成两个子字符串 x 和 y ，且满足 s = x + y。
+ * 随机 决定是要「交换两个子字符串」还是要「保持这两个子字符串的顺序不变」。即，在执行这一步骤之后，s 可能是 s = x + y 或者 s = y + x 。
+ * 在 x 和 y 这两个子字符串上继续从步骤 1 开始递归执行此算法。
+ *
+ * 给你两个 长度相等 的字符串 s1 和 s2，判断 s2 是否是 s1 的扰乱字符串。如果是，返回 true ；否则，返回 false 。
+ *
+ * 示例 1：
+ * 输入：s1 = "great", s2 = "rgeat"
+ * 输出：true
+ * 解释：s1 上可能发生的一种情形是：
+ * "great" --> "gr/eat" // 在一个随机下标处分割得到两个子字符串
+ * "gr/eat" --> "gr/eat" // 随机决定：「保持这两个子字符串的顺序不变」
+ * "gr/eat" --> "g/r / e/at" // 在子字符串上递归执行此算法。两个子字符串分别在随机下标处进行一轮分割
+ * "g/r / e/at" --> "r/g / e/at" // 随机决定：第一组「交换两个子字符串」，第二组「保持这两个子字符串的顺序不变」
+ * "r/g / e/at" --> "r/g / e/ a/t" // 继续递归执行此算法，将 "at" 分割得到 "a/t"
+ * "r/g / e/ a/t" --> "r/g / e/ a/t" // 随机决定：「保持这两个子字符串的顺序不变」
+ * 算法终止，结果字符串和 s2 相同，都是 "rgeat"
+ * 这是一种能够扰乱 s1 得到 s2 的情形，可以认为 s2 是 s1 的扰乱字符串，返回 true
+ *
+ * 示例 2：
+ * 输入：s1 = "abcde", s2 = "caebd"
+ * 输出：false
+ *
+ * 示例 3：
+ * 输入：s1 = "a", s2 = "a"
+ * 输出：true
+ *
+ * 提示：
+ * s1.length == s2.length
+ * 1 <= s1.length <= 30
+ * s1 和 s2 由小写英文字母组成
+ */
+// @lc code=start
+class ScrambleString {
+    /**
+     * 解法1: 递归
+     */
+    public boolean isScramble(String s1, String s2) {
+        // 使用记忆化技术，保存中间结果，避免重复计算
+        Map<String, Boolean> memo = new HashMap<>();
+        return isScrambleHelper(s1, s2, memo);
+    }
+
+    private boolean isScrambleHelper(String s1, String s2, Map<String, Boolean> memo) {
+        // 判断两个字符串是否相等
+        if (s1.equals(s2)) {
+            return true;
+        }
+        int n = s1.length();
+        // 判断两个字符串长度是否相等
+        if (n != s2.length()) {
+            return false;
+        }
+        // 判断两个字符串中字符的种类和数量是否一致
+        int charNum = 26;
+        int[] count = new int[charNum];
+        for (int i = 0; i < n; i++) {
+            count[s1.charAt(i) - 'a']++;
+            count[s2.charAt(i) - 'a']--;
+        }
+        for (int i = 0; i < charNum; i++) {
+            if (count[i] != 0) {
+                return false;
+            }
+        }
+        // 判断是否已经计算过该结果
+        String key = s1 + "#" + s2;
+        if (memo.containsKey(key)) {
+            return memo.get(key);
+        }
+        // 递归判断所有可能的切割位置
+        for (int i = 1; i < n; i++) {
+            // 不交换的情况
+            if (isScrambleHelper(s1.substring(0, i), s2.substring(0, i), memo)
+                    && isScrambleHelper(s1.substring(i), s2.substring(i), memo)) {
+                memo.put(key, true);
+                return true;
+            }
+            // 交换的情况
+            if (isScrambleHelper(s1.substring(0, i), s2.substring(n - i), memo)
+                    && isScrambleHelper(s1.substring(i), s2.substring(0, n - i), memo)) {
+                memo.put(key, true);
+                return true;
+            }
+        }
+        memo.put(key, false);
+        return false;
+    }
+
+    /**
+     * 解法2: 动态规划
+     */
+    public boolean isScramble2(String s1, String s2) {
+        int n = s1.length();
+        if (n != s2.length()) {
+            return false;
+        }
+
+        // dp[i][j][k] 表示 s1 从 i 开始长度为 k 的子串是否能扰乱成 s2 从 j 开始长度为 k 的子串
+        boolean[][][] dp = new boolean[n][n][n + 1];
+
+        // 初始化单个字符的情况
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                dp[i][j][1] = s1.charAt(i) == s2.charAt(j);
+            }
+        }
+
+        // 枚举子串长度
+        for (int len = 2; len <= n; len++) {
+            // 枚举 s1 的起点位置
+            for (int i = 0; i <= n - len; i++) {
+                // 枚举 s2 的起点位置
+                for (int j = 0; j <= n - len; j++) {
+                    // 枚举切割位置
+                    for (int k = 1; k < len; k++) {
+                        // 不交换的情况
+                        if (dp[i][j][k] && dp[i + k][j + k][len - k]) {
+                            dp[i][j][len] = true;
+                            break;
+                        }
+                        // 交换的情况
+                        if (dp[i][j + len - k][k] && dp[i + k][j][len - k]) {
+                            dp[i][j][len] = true;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        return dp[0][0][n];
     }
 }
 // @lc code=end
