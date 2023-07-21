@@ -37,6 +37,10 @@ public class AlgoLinkedList {
         // 分隔链表
         log.info("PartitionList: {}", new PartitionList().partition(PartitionList.example1(), 3));
         log.info("PartitionList: {}", new PartitionList().partition(PartitionList.example2(), 2));
+        // 反转链表 II
+        log.info("ReverseLinkedListII: {}", new ReverseLinkedListII().reverseBetween(ReverseLinkedListII.example1(), 2, 4));
+        log.info("ReverseLinkedListII: {}", new ReverseLinkedListII().reverseBetween(ReverseLinkedListII.example2(), 1, 1));
+        log.info("ReverseLinkedListII: {}", new ReverseLinkedListII().reverseBetween(ReverseLinkedListII.example3(), 1, 2));
     }
 }
 
@@ -596,6 +600,96 @@ class PartitionList {
 
     public static ListNode example2() {
         return new ListNode(2, new ListNode(1));
+    }
+}
+// @lc code=end
+
+
+/**
+ * @lc app=leetcode.cn id=92 lang=java
+ *
+ * [92] 反转链表 II
+ *
+ * https://leetcode.cn/problems/reverse-linked-list-ii/description/
+ *
+ * algorithms
+ * Medium (55.68%)
+ * Likes:    1588
+ * Dislikes: 0
+ * Total Accepted:    410.9K
+ * Total Submissions: 737.9K
+ * Testcase Example:  '[1,2,3,4,5]\n2\n4'
+ *
+ * 给你单链表的头指针 head 和两个整数 left 和 right ，其中 left  。请你反转从位置 left 到位置 right 的链表节点，返回
+ * 反转后的链表 。
+ *
+ * 示例 1：
+ * 输入：head = [1,2,3,4,5], left = 2, right = 4
+ * 输出：[1,4,3,2,5]
+ *
+ * 示例 2：
+ * 输入：head = [5], left = 1, right = 1
+ * 输出：[5]
+ *
+ * 提示：
+ * 链表中节点数目为 n
+ * 1 <= n <= 500
+ * -500 <= Node.val <= 500
+ * 1 <= left <= right <= n
+ * 进阶： 你可以使用一趟扫描完成反转吗？
+ */
+// @lc code=start
+class ReverseLinkedListII {
+    public ListNode reverseBetween(ListNode head, int left, int right) {
+        if (head == null || left >= right) {
+            return head;
+        }
+
+        ListNode dummy = new ListNode(-1);
+        dummy.next = head;
+
+        ListNode preStart = dummy;
+        ListNode cur = preStart.next;
+
+        // 移动 cur 指针，直到它指向要反转的部分的起始节点的前一个节点，记为 preStart
+        for (int i = 1; i < left; i++) {
+            preStart = cur;
+            cur = cur.next;
+        }
+
+        // preStart 节点不再属于要反转的部分，将其指向 null
+        preStart.next = null;
+        ListNode start = cur;
+
+        ListNode preEnd = null;
+        ListNode next = null;
+
+        // 反转从 left 到 right 的链表部分，同时更新 preEnd 为反转后的尾节点的下一个节点
+        for (int i = left; i <= right; i++) {
+            next = cur.next;
+            cur.next = preEnd;
+            preEnd = cur;
+            cur = next;
+        }
+
+        // 将 preStart 的下一个节点指向反转后的链表的头节点
+        preStart.next = preEnd;
+        // 将反转后的链表的尾节点的 next 指向 end 节点的下一个节点
+        start.next = next;
+
+        return dummy.next;
+    }
+
+    public static ListNode example1() {
+        return new ListNode(1, new ListNode(2, new ListNode(3, new ListNode(4, new ListNode(5)))));
+    }
+
+    public static ListNode example2() {
+        return new ListNode(5);
+    }
+
+    public static ListNode example3() {
+        return new ListNode(3, new ListNode(5));
     }
 }
 // @lc code=end
