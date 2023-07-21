@@ -59,6 +59,10 @@ public class AlgoBackTracking {
         // 子集 II
         log.info("SubsetsII: {}", new SubsetsII().subsetsWithDup(new int[] {1,2,2}));
         log.info("SubsetsII: {}", new SubsetsII().subsetsWithDup(new int[] {0}));
+        // [93] 复原 IP 地址
+        log.info("RestoreIpAddresses: {}", new RestoreIpAddresses().restoreIpAddresses("25525511135"));
+        log.info("RestoreIpAddresses: {}", new RestoreIpAddresses().restoreIpAddresses("0000"));
+        log.info("RestoreIpAddresses: {}", new RestoreIpAddresses().restoreIpAddresses("101023"));
     }
 }
 
@@ -1204,6 +1208,108 @@ class SubsetsII {
             // 撤销选择
             track.remove(track.size() - 1);
         }
+    }
+}
+// @lc code=end
+
+
+/**
+ * @lc app=leetcode.cn id=93 lang=java
+ *
+ * [93] 复原 IP 地址
+ *
+ * https://leetcode.cn/problems/restore-ip-addresses/description/
+ *
+ * algorithms
+ * Medium (58.08%)
+ * Likes:    1252
+ * Dislikes: 0
+ * Total Accepted:    348.3K
+ * Total Submissions: 599.3K
+ * Testcase Example:  '"25525511135"'
+ *
+ * 有效 IP 地址 正好由四个整数（每个整数位于 0 到 255 之间组成，且不能含有前导 0），整数之间用 '.' 分隔。
+ *
+ * 例如："0.1.2.201" 和 "192.168.1.1" 是 有效 IP 地址，但是 "0.011.255.245"、"192.168.1.312"
+ * 和 "192.168@1.1" 是 无效 IP 地址。
+ *
+ * 给定一个只包含数字的字符串 s ，用以表示一个 IP 地址，返回所有可能的有效 IP 地址，这些地址可以通过在 s 中插入 '.' 来形成。你 不能
+ * 重新排序或删除 s 中的任何数字。你可以按 任何 顺序返回答案。
+ *
+ * 示例 1：
+ * 输入：s = "25525511135"
+ * 输出：["255.255.11.135","255.255.111.35"]
+ *
+ * 示例 2：
+ * 输入：s = "0000"
+ * 输出：["0.0.0.0"]
+ *
+ * 示例 3：
+ * 输入：s = "101023"
+ * 输出：["1.0.10.23","1.0.102.3","10.1.0.23","10.10.2.3","101.0.2.3"]
+ *
+ * 提示：
+ * 1 <= s.length <= 20
+ * s 仅由数字组成
+ */
+// @lc code=start
+class RestoreIpAddresses {
+    List<String> res = new ArrayList<>();
+    List<String> track = new ArrayList<>();
+
+    public List<String> restoreIpAddresses(String s) {
+        backtrack(s, 0);
+        return res;
+    }
+
+    // 回溯算法框架
+    void backtrack(String s, int start) {
+        if (start == s.length() && track.size() == 4) {
+            // base case，走到叶子节点
+            // 即整个 s 被成功分割为合法的四部分，记下答案
+            res.add(String.join(".", track));
+        }
+        for (int i = start; i < s.length(); i++) {
+            if (!isValid(s, start, i)) {
+                // s[start..i] 不是合法的 ip 数字，不能分割
+                continue;
+            }
+            if (track.size() >= 4) {
+                // 已经分解成 4 部分了，不能再分解了
+                break;
+            }
+            // s[start..i] 是一个合法的 ip 数字，可以进行分割
+            // 做选择，把 s[start..i] 放入路径列表中
+            track.add(s.substring(start, i + 1));
+            // 进入回溯树的下一层，继续切分 s[i+1..]
+            backtrack(s, i + 1);
+            // 撤销选择
+            track.remove(track.size() - 1);
+        }
+    }
+
+    // 判断 s[start, end]
+    boolean isValid(String s, int start, int end) {
+        int length = end - start + 1;
+
+        if (length <= 0 || length > 3) {
+            return false;
+        }
+
+        // 多于一位数字，但开头是 0，不合法
+        if (length > 1 && s.charAt(start) == '0') {
+            return false;
+        }
+
+        // 数字大于 255，不合法
+        if (Integer.parseInt(s.substring(start, start + length)) > 255) {
+            return false;
+        }
+
+        // 如果只有一位数字，合法
+        // 排除了开头是 0 的情况，那么如果是两位数，合法
+        // 其他情况，合法
+        return true;
     }
 }
 // @lc code=end
