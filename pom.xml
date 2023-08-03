@@ -44,6 +44,9 @@
         <javassist.version>3.29.0-GA</javassist.version>
         <alipay-sdk.version>4.33.1.ALL</alipay-sdk.version>
         <guava.version>31.1-jre</guava.version>
+        <jctools-core.version>4.0.1</jctools-core.version>
+
+        <!-- provided -->
         <jol-core.version>0.17</jol-core.version>
     </properties>
 
@@ -266,6 +269,12 @@
             <artifactId>guava</artifactId>
         </dependency>
 
+        <!-- jctools core -->
+        <dependency>
+            <groupId>org.jctools</groupId>
+            <artifactId>jctools-core</artifactId>
+        </dependency>
+
         <!-- jol-core -->
         <dependency>
             <groupId>org.openjdk.jol</groupId>
@@ -478,12 +487,20 @@
                 <version>${guava.version}</version>
             </dependency>
 
+            <!-- jctools core -->
+            <dependency>
+                <groupId>org.jctools</groupId>
+                <artifactId>jctools-core</artifactId>
+                <version>${jctools-core.version}</version>
+            </dependency>
+
             <!-- jol-core -->
             <dependency>
                 <groupId>org.openjdk.jol</groupId>
                 <artifactId>jol-core</artifactId>
                 <version>${jol-core.version}</version>
-<!--                <scope>provided</scope>-->
+                <!-- 这里不是 provided 而是默认值时会导致日志打印不出来和其他异常 -->
+                <scope>provided</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>
