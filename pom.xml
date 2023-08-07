@@ -279,7 +279,64 @@
         <dependency>
             <groupId>org.openjdk.jol</groupId>
             <artifactId>jol-core</artifactId>
-<!--            <scope>provided</scope>-->
+        </dependency>
+
+        <!-- local lib -->
+        <dependency>
+            <groupId>com.test</groupId>
+            <artifactId>jniTest</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/src/main/resources/lib/jniTest.dll</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>com.sun.tools</groupId>
+            <artifactId>tools</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/src/main/resources/lib/tools.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>com.test</groupId>
+            <artifactId>media-core-codec-g711</artifactId>
+            <version>8.0.0-SNAPSHOT</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/src/main/resources/lib/media-core-codec-g711-8.0.0-SNAPSHOT.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>com.test</groupId>
+            <artifactId>media-core-codec-g729</artifactId>
+            <version>8.0.0-SNAPSHOT</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/src/main/resources/lib/media-core-codec-g729-8.0.0-SNAPSHOT.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>com.test</groupId>
+            <artifactId>media-core-codec-gsm</artifactId>
+            <version>8.0.0-SNAPSHOT</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/src/main/resources/lib/media-core-codec-gsm-8.0.0-SNAPSHOT.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>com.test</groupId>
+            <artifactId>media-core-concurrent</artifactId>
+            <version>8.0.0-SNAPSHOT</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/src/main/resources/lib/media-core-concurrent-8.0.0-SNAPSHOT.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>com.test</groupId>
+            <artifactId>media-core-scheduler</artifactId>
+            <version>8.0.0-SNAPSHOT</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/src/main/resources/lib/media-core-scheduler-8.0.0-SNAPSHOT.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>com.test</groupId>
+            <artifactId>media-core-spi</artifactId>
+            <version>8.0.0-SNAPSHOT</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/src/main/resources/lib/media-core-spi-8.0.0-SNAPSHOT.jar</systemPath>
         </dependency>
     </dependencies>
 
