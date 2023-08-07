@@ -45,6 +45,7 @@
         <alipay-sdk.version>4.33.1.ALL</alipay-sdk.version>
         <guava.version>31.1-jre</guava.version>
         <jctools-core.version>4.0.1</jctools-core.version>
+        <jmh.version>1.36</jmh.version>
 
         <!-- provided -->
         <jol-core.version>0.17</jol-core.version>
@@ -273,6 +274,16 @@
         <dependency>
             <groupId>org.jctools</groupId>
             <artifactId>jctools-core</artifactId>
+        </dependency>
+
+        <!-- jmh -->
+        <dependency>
+            <groupId>org.openjdk.jmh</groupId>
+            <artifactId>jmh-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.openjdk.jmh</groupId>
+            <artifactId>jmh-generator-annprocess</artifactId>
         </dependency>
 
         <!-- jol-core -->
@@ -549,6 +560,19 @@
                 <groupId>org.jctools</groupId>
                 <artifactId>jctools-core</artifactId>
                 <version>${jctools-core.version}</version>
+            </dependency>
+
+            <!-- jmh -->
+            <dependency>
+                <groupId>org.openjdk.jmh</groupId>
+                <artifactId>jmh-core</artifactId>
+                <version>${jmh.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.openjdk.jmh</groupId>
+                <artifactId>jmh-generator-annprocess</artifactId>
+                <version>${jmh.version}</version>
+                <scope>provided</scope>
             </dependency>
 
             <!-- jol-core -->
