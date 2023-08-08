@@ -3,7 +3,9 @@ package test.algorithm.leetcode;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 二叉树
@@ -47,6 +49,36 @@ public class AlgoBinaryTree {
         log.info("BinaryTreeLevelOrderTraversal: {}", new BinaryTreeLevelOrderTraversal().levelOrder(BinaryTreeLevelOrderTraversal.example1()));
         log.info("BinaryTreeLevelOrderTraversal: {}", new BinaryTreeLevelOrderTraversal().levelOrder(BinaryTreeLevelOrderTraversal.example2()));
         log.info("BinaryTreeLevelOrderTraversal: {}", new BinaryTreeLevelOrderTraversal().levelOrder(BinaryTreeLevelOrderTraversal.example3()));
+        // [103] 二叉树的锯齿形层序遍历
+        log.info("BinaryTreeZigzagLevelOrderTraversal: {}", new BinaryTreeZigzagLevelOrderTraversal().zigzagLevelOrder(BinaryTreeZigzagLevelOrderTraversal.example1()));
+        log.info("BinaryTreeZigzagLevelOrderTraversal: {}", new BinaryTreeZigzagLevelOrderTraversal().zigzagLevelOrder(BinaryTreeZigzagLevelOrderTraversal.example2()));
+        log.info("BinaryTreeZigzagLevelOrderTraversal: {}", new BinaryTreeZigzagLevelOrderTraversal().zigzagLevelOrder(BinaryTreeZigzagLevelOrderTraversal.example3()));
+        // [104] 二叉树的最大深度
+        log.info("MaximumDepthOfBinaryTree: {}", new MaximumDepthOfBinaryTree().maxDepth(MaximumDepthOfBinaryTree.example1()));
+        log.info("MaximumDepthOfBinaryTree: {}", new MaximumDepthOfBinaryTree().maxDepth(MaximumDepthOfBinaryTree.example2()));
+        // [105] 从前序与中序遍历序列构造二叉树
+        log.info("ConstructBinaryTreeFromPreorderAndInorderTraversal: {}", new ConstructBinaryTreeFromPreorderAndInorderTraversal().buildTree(new int[] {3,9,20,15,7}, new int[] {9,3,15,20,7}));
+        log.info("ConstructBinaryTreeFromPreorderAndInorderTraversal: {}", new ConstructBinaryTreeFromPreorderAndInorderTraversal().buildTree(new int[] {-1}, new int[] {-1}));
+        // [106] 从中序与后序遍历序列构造二叉树
+        log.info("ConstructBinaryTreeFromInorderAndPostorderTraversal: {}", new ConstructBinaryTreeFromInorderAndPostorderTraversal().buildTree(new int[] {9,3,15,20,7}, new int[] {9,15,7,20,3}));
+        log.info("ConstructBinaryTreeFromInorderAndPostorderTraversal: {}", new ConstructBinaryTreeFromInorderAndPostorderTraversal().buildTree(new int[] {-1}, new int[] {-1}));
+        // [107] 二叉树的层序遍历 II
+        log.info("BinaryTreeLevelOrderTraversalII: {}", new BinaryTreeLevelOrderTraversalII().levelOrderBottom(BinaryTreeLevelOrderTraversalII.example1()));
+        log.info("BinaryTreeLevelOrderTraversalII: {}", new BinaryTreeLevelOrderTraversalII().levelOrderBottom(BinaryTreeLevelOrderTraversalII.example2()));
+        log.info("BinaryTreeLevelOrderTraversalII: {}", new BinaryTreeLevelOrderTraversalII().levelOrderBottom(BinaryTreeLevelOrderTraversalII.example3()));
+        // [108] 将有序数组转换为二叉搜索树
+        log.info("ConvertSortedArrayToBinarySearchTree: {}", new ConvertSortedArrayToBinarySearchTree().sortedArrayToBST(new int[] {-10,-3,0,5,9}));
+        log.info("ConvertSortedArrayToBinarySearchTree: {}", new ConvertSortedArrayToBinarySearchTree().sortedArrayToBST(new int[] {1,3}));
+        // [109] 有序链表转换二叉搜索树
+        log.info("ConvertSortedListToBinarySearchTree: {}", new ConvertSortedListToBinarySearchTree().sortedListToBST(ConvertSortedListToBinarySearchTree.example1()));
+        log.info("ConvertSortedListToBinarySearchTree: {}", new ConvertSortedListToBinarySearchTree().sortedListToBST(ConvertSortedListToBinarySearchTree.example2()));
+        // [110] 平衡二叉树
+        log.info("BalancedBinaryTree: {}", new BalancedBinaryTree().isBalanced(BalancedBinaryTree.example1()));
+        log.info("BalancedBinaryTree: {}", new BalancedBinaryTree().isBalanced(BalancedBinaryTree.example2()));
+        log.info("BalancedBinaryTree: {}", new BalancedBinaryTree().isBalanced(BalancedBinaryTree.example3()));
+        // [111] 二叉树的最小深度
+        log.info("MinimumDepthOfBinaryTree: {}", new MinimumDepthOfBinaryTree().minDepth(MinimumDepthOfBinaryTree.example1()));
+        log.info("MinimumDepthOfBinaryTree: {}", new MinimumDepthOfBinaryTree().minDepth(MinimumDepthOfBinaryTree.example2()));
     }
 }
 
@@ -719,3 +751,637 @@ class BinaryTreeLevelOrderTraversal {
     }
 }
 // @lc code=end
+
+
+/**
+ * @lc app=leetcode.cn id=103 lang=java
+ *
+ * [103] 二叉树的锯齿形层序遍历
+ *
+ * https://leetcode.cn/problems/binary-tree-zigzag-level-order-traversal/description/
+ *
+ * algorithms
+ * Medium (57.54%)
+ * Likes:    792
+ * Dislikes: 0
+ * Total Accepted:    313.6K
+ * Total Submissions: 544.9K
+ * Testcase Example:  '[3,9,20,null,null,15,7]'
+ *
+ * 给你二叉树的根节点 root ，返回其节点值的 锯齿形层序遍历 。（即先从左往右，再从右往左进行下一层遍历，以此类推，层与层之间交替进行）。
+ *
+ * 示例 1：
+ * 输入：root = [3,9,20,null,null,15,7]
+ * 输出：[[3],[20,9],[15,7]]
+ *
+ * 示例 2：
+ * 输入：root = [1]
+ * 输出：[[1]]
+ *
+ * 示例 3：
+ * 输入：root = []
+ * 输出：[]
+ *
+ * 提示：
+ * 树中节点数目在范围 [0, 2000] 内
+ * -100 <= Node.val <= 100
+ */
+// @lc code=start
+class BinaryTreeZigzagLevelOrderTraversal {
+    public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
+        List<List<Integer>> res = new ArrayList<>();
+        if (root == null) return res;
+
+        List<TreeNode> layer = new ArrayList<>();
+        layer.add(root);
+        boolean reverse = true;
+        while (!layer.isEmpty()) {
+            List<TreeNode> nextLayer = new ArrayList<>();
+            boolean hasNode = false;
+            reverse ^= true;
+            List<Integer> curLayer = new ArrayList<>();
+            for (int i = layer.size() - 1; i >= 0; i--) {
+                TreeNode curNode = layer.get(i);
+                if (curNode != null) {
+                    if (!reverse) {
+                        nextLayer.add(curNode.left);
+                        nextLayer.add(curNode.right);
+                    } else {
+                        nextLayer.add(curNode.right);
+                        nextLayer.add(curNode.left);
+                    }
+                    curLayer.add(curNode.val);
+                    if (curNode.left != null || curNode.right != null) {
+                        hasNode = true;
+                    }
+                }
+            }
+            res.add(curLayer);
+            layer = hasNode ? nextLayer : new ArrayList<>();
+        }
+        return res;
+    }
+
+
+    public static TreeNode example1() {
+        return new TreeNode(3, new TreeNode(9), new TreeNode(20, new TreeNode(15), new TreeNode(7)));
+    }
+    public static TreeNode example2() {
+        return new TreeNode(1);
+    }
+    public static TreeNode example3() {
+        return null;
+    }
+}
+// @lc code=end
+
+
+/**
+ * @lc app=leetcode.cn id=104 lang=java
+ *
+ * [104] 二叉树的最大深度
+ *
+ * https://leetcode.cn/problems/maximum-depth-of-binary-tree/description/
+ *
+ * algorithms
+ * Easy (77.12%)
+ * Likes:    1658
+ * Dislikes: 0
+ * Total Accepted:    1.1M
+ * Total Submissions: 1.4M
+ * Testcase Example:  '[3,9,20,null,null,15,7]'
+ *
+ * 给定一个二叉树 root ，返回其最大深度。
+ * 二叉树的 最大深度 是指从根节点到最远叶子节点的最长路径上的节点数。
+ *
+ * 示例 1：
+ * 输入：root = [3,9,20,null,null,15,7]
+ * 输出：3
+ *
+ * 示例 2：
+ * 输入：root = [1,null,2]
+ * 输出：2
+ *
+ * 提示：
+ * 树中节点的数量在 [0, 10^4] 区间内。
+ * -100 <= Node.val <= 100
+ */
+// @lc code=start
+class MaximumDepthOfBinaryTree {
+    public int maxDepth(TreeNode root) {
+        return maxDepth(root, 0);
+    }
+
+    public int maxDepth(TreeNode root, int depth) {
+        if (root == null) {
+            return depth;
+        }
+        depth += 1;
+
+        return Math.max(maxDepth(root.left, depth), maxDepth(root.right, depth));
+    }
+
+
+    public static TreeNode example1() {
+        return new TreeNode(3, new TreeNode(9), new TreeNode(20, new TreeNode(15), new TreeNode(7)));
+    }
+    public static TreeNode example2() {
+        return new TreeNode(1, null, new TreeNode(2));
+    }
+}
+// @lc code=end
+
+
+/**
+ * @lc app=leetcode.cn id=105 lang=java
+ *
+ * [105] 从前序与中序遍历序列构造二叉树
+ *
+ * https://leetcode.cn/problems/construct-binary-tree-from-preorder-and-inorder-traversal/description/
+ *
+ * algorithms
+ * Medium (71.24%)
+ * Likes:    2036
+ * Dislikes: 0
+ * Total Accepted:    518K
+ * Total Submissions: 727.1K
+ * Testcase Example:  '[3,9,20,15,7]\n[9,3,15,20,7]'
+ *
+ * 给定两个整数数组 preorder 和 inorder ，其中 preorder 是二叉树的先序遍历， inorder
+ * 是同一棵树的中序遍历，请构造二叉树并返回其根节点。
+ *
+ * 示例 1:
+ * 输入: preorder = [3,9,20,15,7], inorder = [9,3,15,20,7]
+ * 输出: [3,9,20,null,null,15,7]
+ *
+ * 示例 2:
+ * 输入: preorder = [-1], inorder = [-1]
+ * 输出: [-1]
+ *
+ * 提示:
+ * 1 <= preorder.length <= 3000
+ * inorder.length == preorder.length
+ * -3000 <= preorder[i], inorder[i] <= 3000
+ * preorder 和 inorder 均 无重复 元素
+ * inorder 均出现在 preorder
+ * preorder 保证 为二叉树的前序遍历序列
+ * inorder 保证 为二叉树的中序遍历序列
+ */
+// @lc code=start
+class ConstructBinaryTreeFromPreorderAndInorderTraversal {
+    // 存储 inorder 中值到索引的映射
+    Map<Integer, Integer> valToIndex = new HashMap<>();
+
+    public TreeNode buildTree(int[] preorder, int[] inorder) {
+        for (int i = 0; i < inorder.length; i++) {
+            valToIndex.put(inorder[i], i);
+        }
+        return build(preorder, 0, preorder.length - 1,
+                inorder, 0, inorder.length - 1);
+    }
+
+    /*
+     * 定义：前序遍历数组为 preorder[preStart..preEnd]，
+     * 中序遍历数组为 inorder[inStart..inEnd]，
+     * 构造这个二叉树并返回该二叉树的根节点
+     */
+    TreeNode build(int[] preorder, int preStart, int preEnd,
+                   int[] inorder, int inStart, int inEnd) {
+        if (preStart > preEnd) {
+            return null;
+        }
+
+        // root 节点对应的值就是前序遍历数组的第一个元素
+        int rootVal = preorder[preStart];
+        // rootVal 在中序遍历数组中的索引
+        int index = valToIndex.get(rootVal);
+
+        int leftSize = index - inStart;
+
+        // 先构造出当前根节点
+        TreeNode root = new TreeNode(rootVal);
+
+
+        // 递归构造左右子树
+        root.left = build(preorder, preStart + 1, preStart + leftSize,
+                inorder, inStart, index - 1);
+
+        root.right = build(preorder, preStart + leftSize + 1, preEnd,
+                inorder, index + 1, inEnd);
+        return root;
+    }
+}
+// @lc code=end
+
+
+/**
+ * @lc app=leetcode.cn id=106 lang=java
+ *
+ * [106] 从中序与后序遍历序列构造二叉树
+ *
+ * https://leetcode.cn/problems/construct-binary-tree-from-inorder-and-postorder-traversal/description/
+ *
+ * algorithms
+ * Medium (72.03%)
+ * Likes:    1071
+ * Dislikes: 0
+ * Total Accepted:    299.3K
+ * Total Submissions: 415.6K
+ * Testcase Example:  '[9,3,15,20,7]\n[9,15,7,20,3]'
+ *
+ * 给定两个整数数组 inorder 和 postorder ，其中 inorder 是二叉树的中序遍历， postorder
+ * 是同一棵树的后序遍历，请你构造并返回这颗 二叉树 。
+ *
+ * 示例 1:
+ * 输入：inorder = [9,3,15,20,7], postorder = [9,15,7,20,3]
+ * 输出：[3,9,20,null,null,15,7]
+ *
+ * 示例 2:
+ * 输入：inorder = [-1], postorder = [-1]
+ * 输出：[-1]
+ *
+ * 提示:
+ * 1 <= inorder.length <= 3000
+ * postorder.length == inorder.length
+ * -3000 <= inorder[i], postorder[i] <= 3000
+ * inorder 和 postorder 都由 不同 的值组成
+ * postorder 中每一个值都在 inorder 中
+ * inorder 保证是树的中序遍历
+ * postorder 保证是树的后序遍历
+ */
+// @lc code=start
+class ConstructBinaryTreeFromInorderAndPostorderTraversal {
+    // 存储 inorder 中值到索引的映射
+    HashMap<Integer, Integer> valToIndex = new HashMap<>();
+
+    public TreeNode buildTree(int[] inorder, int[] postorder) {
+        for (int i = 0; i < inorder.length; i++) {
+            valToIndex.put(inorder[i], i);
+        }
+        return build(inorder, 0, inorder.length - 1,
+                postorder, 0, postorder.length - 1);
+    }
+
+    /*
+       定义：
+       中序遍历数组为 inorder[inStart..inEnd]，
+       后序遍历数组为 postorder[postStart..postEnd]，
+       构造这个二叉树并返回该二叉树的根节点
+    */
+    TreeNode build(int[] inorder, int inStart, int inEnd,
+                   int[] postorder, int postStart, int postEnd) {
+
+        if (inStart > inEnd) {
+            return null;
+        }
+        // root 节点对应的值就是后序遍历数组的最后一个元素
+        int rootVal = postorder[postEnd];
+        // rootVal 在中序遍历数组中的索引
+        int index = valToIndex.get(rootVal);
+        // 左子树的节点个数
+        int leftSize = index - inStart;
+        TreeNode root = new TreeNode(rootVal);
+
+
+        // 递归构造左右子树
+        root.left = build(inorder, inStart, index - 1,
+                postorder, postStart, postStart + leftSize - 1);
+
+        root.right = build(inorder, index + 1, inEnd,
+                postorder, postStart + leftSize, postEnd - 1);
+        return root;
+    }
+}
+// @lc code=end
+
+
+/**
+ * @lc app=leetcode.cn id=107 lang=java
+ *
+ * [107] 二叉树的层序遍历 II
+ *
+ * https://leetcode.cn/problems/binary-tree-level-order-traversal-ii/description/
+ *
+ * algorithms
+ * Medium (72.56%)
+ * Likes:    708
+ * Dislikes: 0
+ * Total Accepted:    282.9K
+ * Total Submissions: 389.5K
+ * Testcase Example:  '[3,9,20,null,null,15,7]'
+ *
+ * 给你二叉树的根节点 root ，返回其节点值 自底向上的层序遍历 。 （即按从叶子节点所在层到根节点所在的层，逐层从左向右遍历）
+ *
+ * 示例 1：
+ * 输入：root = [3,9,20,null,null,15,7]
+ * 输出：[[15,7],[9,20],[3]]
+ *
+ * 示例 2：
+ * 输入：root = [1]
+ * 输出：[[1]]
+ *
+ * 示例 3：
+ * 输入：root = []
+ * 输出：[]
+ *
+ * 提示：
+ * 树中节点数目在范围 [0, 2000] 内
+ * -1000 <= Node.val <= 1000
+ */
+// @lc code=start
+class BinaryTreeLevelOrderTraversalII {
+    public List<List<Integer>> levelOrderBottom(TreeNode root) {
+        List<List<Integer>> res = new ArrayList<>();
+        if (root == null) return res;
+
+        List<TreeNode> layer = new ArrayList<>();
+        layer.add(root);
+        while (!layer.isEmpty()) {
+            List<TreeNode> nextLayer = new ArrayList<>();
+            boolean hasNode = false;
+            List<Integer> curLayer = new ArrayList<>();
+            for (TreeNode curNode : layer) {
+                if (curNode != null) {
+                    nextLayer.add(curNode.left);
+                    nextLayer.add(curNode.right);
+                    curLayer.add(curNode.val);
+                    if (curNode.left != null || curNode.right != null) {
+                        hasNode = true;
+                    }
+                }
+            }
+            // 与自上而下遍历不同的是，这里每次加到队首
+            res.add(0, curLayer);
+            layer = hasNode ? nextLayer : new ArrayList<>();
+        }
+        return res;
+    }
+
+
+    public static TreeNode example1() {
+        return new TreeNode(3, new TreeNode(9), new TreeNode(20, new TreeNode(15), new TreeNode(7)));
+    }
+    public static TreeNode example2() {
+        return new TreeNode(1);
+    }
+    public static TreeNode example3() {
+        return null;
+    }
+}
+// @lc code=end
+
+
+/**
+ * @lc app=leetcode.cn id=108 lang=java
+ *
+ * [108] 将有序数组转换为二叉搜索树
+ *
+ * https://leetcode.cn/problems/convert-sorted-array-to-binary-search-tree/description/
+ *
+ * algorithms
+ * Easy (77.50%)
+ * Likes:    1363
+ * Dislikes: 0
+ * Total Accepted:    377.9K
+ * Total Submissions: 487.3K
+ * Testcase Example:  '[-10,-3,0,5,9]'
+ *
+ * 给你一个整数数组 nums ，其中元素已经按 升序 排列，请你将其转换为一棵 高度平衡 二叉搜索树。
+ * 高度平衡 二叉树是一棵满足「每个节点的左右两个子树的高度差的绝对值不超过 1 」的二叉树。
+ *
+ * 示例 1：
+ * 输入：nums = [-10,-3,0,5,9]
+ * 输出：[0,-3,9,-10,null,5]
+ * 解释：[0,-10,5,null,-3,null,9] 也将被视为正确答案：
+ *
+ * 示例 2：
+ * 输入：nums = [1,3]
+ * 输出：[3,1]
+ * 解释：[1,null,3] 和 [3,1] 都是高度平衡二叉搜索树。
+ *
+ * 提示：
+ * 1 <= nums.length <= 10^4
+ * -10^4 <= nums[i] <= 10^4
+ * nums 按 严格递增 顺序排列
+ */
+// @lc code=start
+class ConvertSortedArrayToBinarySearchTree {
+    public TreeNode sortedArrayToBST(int[] nums) {
+        // 数组为 null，直接返回
+        if (nums == null) return null;
+        return sortedArrayToBST(nums, 0, nums.length - 1);
+    }
+
+    public TreeNode sortedArrayToBST(int[] nums, int start, int end) {
+        // 判断临界点
+        if (start > end) {
+            return null;
+        }
+        // 找到根节点索引
+        int rootIndex = start + (end - start) / 2;
+        // 构建根节点
+        TreeNode root = new TreeNode(nums[rootIndex]);
+        root.left = sortedArrayToBST(nums, start, rootIndex - 1);
+        root.right = sortedArrayToBST(nums, rootIndex + 1, end);
+        return root;
+    }
+}
+// @lc code=end
+
+
+/**
+ * @lc app=leetcode.cn id=109 lang=java
+ *
+ * [109] 有序链表转换二叉搜索树
+ *
+ * https://leetcode.cn/problems/convert-sorted-list-to-binary-search-tree/description/
+ *
+ * algorithms
+ * Medium (76.46%)
+ * Likes:    850
+ * Dislikes: 0
+ * Total Accepted:    149.4K
+ * Total Submissions: 195.4K
+ * Testcase Example:  '[-10,-3,0,5,9]'
+ *
+ * 给定一个单链表的头节点  head ，其中的元素 按升序排序 ，将其转换为高度平衡的二叉搜索树。
+ * 本题中，一个高度平衡二叉树是指一个二叉树每个节点 的左右两个子树的高度差不超过 1。
+ *
+ * 示例 1:
+ * 输入: head = [-10,-3,0,5,9]
+ * 输出: [0,-3,9,-10,null,5]
+ * 解释: 一个可能的答案是[0，-3,9，-10,null,5]，它表示所示的高度平衡的二叉搜索树。
+ *
+ * 示例 2:
+ * 输入: head = []
+ * 输出: []
+ *
+ * 提示:
+ * head 中的节点数在[0, 2 * 10^4] 范围内
+ * -10^5 <= Node.val <= 10^5
+ */
+// @lc code=start
+class ConvertSortedListToBinarySearchTree {
+    public TreeNode sortedListToBST(ListNode head) {
+        List<Integer> values = new ArrayList<>();
+        // 将有序链表的元素存储到数组中
+        while (head != null) {
+            values.add(head.val);
+            head = head.next;
+        }
+        // 调用辅助函数，将有序数组转换为平衡的二叉搜索树
+        return sortedArrayToBST(values, 0, values.size() - 1);
+    }
+
+    private TreeNode sortedArrayToBST(List<Integer> values, int left, int right) {
+        // 递归结束条件，左索引大于右索引
+        if (left > right) {
+            return null;
+        }
+        // 计算中间索引
+        int mid = left + (right - left) / 2;
+        // 使用中间元素构建当前子树的根节点
+        TreeNode root = new TreeNode(values.get(mid));
+        // 递归处理左子数组，构建左子树
+        root.left = sortedArrayToBST(values, left, mid - 1);
+        // 递归处理右子数组，构建右子树
+        root.right = sortedArrayToBST(values, mid + 1, right);
+        return root;
+    }
+
+
+    public static ListNode example1() {
+        return new ListNode(-10, new ListNode(-3, new ListNode(0, new ListNode(5, new ListNode(9)))));
+    }
+    public static ListNode example2() {
+        return null;
+    }
+}
+// @lc code=end
+
+
+/**
+ * @lc app=leetcode.cn id=110 lang=java
+ *
+ * [110] 平衡二叉树
+ *
+ * https://leetcode.cn/problems/balanced-binary-tree/description/
+ *
+ * algorithms
+ * Easy (57.55%)
+ * Likes:    1381
+ * Dislikes: 0
+ * Total Accepted:    527.8K
+ * Total Submissions: 915.9K
+ * Testcase Example:  '[3,9,20,null,null,15,7]'
+ *
+ * 给定一个二叉树，判断它是否是高度平衡的二叉树。
+ * 本题中，一棵高度平衡二叉树定义为：
+ * 一个二叉树每个节点 的左右两个子树的高度差的绝对值不超过 1 。
+ *
+ * 示例 1：
+ * 输入：root = [3,9,20,null,null,15,7]
+ * 输出：true
+ *
+ * 示例 2：
+ * 输入：root = [1,2,2,3,3,null,null,4,4]
+ * 输出：false
+ *
+ * 示例 3：
+ * 输入：root = []
+ * 输出：true
+ *
+ * 提示：
+ * 树中的节点数在范围 [0, 5000] 内
+ * -10^4 <= Node.val <= 10^4
+ */
+// @lc code=start
+class BalancedBinaryTree {
+    public boolean isBalanced(TreeNode root) {
+        if (root == null) {
+            return true;
+        }
+        // 判断当前节点的左右子树高度差是否小于等于 1
+        if (Math.abs(height(root.left) - height(root.right)) > 1) {
+            return false;
+        }
+        // 递归判断左右子树是否平衡
+        return isBalanced(root.left) && isBalanced(root.right);
+    }
+
+    // 计算树的高度
+    private int height(TreeNode node) {
+        if (node == null) {
+            return 0;
+        }
+        return 1 + Math.max(height(node.left), height(node.right));
+    }
+
+
+    public static TreeNode example1() {
+        return new TreeNode(3, new TreeNode(9), new TreeNode(20, new TreeNode(15), new TreeNode(7)));
+    }
+    public static TreeNode example2() {
+        return new TreeNode(1, new TreeNode(2, new TreeNode(3, new TreeNode(4), new TreeNode(4)), new TreeNode(3)), new TreeNode(2));
+    }
+    public static TreeNode example3() {
+        return null;
+    }
+}
+// @lc code=end
+
+
+/**
+ * @lc app=leetcode.cn id=111 lang=java
+ *
+ * [111] 二叉树的最小深度
+ *
+ * https://leetcode.cn/problems/minimum-depth-of-binary-tree/description/
+ *
+ * algorithms
+ * Easy (52.28%)
+ * Likes:    1058
+ * Dislikes: 0
+ * Total Accepted:    588K
+ * Total Submissions: 1.1M
+ * Testcase Example:  '[3,9,20,null,null,15,7]'
+ *
+ * 给定一个二叉树，找出其最小深度。
+ * 最小深度是从根节点到最近叶子节点的最短路径上的节点数量。
+ * 说明：叶子节点是指没有子节点的节点。
+ *
+ * 示例 1：
+ * 输入：root = [3,9,20,null,null,15,7]
+ * 输出：2
+ *
+ * 示例 2：
+ * 输入：root = [2,null,3,null,4,null,5,null,6]
+ * 输出：5
+ *
+ * 提示：
+ * 树中节点数的范围在 [0, 10^5] 内
+ * -1000 <= Node.val <= 1000
+ */
+class MinimumDepthOfBinaryTree {
+    public int minDepth(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+        if (root.left == null) {
+            return 1 + minDepth(root.right);
+        }
+        if (root.right == null) {
+            return 1 + minDepth(root.left);
+        }
+
+        return 1 + Math.min(minDepth(root.left), minDepth(root.right));
+    }
+
+
+    public static TreeNode example1() {
+        return new TreeNode(3, new TreeNode(9), new TreeNode(20, new TreeNode(15), new TreeNode(7)));
+    }
+    public static TreeNode example2() {
+        return new TreeNode(2, null, new TreeNode(3, null, new TreeNode(4, null, new TreeNode(5, null, new TreeNode(6)))));
+    }
+}
