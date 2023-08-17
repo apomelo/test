@@ -92,7 +92,6 @@ public class AlgoString {
  * 0 <= strs[i].length <= 200
  * strs[i] 仅由小写英文字母组成
  */
-// @lc code=start
 class LongestCommonPrefix {
     public String longestCommonPrefix(String[] strs) {
         StringBuilder stringBuilder = new StringBuilder();
@@ -139,7 +138,6 @@ class LongestCommonPrefix {
         return strs[0];
     }
 }
-// @lc code=end
 
 
 /**
@@ -176,7 +174,6 @@ class LongestCommonPrefix {
  * haystack 和 needle 仅由小写英文字符组成
  */
 
-// @lc code=start
 class FindTheIndexOfTheFirstOccurrenceInAString {
     public int strStr(String haystack, String needle) {
         int hayStackLength = haystack.length();
@@ -205,7 +202,6 @@ class FindTheIndexOfTheFirstOccurrenceInAString {
         return -1;
     }
 }
-// @lc code=end
 
 
 /**
@@ -259,7 +255,6 @@ class FindTheIndexOfTheFirstOccurrenceInAString {
  * 1 <= words[i].length <= 30
  * words[i] 和 s 由小写英文字母组成
  */
-// @lc code=start
 class SubstringWithConcatenationOfAllWords {
     /**
      * 记 words 的长度为 m, words 中每个单词的长度为 n, s 的长度为 ls。首先需要将 s 划分为单词组,
@@ -328,7 +323,6 @@ class SubstringWithConcatenationOfAllWords {
         return res;
     }
 }
-// @lc code=end
 
 
 /**
@@ -382,7 +376,6 @@ class SubstringWithConcatenationOfAllWords {
  * 提示：
  * 1 <= n <= 30
  */
-// @lc code=start
 class CountAndSay {
     public String countAndSay(int n) {
         if (n == 1) return "1";
@@ -414,7 +407,6 @@ class CountAndSay {
         return sb.toString();
     }
 }
-// @lc code=end
 
 
 /**
@@ -448,7 +440,6 @@ class CountAndSay {
  * num1 和 num2 只能由数字组成。
  * num1 和 num2 都不包含任何前导零，除了数字0本身。
  */
-// @lc code=start
 class MultiplyStrings {
     public String multiply(String num1, String num2) {
         int m = num1.length();
@@ -481,7 +472,6 @@ class MultiplyStrings {
         return str.length() == 0 ? "0" : str;
     }
 }
-// @lc code=end
 
 
 /**
@@ -519,7 +509,6 @@ class MultiplyStrings {
  * 0 <= strs[i].length <= 100
  * strs[i] 仅包含小写字母
  */
-// @lc code=start
 class GroupAnagrams {
     public List<List<String>> groupAnagrams(String[] strs) {
         // 编码到分组的映射
@@ -547,7 +536,6 @@ class GroupAnagrams {
         return new String(count);
     }
 }
-// @lc code=end
 
 
 /**
@@ -588,7 +576,6 @@ class GroupAnagrams {
  * s 仅有英文字母和空格 ' ' 组成
  * s 中至少存在一个单词
  */
-// @lc code=start
 class LengthOfLastWord {
     public int lengthOfLastWord(String s) {
         String[] split = s.trim().split("\\s+");
@@ -596,7 +583,6 @@ class LengthOfLastWord {
         return split[n - 1].length();
     }
 }
-// @lc code=end
 
 
 /**
@@ -668,7 +654,6 @@ class LengthOfLastWord {
  * 1 <= maxWidth <= 100
  * words[i].length <= maxWidth
  */
-// @lc code=start
 class TextJustification {
     public List<String> fullJustify(String[] words, int maxWidth) {
         List<String> res = new ArrayList<>();
@@ -739,7 +724,6 @@ class TextJustification {
         }
     }
 }
-// @lc code=end
 
 
 /**
@@ -794,7 +778,6 @@ class TextJustification {
  * path 由英文字母，数字，'.'，'/' 或 '_' 组成。
  * path 是一个有效的 Unix 风格绝对路径。
  */
-// @lc code=start
 class SimplifyPath {
     public String simplifyPath(String path) {
         Stack<String> stk = new Stack<>();
@@ -820,7 +803,6 @@ class SimplifyPath {
         return res.isEmpty() ? "/" : res;
     }
 }
-// @lc code=end
 
 
 /**
@@ -868,7 +850,6 @@ class SimplifyPath {
  *
  * 进阶：你能设计一个在 o(m+n) 时间内解决此问题的算法吗？
  */
-// @lc code=start
 class MinimumWindowSubstring {
     public String minWindow(String s, String t) {
         Map<Character, Integer> need = new HashMap<>();
@@ -922,7 +903,6 @@ class MinimumWindowSubstring {
         return len == Integer.MAX_VALUE ? "" : s.substring(start, start + len);
     }
 }
-// @lc code=end
 
 
 /**
@@ -975,7 +955,6 @@ class MinimumWindowSubstring {
  * 1 <= s1.length <= 30
  * s1 和 s2 由小写英文字母组成
  */
-// @lc code=start
 class ScrambleString {
     /**
      * 解法1: 递归
@@ -1077,4 +1056,3 @@ class ScrambleString {
         return dp[0][0][n];
     }
 }
-// @lc code=end

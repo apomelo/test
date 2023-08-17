@@ -99,7 +99,6 @@ public class AlgoArray {
  * 1 <= nums.length <= 100
  * 0 <= nums[i] <= 100
  */
-// @lc code=start
 class NextPermutation {
     /**
      * 从后向前 查找第一个 相邻升序 的元素对 (i,j)，满足 A[i] < A[j]。此时 [j,end) 必然是降序
@@ -144,7 +143,6 @@ class NextPermutation {
         }
     }
 }
-// @lc code=end
 
 
 /**
@@ -178,7 +176,6 @@ class NextPermutation {
  * 1 <= n <= 20
  * -1000 <= matrix[i][j] <= 1000
  */
-// @lc code=start
 class RotateImage {
     /**
      * 翻转主函数
@@ -222,7 +219,6 @@ class RotateImage {
         return new int[] {j, n - i - 1};
     }
 }
-// @lc code=end
 
 
 /**
@@ -256,7 +252,6 @@ class RotateImage {
  * 1 <= m, n <= 10
  * -100 <= matrix[i][j] <= 100
  */
-// @lc code=start
 class SpiralMatrix {
     /**
      * 维护了四个变量，即矩阵的左边界、右边界、上边界和下边界。
@@ -303,7 +298,6 @@ class SpiralMatrix {
         return res;
     }
 }
-// @lc code=end
 
 
 /**
@@ -334,7 +328,6 @@ class SpiralMatrix {
  * 提示：
  * 1 <= n <= 20
  */
-// @lc code=start
 class SpiralMatrixII {
     public int[][] generateMatrix(int n) {
         int[][] res = new int[n][n];
@@ -371,7 +364,6 @@ class SpiralMatrixII {
         return res;
     }
 }
-// @lc code=end
 
 
 /**
@@ -412,7 +404,6 @@ class SpiralMatrixII {
  * 1 <= digits.length <= 100
  * 0 <= digits[i] <= 9
  */
-// @lc code=start
 class PlusOne {
     public int[] plusOne(int[] digits) {
         if (digits.length == 0) {
@@ -436,7 +427,6 @@ class PlusOne {
         return res.stream().mapToInt(i -> i).toArray();
     }
 }
-// @lc code=end
 
 
 /**
@@ -475,7 +465,6 @@ class PlusOne {
  * 一个简单的改进方案是使用 O(m + n) 的额外空间，但这仍然不是最好的解决方案。
  * 你能想出一个仅使用常量空间的解决方案吗？
  */
-// @lc code=start
 class SetMatrixZeroes {
     /**
      * 方法1: 用第一行和第一列作为标记
@@ -569,4 +558,3 @@ class SetMatrixZeroes {
         }
     }
 }
-// @lc code=end

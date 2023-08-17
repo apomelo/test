@@ -88,7 +88,6 @@ public class AlgoMathString {
  * 提示：
  * 1
  */
-// @lc code=start
 class IntegerToRoman {
     public String intToRoman(int num) {
         // 映射表
@@ -112,7 +111,6 @@ class IntegerToRoman {
         return roman.toString();
     }
 }
-// @lc code=end
 
 /**
  * @lc app=leetcode.cn id=13 lang=java
@@ -180,7 +178,6 @@ class IntegerToRoman {
  * 关于罗马数字的详尽书写规则，可以参考 罗马数字 - Mathematics 。
  */
 
-// @lc code=start
 class RomanToInteger {
     public int romanToInt(String s) {
         Map<Character, Integer> symbolValues = new HashMap<Character, Integer>() {{
@@ -206,7 +203,6 @@ class RomanToInteger {
         return res;
     }
 }
-// @lc code=end
 
 
 /**
@@ -239,7 +235,6 @@ class RomanToInteger {
  * a 和 b 仅由字符 '0' 或 '1' 组成
  * 字符串如果不是 "0" ，就不含前导零
  */
-// @lc code=start
 class AddBinary {
     public String addBinary(String a, String b) {
         int radix = 2;
@@ -273,4 +268,3 @@ class AddBinary {
         return res.toString();
     }
 }
-// @lc code=end

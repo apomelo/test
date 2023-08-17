@@ -70,7 +70,6 @@ public class AlgoMath {
  * -2^31 <= dividend, divisor <= 2^31 - 1
  * divisor != 0
  */
-// @lc code=start
 class DivideTwoIntegers {
     /**
      * 使用二分查找法计算商：
@@ -193,7 +192,6 @@ class DivideTwoIntegers {
         return true;
     }
 }
-// @lc code=end
 
 
 /**
@@ -230,7 +228,6 @@ class DivideTwoIntegers {
  * 1 <= nums.length <= 5 * 10^5
  * -2^31 <= nums[i] <= 2^31 - 1
  */
-// @lc code=start
 class FirstMissingPositive {
     /**
      * 方法1: 原地 hash 法
@@ -294,7 +291,6 @@ class FirstMissingPositive {
         return n + 1;
     }
 }
-// @lc code=end
 
 
 /**
@@ -333,7 +329,6 @@ class FirstMissingPositive {
  * n 是一个整数
  * -10^4 <= x^n <= 10^4
  */
-// @lc code=start
 class PowxN {
     public double myPow(double x, int n) {
         if (n == 0) return 1;
@@ -357,7 +352,6 @@ class PowxN {
         }
     }
 }
-// @lc code=end
 
 
 /**
@@ -408,14 +402,12 @@ class PowxN {
  * 1 <= s.length <= 20
  * s 仅含英文字母（大写和小写），数字（0-9），加号 '+' ，减号 '-' ，或者点 '.' 。
  */
-// @lc code=start
 class ValidNumber {
     public boolean isNumber(String s) {
         String regex = "^[+-]?(\\d+|\\d+(\\.\\d*)?|\\.\\d+)([eE][+-]?\\d+)?$";
         return s.matches(regex);
     }
 }
-// @lc code=end
 
 
 /**
@@ -449,7 +441,6 @@ class ValidNumber {
  * 提示：
  * 0 <= x <= 2^31 - 1
  */
-// @lc code=start
 class Sqrtx {
     public int mySqrt(int x) {
         if (x == 0) {
@@ -472,4 +463,3 @@ class Sqrtx {
         return (int) left;
     }
 }
-// @lc code=end

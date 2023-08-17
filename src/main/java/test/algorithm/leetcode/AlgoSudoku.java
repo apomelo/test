@@ -78,7 +78,6 @@ public class AlgoSudoku {
  * board[i].length == 9
  * board[i][j] 是一位数字（1-9）或者 '.'
  */
-// @lc code=start
 class ValidSudoku {
     public boolean isValidSudoku(char[][] board) {
         // 定义数字行内出现的次数
@@ -125,7 +124,6 @@ class ValidSudoku {
         };
     }
 }
-// @lc code=end
 
 
 /**
@@ -179,7 +177,6 @@ class ValidSudoku {
  * board[i][j] 是一位数字或者 '.'
  * 题目数据 保证 输入数独仅有一个解
  */
-// @lc code=start
 class SudokuSolver {
     public void solveSudoku(char[][] board) {
         dfs(board, 0, 0);
@@ -283,4 +280,3 @@ class SudokuSolver {
         System.out.println("-------end-------");
     }
 }
-// @lc code=end

@@ -52,7 +52,6 @@ public class AlgoPalindrome {
  *
  * 进阶：你能不将整数转为字符串来解决这个问题吗？
  */
-// @lc code=start
 class PalindromeNum {
     public boolean isPalindrome(int x) {
         String s = String.valueOf(x);

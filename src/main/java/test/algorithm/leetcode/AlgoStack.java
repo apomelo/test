@@ -66,7 +66,6 @@ public class AlgoStack {
  * 1 <= s.length <= 10^4
  * s 仅由括号 '()[]{}' 组成
  */
-// @lc code=start
 class ValidParentheses {
     public boolean isValid(String s) {
         Map<Character, Character> maping = new HashMap<Character, Character>() {{
@@ -91,7 +90,6 @@ class ValidParentheses {
         return stack.empty();
     }
 }
-// @lc code=end
 
 
 /**
@@ -125,7 +123,6 @@ class ValidParentheses {
  * 1 <= heights.length <=10^5
  * 0 <= heights[i] <= 10^4
  */
-// @lc code=start
 class LargestRectangleInHistogram {
     public int largestRectangleArea(int[] heights) {
         int n = heights.length;
@@ -166,7 +163,6 @@ class LargestRectangleInHistogram {
         return maxArea;
     }
 }
-// @lc code=end
 
 
 /**
@@ -217,7 +213,6 @@ class LargestRectangleInHistogram {
  * 1 <= row, cols <= 200
  * matrix[i][j] 为 '0' 或 '1'
  */
-// @lc code=start
 class MaximalRectangle {
     public int maximalRectangle(char[][] matrix) {
         if (matrix == null || matrix.length == 0 || matrix[0].length == 0) {
@@ -285,4 +280,3 @@ class MaximalRectangle {
         return maxArea;
     }
 }
-// @lc code=end
