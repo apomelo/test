@@ -61,7 +61,6 @@ public class AlgoSort {
  * intervals[i].length == 2
  * 0 <= starti <= endi <= 10^4
  */
-// @lc code=start
 class MergeIntervals {
     public int[][] merge(int[][] intervals) {
         LinkedList<int[]> res = new LinkedList<>();
@@ -106,7 +105,6 @@ class MergeIntervals {
                 || (b[1] >= a[0] && b[1] <= a[1]);
     }
 }
-// @lc code=end
 
 
 /**
@@ -156,7 +154,6 @@ class MergeIntervals {
  * newInterval.length == 2
  * 0 <= newInterval[0] <= newInterval[1] <= 10^5
  */
-// @lc code=start
 class InsertInterval {
     /**
      * 解法1
@@ -190,5 +187,4 @@ class InsertInterval {
         return merged.toArray(new int[merged.size()][]);
     }
 }
-// @lc code=end
 

@@ -82,7 +82,6 @@ public class AlgoDynamicProgramming {
  * 0
  * s[i] 为 '(' 或 ')'
  */
-// @lc code=start
 class LongestValidParentheses {
     public int longestValidParentheses(String s) {
         if (s == null || s.length() == 0) return 0;
@@ -118,7 +117,6 @@ class LongestValidParentheses {
         return res;
     }
 }
-// @lc code=end
 
 
 /**
@@ -165,7 +163,6 @@ class LongestValidParentheses {
  * 1 <= m, n <= 100
  * 题目数据保证答案小于等于 2 * 10^9
  */
-// @lc code=start
 class UniquePaths {
     public int uniquePaths(int m, int n) {
         if (m <= 1 || n <= 1) {
@@ -188,7 +185,6 @@ class UniquePaths {
         return dp[m - 1][n - 1];
     }
 }
-// @lc code=end
 
 
 /**
@@ -229,7 +225,6 @@ class UniquePaths {
  * 1 <= m, n <= 100
  * obstacleGrid[i][j] 为 0 或 1
  */
-// @lc code=start
 class UniquePathsII {
     public int uniquePathsWithObstacles(int[][] obstacleGrid) {
         // 排除格子为空的情况
@@ -262,7 +257,6 @@ class UniquePathsII {
         return dp[m - 1][n - 1];
     }
 }
-// @lc code=end
 
 
 /**
@@ -298,7 +292,6 @@ class UniquePathsII {
  * 1 <= m, n <= 200
  * 0 <= grid[i][j] <= 200
  */
-// @lc code=start
 class MinimumPathSum {
     public int minPathSum(int[][] grid) {
         // 排除格子为空的情况
@@ -328,7 +321,6 @@ class MinimumPathSum {
         return dp[m - 1][n - 1];
     }
 }
-// @lc code=end
 
 
 /**
@@ -367,7 +359,6 @@ class MinimumPathSum {
  * 提示：
  * 1 <= n <= 45
  */
-// @lc code=start
 class ClimbingStairs {
     public int climbStairs(int n) {
         if (n <= 2) {
@@ -382,7 +373,6 @@ class ClimbingStairs {
         return dp[n];
     }
 }
-// @lc code=end
 
 
 /**
@@ -428,7 +418,6 @@ class ClimbingStairs {
  * 0 <= word1.length, word2.length <= 500
  * word1 和 word2 由小写英文字母组成
  */
-// @lc code=start
 class EditDistance {
     public int minDistance(String word1, String word2) {
         int m = word1.length();
@@ -468,7 +457,6 @@ class EditDistance {
         return dp[m][n];
     }
 }
-// @lc code=end
 
 
 /**
@@ -518,7 +506,6 @@ class EditDistance {
  * 1 <= s.length <= 100
  * s 只包含数字，并且可能包含前导零。
  */
-// @lc code=start
 class DecodeWays {
     public int numDecodings(String s) {
         int n = s.length();
@@ -548,7 +535,6 @@ class DecodeWays {
         return dp[n];
     }
 }
-// @lc code=end
 
 
 /**
@@ -595,7 +581,6 @@ class DecodeWays {
  *
  * 进阶：您能否仅使用 O(s2.length) 额外的内存空间来解决它?
  */
-// @lc code=start
 class InterleavingString {
     public boolean isInterleave(String s1, String s2, String s3) {
         int m = s1.length();
@@ -640,4 +625,3 @@ class InterleavingString {
         return res;
     }
 }
-// @lc code=end

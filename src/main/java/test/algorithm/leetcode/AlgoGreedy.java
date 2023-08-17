@@ -59,7 +59,6 @@ public class AlgoGreedy {
  * 0 <= nums[i] <= 1000
  * 题目保证可以到达 nums[n-1]
  */
-// @lc code=start
 class JumpGameII {
     /**
      * 方法 1:
@@ -111,7 +110,6 @@ class JumpGameII {
         return dp[n - 1];
     }
 }
-// @lc code=end
 
 
 /**
@@ -147,7 +145,6 @@ class JumpGameII {
  * 1 <= nums.length <= 3 * 10^4
  * 0 <= nums[i] <= 10^5
  */
-// @lc code=start
 class JumpGame {
     /**
      * 方法 1
@@ -198,4 +195,3 @@ class JumpGame {
         return dp[n - 1] >= 0;
     }
 }
-// @lc code=end

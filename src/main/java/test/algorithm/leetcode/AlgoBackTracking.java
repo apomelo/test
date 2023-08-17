@@ -100,7 +100,6 @@ public class AlgoBackTracking {
  * 0 <= digits.length <= 4
  * digits[i] 是范围 ['2', '9'] 的一个数字。
  */
-// @lc code=start
 class LetterCombinationsOfAPhoneNumber {
     // 每个数字到字母的映射
     String[] mapping = new String[] {
@@ -140,7 +139,6 @@ class LetterCombinationsOfAPhoneNumber {
         }
     }
 }
-// @lc code=end
 
 /**
  * @lc app=leetcode.cn id=22 lang=java
@@ -170,7 +168,6 @@ class LetterCombinationsOfAPhoneNumber {
  * 提示：
  * 1 <= n <= 8
  */
-// @lc code=start
 class GenerateParentheses {
     public List<String> generateParenthesis(int n) {
         List<String> res = new ArrayList<>();
@@ -212,7 +209,6 @@ class GenerateParentheses {
         track.deleteCharAt(track.length() - 1); // 撤消选择
     }
 }
-// @lc code=end
 
 
 /**
@@ -257,7 +253,6 @@ class GenerateParentheses {
  * candidates 的所有元素 互不相同
  * 1 <= target <= 40
  */
-// @lc code=start
 class CombinationSum {
     List<List<Integer>> res = new LinkedList<>();
     // 记录回溯的路径
@@ -297,7 +292,6 @@ class CombinationSum {
         }
     }
 }
-// @lc code=end
 
 
 /**
@@ -342,7 +336,6 @@ class CombinationSum {
  * 1 <= candidates[i] <= 50
  * 1 <= target <= 30
  */
-// @lc code=start
 class CombinationSumII {
     // 结果
     LinkedList<List<Integer>> res = new LinkedList<>();
@@ -390,7 +383,6 @@ class CombinationSumII {
         }
     }
 }
-// @lc code=end
 
 
 /**
@@ -427,7 +419,6 @@ class CombinationSumII {
  * -10 <= nums[i] <= 10
  * nums 中的所有整数 互不相同
  */
-// @lc code=start
 class Permutations {
     List<List<Integer>> res = new ArrayList<>();
 
@@ -473,7 +464,6 @@ class Permutations {
         }
     }
 }
-// @lc code=end
 
 
 /**
@@ -508,7 +498,6 @@ class Permutations {
  * 1 <= nums.length <= 8
  * -10 <= nums[i] <= 10
  */
-// @lc code=start
 class PermutationsII {
     List<List<Integer>> res = new ArrayList<>();
     /**
@@ -557,7 +546,6 @@ class PermutationsII {
         }
     }
 }
-// @lc code=end
 
 
 /**
@@ -592,7 +580,6 @@ class PermutationsII {
  * 提示：
  * 1 <= n <= 9
  */
-// @lc code=start
 class NQueens {
     List<List<String>> res = new ArrayList<>();
 
@@ -668,7 +655,6 @@ class NQueens {
         return true;
     }
 }
-// @lc code=end
 
 
 /*
@@ -701,7 +687,6 @@ class NQueens {
  * 提示：
  * 1 <= n <= 9
  */
-// @lc code=start
 class NQueensII {
     private int count = 0;
     public int totalNQueens(int n) {
@@ -762,7 +747,6 @@ class NQueensII {
         return true;
     }
 }
-// @lc code=end
 
 
 /**
@@ -806,7 +790,6 @@ class NQueensII {
  * 1 <= n <= 9
  * 1 <= k <= n!
  */
-// @lc code=start
 class PermutationSequence {
     private int cur = 0;
     private String res = "";
@@ -847,7 +830,6 @@ class PermutationSequence {
         }
     }
 }
-// @lc code=end
 
 
 /**
@@ -888,7 +870,6 @@ class PermutationSequence {
  * 1 <= n <= 20
  * 1 <= k <= n
  */
-// @lc code=start
 class Combinations {
     private List<List<Integer>> res = new ArrayList<>();
 
@@ -922,7 +903,6 @@ class Combinations {
         }
     }
 }
-// @lc code=end
 
 
 /**
@@ -956,7 +936,6 @@ class Combinations {
  * -10 <= nums[i] <= 10
  * nums 中的所有元素 互不相同
  */
-// @lc code=start
 class Subsets {
     private List<List<Integer>> res = new ArrayList<>();
 
@@ -982,7 +961,6 @@ class Subsets {
         }
     }
 }
-// @lc code=end
 
 
 /**
@@ -1027,7 +1005,6 @@ class Subsets {
  *
  * 进阶：你可以使用搜索剪枝的技术来优化解决方案，使其在 board 更大的情况下可以更快解决问题？
  */
-// @lc code=start
 class WordSearch {
     private boolean found = false;
     private int[][] dir = new int[][] {{-1, 0}, {0, 1}, {1, 0}, {0, -1}};
@@ -1072,7 +1049,6 @@ class WordSearch {
         board[i][j] = (char)(-board[i][j]);
     }
 }
-// @lc code=end
 
 
 /**
@@ -1121,7 +1097,6 @@ class WordSearch {
  * 提示：
  * 1 <= n <= 16
  */
-// @lc code=start
 class GrayCode {
     public List<Integer> grayCode(int n) {
         List<Integer> res = new ArrayList<>();
@@ -1140,7 +1115,6 @@ class GrayCode {
         return res;
     }
 }
-// @lc code=end
 
 
 /**
@@ -1173,7 +1147,6 @@ class GrayCode {
  * 1 <= nums.length <= 10
  * -10 <= nums[i] <= 10
  */
-// @lc code=start
 class SubsetsII {
     private List<List<Integer>> res = new ArrayList<>();
 
@@ -1210,7 +1183,6 @@ class SubsetsII {
         }
     }
 }
-// @lc code=end
 
 
 /**
@@ -1252,7 +1224,6 @@ class SubsetsII {
  * 1 <= s.length <= 20
  * s 仅由数字组成
  */
-// @lc code=start
 class RestoreIpAddresses {
     List<String> res = new ArrayList<>();
     List<String> track = new ArrayList<>();
@@ -1312,4 +1283,3 @@ class RestoreIpAddresses {
         return true;
     }
 }
-// @lc code=end

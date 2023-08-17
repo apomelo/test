@@ -63,7 +63,6 @@ public class AlgoRegularMatch {
  * p 只包含从 a-z 的小写字母，以及字符 . 和 *。
  * 保证每次出现字符 * 时，前面都匹配到有效的字符
  */
-// @lc code=start
 class RegularExpressionMatching {
     // 备忘录，-1 代表还未计算，0 代表 false，1 代表 true
     int[][] memo;
@@ -178,7 +177,6 @@ class RegularExpressionMatching {
  * p 仅由小写英文字母、'?' 或 '*' 组成
  */
 
-// @lc code=start
 class WildcardMatching {
     // 备忘录，-1 代表还未计算，0 代表 false，1 代表 true
     private int[][] memo;
@@ -257,4 +255,3 @@ class WildcardMatching {
         return sb.toString();
     }
 }
-// @lc code=end

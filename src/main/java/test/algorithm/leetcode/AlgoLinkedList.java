@@ -95,7 +95,6 @@ class ListNode {
  * l1 和 l2 均按 非递减顺序 排列
  */
 
-// @lc code=start
 class MergeTwoSortedLists {
     public ListNode mergeTwoLists(ListNode list1, ListNode list2) {
         // 虚拟头结点
@@ -138,7 +137,6 @@ class MergeTwoSortedLists {
         return new ListNode(0);
     }
 }
-// @lc code=end
 
 
 /**
@@ -174,7 +172,6 @@ class MergeTwoSortedLists {
  * 链表中节点的数目在范围 [0, 100] 内
  * 0 <= Node.val <= 100
  */
-// @lc code=start
 class SwapNodesInPairs {
     // 解法1
     public ListNode swapPairs1(ListNode head) {
@@ -232,7 +229,6 @@ class SwapNodesInPairs {
         return new ListNode(1);
     }
 }
-// @lc code=end
 
 
 /**
@@ -269,7 +265,6 @@ class SwapNodesInPairs {
  *
  * 进阶：你可以设计一个只用 O(1) 额外内存空间的算法解决此问题吗？
  */
-// @lc code=start
 class ReverseNodesInKGroup {
     public ListNode reverseKGroup(ListNode head, int k) {
         if (head == null || head.next == null || k <= 1) return head;
@@ -310,7 +305,6 @@ class ReverseNodesInKGroup {
         return new ListNode(1, new ListNode(2));
     }
 }
-// @lc code=end
 
 
 /**
@@ -343,7 +337,6 @@ class ReverseNodesInKGroup {
  * -100 <= Node.val <= 100
  * 0 <= k <= 2 * 10^9
  */
-// @lc code=start
 class RotateList {
     public ListNode rotateRight(ListNode head, int k) {
         // 判断链表长度为 0 或 1 的情况（长度为 0 时会导致下面计算翻转长度出现除数为 0）
@@ -392,7 +385,6 @@ class RotateList {
         return new ListNode(0, new ListNode(1, new ListNode(2)));
     }
 }
-// @lc code=end
 
 
 /**
@@ -425,7 +417,6 @@ class RotateList {
  * -100 <= Node.val <= 100
  * 题目数据保证链表已经按升序 排列
  */
-// @lc code=start
 class RemoveDuplicatesFromSortedListII {
     public ListNode deleteDuplicates(ListNode head) {
         // 创建一个虚拟头节点，方便处理头节点重复的情况
@@ -472,7 +463,6 @@ class RemoveDuplicatesFromSortedListII {
         return new ListNode(1);
     }
 }
-// @lc code=end
 
 
 /**
@@ -505,7 +495,6 @@ class RemoveDuplicatesFromSortedListII {
  * -100 <= Node.val <= 100
  * 题目数据保证链表已经按升序 排列
  */
-// @lc code=start
 class RemoveDuplicatesFromSortedList {
     public ListNode deleteDuplicates(ListNode head) {
         if (head == null) {
@@ -535,7 +524,6 @@ class RemoveDuplicatesFromSortedList {
         return new ListNode(1, new ListNode(1, new ListNode(2, new ListNode(3, new ListNode(3)))));
     }
 }
-// @lc code=end
 
 
 /**
@@ -569,7 +557,6 @@ class RemoveDuplicatesFromSortedList {
  * -100 <= Node.val <= 100
  * -200 <= x <= 200
  */
-// @lc code=start
 class PartitionList {
     public ListNode partition(ListNode head, int x) {
         ListNode beforeHead = new ListNode(0); // 小于 x 的节点链表的头节点
@@ -602,7 +589,6 @@ class PartitionList {
         return new ListNode(2, new ListNode(1));
     }
 }
-// @lc code=end
 
 
 /**
@@ -638,7 +624,6 @@ class PartitionList {
  * 1 <= left <= right <= n
  * 进阶： 你可以使用一趟扫描完成反转吗？
  */
-// @lc code=start
 class ReverseLinkedListII {
     public ListNode reverseBetween(ListNode head, int left, int right) {
         if (head == null || left >= right) {
@@ -692,4 +677,3 @@ class ReverseLinkedListII {
         return new ListNode(3, new ListNode(5));
     }
 }
-// @lc code=end

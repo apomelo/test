@@ -70,7 +70,6 @@ public class AlgoDivideAndConquer {
  * lists[i] 按 升序 排列
  * lists[i].length 的总和不超过 10^4
  */
-// @lc code=start
 class MergeKSortedLists {
     public ListNode mergeKLists(ListNode[] lists) {
         if (lists == null || lists.length == 0) return null;
@@ -133,7 +132,6 @@ class MergeKSortedLists {
         return new ListNode[0];
     }
 }
-// @lc code=end
 
 
 /**
@@ -172,7 +170,6 @@ class MergeKSortedLists {
  * -10^4 <= nums[i] <= 10^4
  * 进阶：如果你已经实现复杂度为 O(n) 的解法，尝试使用更为精妙的 分治法 求解。
  */
-// @lc code=start
 class MaximumSubarray {
     public int maxSubArray(int[] nums) {
         int res = Integer.MIN_VALUE >> 1;
@@ -187,5 +184,4 @@ class MaximumSubarray {
         return res;
     }
 }
-// @lc code=end
 

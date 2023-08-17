@@ -164,7 +164,6 @@ class TreeNode {
  *
  * 进阶: 递归算法很简单，你可以通过迭代算法完成吗？
  */
-// @lc code=start
 class BinaryTreeInorderTraversal {
     /* 回溯算法思路 */
     List<Integer> res = new ArrayList<>();
@@ -206,7 +205,6 @@ class BinaryTreeInorderTraversal {
         return new TreeNode(1);
     }
 }
-// @lc code=end
 
 
 /**
@@ -237,7 +235,6 @@ class BinaryTreeInorderTraversal {
  * 提示：
  * 1 <= n <= 8
  */
-// @lc code=start
 class UniqueBinarySearchTreesII {
     public List<TreeNode> generateTrees(int n) {
         if (n == 0) {
@@ -272,7 +269,6 @@ class UniqueBinarySearchTreesII {
         return res;
     }
 }
-// @lc code=end
 
 
 /**
@@ -303,7 +299,6 @@ class UniqueBinarySearchTreesII {
  * 提示：
  * 1 <= n <= 19
  */
-// @lc code=start
 class UniqueBinarySearchTrees {
     int numTrees(int n) {
         // 备忘录的值初始化为 0
@@ -352,7 +347,6 @@ class UniqueBinarySearchTrees {
         return res;
     }
 }
-// @lc code=end
 
 
 /**
@@ -389,7 +383,6 @@ class UniqueBinarySearchTrees {
  * 树中节点数目范围在[1, 10^4] 内
  * -2^31 <= Node.val <= 2^31 - 1
  */
-// @lc code=start
 class ValidateBinarySearchTree {
     public boolean isValidBST(TreeNode root) {
         return isValidBST(root, null, null);
@@ -421,7 +414,6 @@ class ValidateBinarySearchTree {
         return new TreeNode(0);
     }
 }
-// @lc code=end
 
 
 /**
@@ -457,7 +449,6 @@ class ValidateBinarySearchTree {
  *
  * 进阶：使用 O(n) 空间复杂度的解法很容易实现。你能想出一个只使用 O(1) 空间的解决方案吗？
  */
-// @lc code=start
 class RecoverBinarySearchTree {
     // 遍历过程中判断，空间复杂度O(1)
     public void recoverTree(TreeNode root) {
@@ -536,7 +527,6 @@ class RecoverBinarySearchTree {
         return new TreeNode(3, new TreeNode(1), new TreeNode(4, new TreeNode(2), null));
     }
 }
-// @lc code=end
 
 
 /**
@@ -573,7 +563,6 @@ class RecoverBinarySearchTree {
  * 两棵树上的节点数目都在范围 [0, 100] 内
  * -10^4
  */
-// @lc code=start
 class SameTree {
     public boolean isSameTree(TreeNode p, TreeNode q) {
         // 都是null，判断相同
@@ -609,7 +598,6 @@ class SameTree {
         return new TreeNode(1, new TreeNode(1), new TreeNode(2));
     }
 }
-// @lc code=end
 
 
 /**
@@ -643,7 +631,6 @@ class SameTree {
  *
  * 进阶：你可以运用递归和迭代两种方法解决这个问题吗？
  */
-// @lc code=start
 class SymmetricTree {
     public boolean isSymmetric(TreeNode root) {
         // 空节点
@@ -675,7 +662,6 @@ class SymmetricTree {
         return new TreeNode(1, new TreeNode(2, null, new TreeNode(3)), new TreeNode(2, null, new TreeNode(3)));
     }
 }
-// @lc code=end
 
 
 /**
@@ -711,7 +697,6 @@ class SymmetricTree {
  * 树中节点数目在范围 [0, 2000] 内
  * -1000 <= Node.val <= 1000
  */
-// @lc code=start
 class BinaryTreeLevelOrderTraversal {
     public List<List<Integer>> levelOrder(TreeNode root) {
         List<List<Integer>> res = new ArrayList<>();
@@ -750,7 +735,6 @@ class BinaryTreeLevelOrderTraversal {
         return null;
     }
 }
-// @lc code=end
 
 
 /**
@@ -786,7 +770,6 @@ class BinaryTreeLevelOrderTraversal {
  * 树中节点数目在范围 [0, 2000] 内
  * -100 <= Node.val <= 100
  */
-// @lc code=start
 class BinaryTreeZigzagLevelOrderTraversal {
     public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
         List<List<Integer>> res = new ArrayList<>();
@@ -833,7 +816,6 @@ class BinaryTreeZigzagLevelOrderTraversal {
         return null;
     }
 }
-// @lc code=end
 
 
 /**
@@ -866,7 +848,6 @@ class BinaryTreeZigzagLevelOrderTraversal {
  * 树中节点的数量在 [0, 10^4] 区间内。
  * -100 <= Node.val <= 100
  */
-// @lc code=start
 class MaximumDepthOfBinaryTree {
     public int maxDepth(TreeNode root) {
         return maxDepth(root, 0);
@@ -889,7 +870,6 @@ class MaximumDepthOfBinaryTree {
         return new TreeNode(1, null, new TreeNode(2));
     }
 }
-// @lc code=end
 
 
 /**
@@ -927,7 +907,6 @@ class MaximumDepthOfBinaryTree {
  * preorder 保证 为二叉树的前序遍历序列
  * inorder 保证 为二叉树的中序遍历序列
  */
-// @lc code=start
 class ConstructBinaryTreeFromPreorderAndInorderTraversal {
     // 存储 inorder 中值到索引的映射
     Map<Integer, Integer> valToIndex = new HashMap<>();
@@ -971,7 +950,6 @@ class ConstructBinaryTreeFromPreorderAndInorderTraversal {
         return root;
     }
 }
-// @lc code=end
 
 
 /**
@@ -1009,7 +987,6 @@ class ConstructBinaryTreeFromPreorderAndInorderTraversal {
  * inorder 保证是树的中序遍历
  * postorder 保证是树的后序遍历
  */
-// @lc code=start
 class ConstructBinaryTreeFromInorderAndPostorderTraversal {
     // 存储 inorder 中值到索引的映射
     HashMap<Integer, Integer> valToIndex = new HashMap<>();
@@ -1052,7 +1029,6 @@ class ConstructBinaryTreeFromInorderAndPostorderTraversal {
         return root;
     }
 }
-// @lc code=end
 
 
 /**
@@ -1088,7 +1064,6 @@ class ConstructBinaryTreeFromInorderAndPostorderTraversal {
  * 树中节点数目在范围 [0, 2000] 内
  * -1000 <= Node.val <= 1000
  */
-// @lc code=start
 class BinaryTreeLevelOrderTraversalII {
     public List<List<Integer>> levelOrderBottom(TreeNode root) {
         List<List<Integer>> res = new ArrayList<>();
@@ -1128,7 +1103,6 @@ class BinaryTreeLevelOrderTraversalII {
         return null;
     }
 }
-// @lc code=end
 
 
 /**
@@ -1164,7 +1138,6 @@ class BinaryTreeLevelOrderTraversalII {
  * -10^4 <= nums[i] <= 10^4
  * nums 按 严格递增 顺序排列
  */
-// @lc code=start
 class ConvertSortedArrayToBinarySearchTree {
     public TreeNode sortedArrayToBST(int[] nums) {
         // 数组为 null，直接返回
@@ -1186,7 +1159,6 @@ class ConvertSortedArrayToBinarySearchTree {
         return root;
     }
 }
-// @lc code=end
 
 
 /**
@@ -1220,7 +1192,6 @@ class ConvertSortedArrayToBinarySearchTree {
  * head 中的节点数在[0, 2 * 10^4] 范围内
  * -10^5 <= Node.val <= 10^5
  */
-// @lc code=start
 class ConvertSortedListToBinarySearchTree {
     public TreeNode sortedListToBST(ListNode head) {
         List<Integer> values = new ArrayList<>();
@@ -1257,7 +1228,6 @@ class ConvertSortedListToBinarySearchTree {
         return null;
     }
 }
-// @lc code=end
 
 
 /**
@@ -1295,7 +1265,6 @@ class ConvertSortedListToBinarySearchTree {
  * 树中的节点数在范围 [0, 5000] 内
  * -10^4 <= Node.val <= 10^4
  */
-// @lc code=start
 class BalancedBinaryTree {
     public boolean isBalanced(TreeNode root) {
         if (root == null) {
@@ -1328,7 +1297,6 @@ class BalancedBinaryTree {
         return null;
     }
 }
-// @lc code=end
 
 
 /**

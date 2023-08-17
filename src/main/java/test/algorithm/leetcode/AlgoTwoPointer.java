@@ -102,7 +102,6 @@ public class AlgoTwoPointer {
  * 0 <= height[i] <= 10^4
  */
 
-// @lc code=start
 class ContainerWithMostWater {
     public int maxArea(int[] height) {
         int start = 0;
@@ -168,7 +167,6 @@ class ContainerWithMostWater {
  * 3 <= nums.length <= 3000
  * -10^5 <= nums[i] <= 10^5
  */
-// @lc code=start
 class ThreeSum {
     public List<List<Integer>> threeSum(int[] nums) {
         Arrays.sort(nums);
@@ -211,7 +209,6 @@ class ThreeSum {
         return res;
     }
 }
-// @lc code=end
 
 /**
  * @lc app=leetcode.cn id=16 lang=java
@@ -246,7 +243,6 @@ class ThreeSum {
  * -1000 <= nums[i] <= 1000
  * -10^4 <= target <= 10^4
  */
-// @lc code=start
 class ThreeSumClosest {
     public int threeSumClosest(int[] nums, int target) {
         Arrays.sort(nums);
@@ -359,7 +355,6 @@ class ThreeSumClosest {
         return target - delta;
     }
 }
-// @lc code=end
 
 
 /**
@@ -398,7 +393,6 @@ class ThreeSumClosest {
  * -10^9 <= target <= 10^9
  */
 
-// @lc code=start
 class FourSum {
     public List<List<Integer>> fourSum(int[] nums, int target) {
         Arrays.sort(nums);
@@ -450,7 +444,6 @@ class FourSum {
         return ((x ^ y) & (x ^ r)) < 0;
     }
 }
-// @lc code=end
 
 /**
  * @lc app=leetcode.cn id=19 lang=java
@@ -489,7 +482,6 @@ class FourSum {
  *
  * 进阶：你能尝试使用一趟扫描实现吗？
  */
-// @lc code=start
 class RemoveNthNodeFromEndOfList {
 
     public ListNode removeNthFromEnd(ListNode head, int n) {
@@ -569,7 +561,6 @@ class RemoveNthNodeFromEndOfList {
         return new ListNode(1, new ListNode(2));
     }
 }
-// @lc code=end
 
 
 /**
@@ -621,7 +612,6 @@ class RemoveNthNodeFromEndOfList {
  * -10^4 <= nums[i] <= 10^4
  * nums 已按 升序 排列
  */
-// @lc code=start
 class RemoveDuplicatesFromSortedArray {
     public int removeDuplicates(int[] nums) {
         if (nums == null || nums.length == 0) return 0;
@@ -638,7 +628,6 @@ class RemoveDuplicatesFromSortedArray {
         return slow + 1;
     }
 }
-// @lc code=end
 
 
 /**
@@ -689,7 +678,6 @@ class RemoveDuplicatesFromSortedArray {
  * 0 <= nums[i] <= 50
  * 0 <= val <= 100
  */
-// @lc code=start
 class RemoveElement {
     public int removeElement(int[] nums, int val) {
         if (nums == null || nums.length == 0) return 0;
@@ -704,7 +692,6 @@ class RemoveElement {
         return slow;
     }
 }
-// @lc code=end
 
 
 /**
@@ -738,7 +725,6 @@ class RemoveElement {
  * 1 <= n <= 2 * 10^4
  * 0 <= height[i] <= 10^5
  */
-// @lc code=start
 class TrappingRainWater {
     public int trap(int[] height) {
         if (height == null || height.length < 3) {
@@ -768,7 +754,6 @@ class TrappingRainWater {
         return res;
     }
 }
-// @lc code=end
 
 
 /**
@@ -806,7 +791,6 @@ class TrappingRainWater {
  * 进阶：
  * 你能想出一个仅使用常数空间的一趟扫描算法吗？
  */
-// @lc code=start
 class SortColors {
     public void sortColors(int[] nums) {
         // 定义左指针和右指针
@@ -834,7 +818,6 @@ class SortColors {
         nums[j] = temp;
     }
 }
-// @lc code=end
 
 
 /**
@@ -884,7 +867,6 @@ class SortColors {
  * -10^4 <= nums[i] <= 10^4
  * nums 已按升序排列
  */
-// @lc code=start
 class RemoveDuplicatesFromSortedArrayII {
     public int removeDuplicates(int[] nums) {
         if (nums == null || nums.length == 0) {
@@ -912,7 +894,6 @@ class RemoveDuplicatesFromSortedArrayII {
         return slow + 1;
     }
 }
-// @lc code=end
 
 
 /**
@@ -963,7 +944,6 @@ class RemoveDuplicatesFromSortedArrayII {
  *
  * 进阶：你可以设计实现一个时间复杂度为 O(m + n) 的算法解决此问题吗？
  */
-// @lc code=start
 class MergeSortedArray {
     public void merge(int[] nums1, int m, int[] nums2, int n) {
         // 排除不合理情况
@@ -990,4 +970,3 @@ class MergeSortedArray {
         }
     }
 }
-// @lc code=end

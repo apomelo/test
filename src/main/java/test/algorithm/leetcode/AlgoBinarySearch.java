@@ -76,7 +76,6 @@ public class AlgoBinarySearch {
  * 题目数据保证 nums 在预先未知的某个下标上进行了旋转
  * -10^4 <= target <= 10^4
  */
-// @lc code=start
 class SearchInRotatedSortedArray {
     public int search(int[] nums, int target) {
         int length = nums.length;
@@ -114,7 +113,6 @@ class SearchInRotatedSortedArray {
         return -1;
     }
 }
-// @lc code=end
 
 
 /**
@@ -154,7 +152,6 @@ class SearchInRotatedSortedArray {
  * nums 是一个非递减数组
  * -10^9 <= target <= 10^9
  */
-// @lc code=start
 class FindFirstAndLastPositionOfElementInSortedArray {
     public int[] searchRange(int[] nums, int target) {
         int length = nums.length;
@@ -198,7 +195,6 @@ class FindFirstAndLastPositionOfElementInSortedArray {
         return new int[] {left, right};
     }
 }
-// @lc code=end
 
 
 /**
@@ -237,7 +233,6 @@ class FindFirstAndLastPositionOfElementInSortedArray {
  * nums 为 无重复元素 的 升序 排列数组
  * -10^4 <= target <= 10^4
  */
-// @lc code=start
 class SearchInsertPosition {
     public int searchInsert(int[] nums, int target) {
         int length = nums.length;
@@ -258,7 +253,6 @@ class SearchInsertPosition {
         return nums[mid] < target ? mid + 1 : mid;
     }
 }
-// @lc code=end
 
 
 /**
@@ -294,7 +288,6 @@ class SearchInsertPosition {
  * 1 <= m, n <= 100
  * -104 <= matrix[i][j], target <= 104
  */
-// @lc code=start
 class SearchA2dMatrix {
     public boolean searchMatrix(int[][] matrix, int target) {
         int m = matrix.length;
@@ -320,7 +313,6 @@ class SearchA2dMatrix {
         return false;
     }
 }
-// @lc code=end
 
 
 /**
@@ -365,7 +357,6 @@ class SearchA2dMatrix {
  * 这是 搜索旋转排序数组 的延伸题目，本题中的 nums  可能包含重复元素。
  * 这会影响到程序的时间复杂度吗？会有怎样的影响，为什么？
  */
-// @lc code=start
 class SearchInRotatedSortedArrayII {
     public boolean search(int[] nums, int target) {
         int length = nums.length;
@@ -409,4 +400,3 @@ class SearchInRotatedSortedArrayII {
         return false;
     }
 }
-// @lc code=end
