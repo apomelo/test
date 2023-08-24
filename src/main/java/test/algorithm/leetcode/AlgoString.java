@@ -14,46 +14,46 @@ import java.util.stream.Collectors;
 @Slf4j
 public class AlgoString {
     public static void main(java.lang.String[] args) {
-        // 最长公共前缀
+        // [14] 最长公共前缀
         log.info("LongestCommonPrefix: {}", new LongestCommonPrefix().longestCommonPrefix(new String[]{"flower", "flow", "flight"}));
         log.info("LongestCommonPrefix: {}", new LongestCommonPrefix().longestCommonPrefix(new String[]{"dog", "racecar", "car"}));
         log.info("LongestCommonPrefix: {}", new LongestCommonPrefix().longestCommonPrefix(new String[]{"ab", "a"}));
-        // 找出字符串中第一个匹配项的下标
+        // [28] 找出字符串中第一个匹配项的下标
         log.info("FindTheIndexOfTheFirstOccurrenceInAString: {}", new FindTheIndexOfTheFirstOccurrenceInAString().strStr("sadbutsad", "sad"));
         log.info("FindTheIndexOfTheFirstOccurrenceInAString: {}", new FindTheIndexOfTheFirstOccurrenceInAString().strStr("leetcode", "leeto"));
         log.info("FindTheIndexOfTheFirstOccurrenceInAString: {}", new FindTheIndexOfTheFirstOccurrenceInAString().strStr("mississippi", "issipi"));
-        // 串联所有单词的子串
+        // [30] 串联所有单词的子串
         log.info("SubstringWithConcatenationOfAllWords: {}", new SubstringWithConcatenationOfAllWords().findSubstring("barfoothefoobarman", new String[]{"foo", "bar"}));
         log.info("SubstringWithConcatenationOfAllWords: {}", new SubstringWithConcatenationOfAllWords().findSubstring("wordgoodgoodgoodbestword", new String[]{"word", "good", "best", "word"}));
         log.info("SubstringWithConcatenationOfAllWords: {}", new SubstringWithConcatenationOfAllWords().findSubstring("barfoofoobarthefoobarman", new String[]{"bar", "foo", "the"}));
-        // 外观数列
+        // [38] 外观数列
         log.info("CountAndSay: {}", new CountAndSay().countAndSay(1));
         log.info("CountAndSay: {}", new CountAndSay().countAndSay(4));
-        // 字符串相乘
+        // [43] 字符串相乘
         log.info("MultiplyStrings: {}", new MultiplyStrings().multiply("2", "3"));
         log.info("MultiplyStrings: {}", new MultiplyStrings().multiply("123", "456"));
-        // 字母异位词分组
+        // [49] 字母异位词分组
         log.info("GroupAnagrams: {}", new GroupAnagrams().groupAnagrams(new String[] {"eat", "tea", "tan", "ate", "nat", "bat"}));
         log.info("GroupAnagrams: {}", new GroupAnagrams().groupAnagrams(new String[] {}));
         log.info("GroupAnagrams: {}", new GroupAnagrams().groupAnagrams(new String[] {"a"}));
-        // 最后一个单词的长度
+        // [58] 最后一个单词的长度
         log.info("LengthOfLastWord: {}", new LengthOfLastWord().lengthOfLastWord("Hello World"));
         log.info("LengthOfLastWord: {}", new LengthOfLastWord().lengthOfLastWord("   fly me   to   the moon  "));
         log.info("LengthOfLastWord: {}", new LengthOfLastWord().lengthOfLastWord("luffy is still joyboy"));
-        // 文本左右对齐
+        // [68] 文本左右对齐
         log.info("TextJustification: {}", new TextJustification().fullJustify(new String[] {"This", "is", "an", "example", "of", "text", "justification."}, 16));
         log.info("TextJustification: {}", new TextJustification().fullJustify(new String[] {"What","must","be","acknowledgment","shall","be"}, 16));
         log.info("TextJustification: {}", new TextJustification().fullJustify(new String[] {"Science","is","what","we","understand","well","enough","to","explain","to","a","computer.","Art","is","everything","else","we","do"}, 20));
-        // 简化路径
+        // [71] 简化路径
         log.info("SimplifyPath: {}", new SimplifyPath().simplifyPath("/home/"));
         log.info("SimplifyPath: {}", new SimplifyPath().simplifyPath("/../"));
         log.info("SimplifyPath: {}", new SimplifyPath().simplifyPath("/home//foo/"));
         log.info("SimplifyPath: {}", new SimplifyPath().simplifyPath("/a/./b/../../c/"));
-        // 最小覆盖子串
+        // [76] 最小覆盖子串
         log.info("MinimumWindowSubstring: {}", new MinimumWindowSubstring().minWindow("ADOBECODEBANC", "ABC"));
         log.info("MinimumWindowSubstring: {}", new MinimumWindowSubstring().minWindow("a", "a"));
         log.info("MinimumWindowSubstring: {}", new MinimumWindowSubstring().minWindow("a", "aa"));
-        // 扰乱字符串
+        // [87] 扰乱字符串
         log.info("ScrambleString: {}", new ScrambleString().isScramble("great", "rgeat"));
         log.info("ScrambleString: {}", new ScrambleString().isScramble("abcde", "caebd"));
         log.info("ScrambleString: {}", new ScrambleString().isScramble("a", "a"));
