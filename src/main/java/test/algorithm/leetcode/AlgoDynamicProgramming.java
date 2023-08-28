@@ -43,6 +43,9 @@ public class AlgoDynamicProgramming {
         log.info("InterleavingString: {}", new InterleavingString().isInterleave("aabcc", "dbbca", "aadbbcbcac"));
         log.info("InterleavingString: {}", new InterleavingString().isInterleave("aabcc", "dbbca", "aadbbbaccc"));
         log.info("InterleavingString: {}", new InterleavingString().isInterleave("", "", ""));
+        // [115] 不同的子序列
+        log.info("DistinctSubsequences: {}", new DistinctSubsequences().numDistinct("rabbbit", "rabbit"));
+        log.info("DistinctSubsequences: {}", new DistinctSubsequences().numDistinct("babgbag", "bag"));
     }
 }
 
@@ -622,6 +625,95 @@ class InterleavingString {
         // 如果 s1[i] 和 s2[j] 都匹配不了，则返回 false
         // 将结果存入备忘录
         memo[i][j] = (byte) (res ? 1 : 0);
+        return res;
+    }
+}
+
+
+/**
+ * @lc app=leetcode.cn id=115 lang=java
+ *
+ * [115] 不同的子序列
+ *
+ * https://leetcode.cn/problems/distinct-subsequences/description/
+ *
+ * algorithms
+ * Hard (52.21%)
+ * Likes:    1106
+ * Dislikes: 0
+ * Total Accepted:    147.9K
+ * Total Submissions: 283.5K
+ * Testcase Example:  '"rabbbit"\n"rabbit"'
+ *
+ * 给你两个字符串 s 和 t ，统计并返回在 s 的 子序列 中 t 出现的个数。
+ * 题目数据保证答案符合 32 位带符号整数范围。
+ *
+ * 示例 1：
+ * 输入：s = "rabbbit", t = "rabbit"
+ * 输出：3
+ * 解释：
+ * 如下所示, 有 3 种可以从 s 中得到 "rabbit" 的方案。
+ * rabbbit
+ * rabbbit
+ * rabbbit
+ *
+ * 示例 2：
+ * 输入：s = "babgbag", t = "bag"
+ * 输出：5
+ * 解释：
+ * 如下所示, 有 5 种可以从 s 中得到 "bag" 的方案。
+ * babgbag
+ * babgbag
+ * babgbag
+ * babgbag
+ * babgbag
+ *
+ * 提示：
+ * 1 <= s.length, t.length <= 1000
+ * s 和 t 由英文字母组成
+ */
+class DistinctSubsequences {
+    int[][] memo;
+
+    public int numDistinct(String s, String t) {
+        memo = new int[s.length()][t.length()];
+        for (int[] row : memo) {
+            Arrays.fill(row, -1);
+        }
+        return dp(s, 0, t, 0);
+    }
+
+    // 定义：该函数返回 s[i..] 中的子序列 t[j..] 的数量
+    int dp(String s, int i, String t, int j) {
+        int m = s.length(), n = t.length();
+        if (j == n) {
+            // 子序列全部匹配完成
+            return 1;
+        }
+        if (n - j > m - i) {
+            // 待匹配子序列的长度不应该比字符串的长度还要短
+            return 0;
+        }
+        if (memo[i][j] != -1) {
+            // 已经计算过对应状态
+            return memo[i][j];
+        }
+        int res = 0;
+        // 状态转移方程
+        /*
+        站在 s 的视角：
+        我们的原问题是求 s[0..] 中不同子序列 t[0..]，可以先看看 s[0] 是否能匹配 t[0]，如果不可以，那没得说，原问题就转化为让 s[1..] 去匹配 t[0..]；
+        但如果 s[0] 可以匹配 t[0]，那么又有两种情况，这两种情况是累加的关系：
+        1、让 s[0] 匹配 t[0]，那么原问题转化为让 s[1..] 去匹配 t[1..]。
+        2、不让 s[0] 匹配 t[0]，那么原问题转化为让 s[1..] 去匹配 t[0..]。
+        比如 s = "aab", t = "ab"，就有两种匹配方式：a_b 和 _ab。
+         */
+        if (s.charAt(i) == t.charAt(j)) {
+            res += dp(s, i + 1, t, j + 1) + dp(s, i + 1, t, j);
+        } else {
+            res += dp(s, i + 1, t, j);
+        }
+        memo[i][j] = res;
         return res;
     }
 }

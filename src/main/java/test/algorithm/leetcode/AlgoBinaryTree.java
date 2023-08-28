@@ -79,6 +79,37 @@ public class AlgoBinaryTree {
         // [111] 二叉树的最小深度
         log.info("MinimumDepthOfBinaryTree: {}", new MinimumDepthOfBinaryTree().minDepth(MinimumDepthOfBinaryTree.example1()));
         log.info("MinimumDepthOfBinaryTree: {}", new MinimumDepthOfBinaryTree().minDepth(MinimumDepthOfBinaryTree.example2()));
+        // [112] 路径总和
+        log.info("PathSum: {}", new PathSum().hasPathSum(PathSum.example1(), 22));
+        log.info("PathSum: {}", new PathSum().hasPathSum(PathSum.example2(), 5));
+        // [113] 路径总和 II
+        log.info("PathSumII: {}", new PathSumII().pathSum(PathSumII.example1(), 22));
+        log.info("PathSumII: {}", new PathSumII().pathSum(PathSumII.example2(), 5));
+        log.info("PathSumII: {}", new PathSumII().pathSum(PathSumII.example3(), 0));
+        // [113] 路径总和 II
+        TreeNode flattenBinaryTreeToLinkedListExample1 = FlattenBinaryTreeToLinkedList.example1();
+        new FlattenBinaryTreeToLinkedList().flatten(flattenBinaryTreeToLinkedListExample1);
+        TreeNode flattenBinaryTreeToLinkedListExample2 = FlattenBinaryTreeToLinkedList.example2();
+        new FlattenBinaryTreeToLinkedList().flatten(flattenBinaryTreeToLinkedListExample2);
+        TreeNode flattenBinaryTreeToLinkedListExample3 = FlattenBinaryTreeToLinkedList.example3();
+        new FlattenBinaryTreeToLinkedList().flatten(flattenBinaryTreeToLinkedListExample3);
+        log.info("FlattenBinaryTreeToLinkedList: {}", flattenBinaryTreeToLinkedListExample1);
+        log.info("FlattenBinaryTreeToLinkedList: {}", flattenBinaryTreeToLinkedListExample2);
+        log.info("FlattenBinaryTreeToLinkedList: {}", flattenBinaryTreeToLinkedListExample3);
+        // [116] 填充每个节点的下一个右侧节点指针
+        Node populatingNextRightPointersInEachNodeExample1 = PopulatingNextRightPointersInEachNode.example1();
+        new PopulatingNextRightPointersInEachNode().connect(populatingNextRightPointersInEachNodeExample1);
+        Node populatingNextRightPointersInEachNodeExample2 = PopulatingNextRightPointersInEachNode.example2();
+        new PopulatingNextRightPointersInEachNode().connect(populatingNextRightPointersInEachNodeExample2);
+        log.info("PopulatingNextRightPointersInEachNode: {}", populatingNextRightPointersInEachNodeExample1);
+        log.info("PopulatingNextRightPointersInEachNode: {}", populatingNextRightPointersInEachNodeExample2);
+        // [117] 填充每个节点的下一个右侧节点指针 II
+        Node populatingNextRightPointersInEachNodeIIExample1 = PopulatingNextRightPointersInEachNodeII.example1();
+        new PopulatingNextRightPointersInEachNodeII().connect(populatingNextRightPointersInEachNodeIIExample1);
+        Node populatingNextRightPointersInEachNodeIIExample2 = PopulatingNextRightPointersInEachNodeII.example2();
+        new PopulatingNextRightPointersInEachNodeII().connect(populatingNextRightPointersInEachNodeIIExample2);
+        log.info("PopulatingNextRightPointersInEachNodeII: {}", populatingNextRightPointersInEachNodeIIExample1);
+        log.info("PopulatingNextRightPointersInEachNodeII: {}", populatingNextRightPointersInEachNodeIIExample2);
     }
 }
 
@@ -122,6 +153,53 @@ class TreeNode {
                 }
             }
             layer = hasNode ? nextLayer : new ArrayList<>();
+        }
+        res.append("]");
+        return res.toString();
+    }
+}
+
+class Node {
+    public int val;
+    public Node left;
+    public Node right;
+    public Node next;
+
+    public Node() {}
+
+    public Node(int _val) {
+        val = _val;
+    }
+
+    public Node(int _val, Node _left, Node _right) {
+        val = _val;
+        left = _left;
+        right = _right;
+    }
+
+    public Node(int _val, Node _left, Node _right, Node _next) {
+        val = _val;
+        left = _left;
+        right = _right;
+        next = _next;
+    }
+
+    @Override
+    public String toString() {
+        return printLayer();
+    }
+
+    private String printLayer() {
+        StringBuilder res = new StringBuilder("[").append(this.val).append(", #");
+        Node nextHead = left;
+        while (nextHead != null) {
+            Node p = nextHead;
+            while (p != null) {
+                res.append(", ").append(p.val);
+                p = p.next;
+            }
+            res.append(", #");
+            nextHead = nextHead.left;
         }
         res.append("]");
         return res.toString();
@@ -1351,5 +1429,412 @@ class MinimumDepthOfBinaryTree {
     }
     public static TreeNode example2() {
         return new TreeNode(2, null, new TreeNode(3, null, new TreeNode(4, null, new TreeNode(5, null, new TreeNode(6)))));
+    }
+}
+
+
+/**
+ * @lc app=leetcode.cn id=112 lang=java
+ *
+ * [112] 路径总和
+ *
+ * https://leetcode.cn/problems/path-sum/description/
+ *
+ * algorithms
+ * Easy (53.55%)
+ * Likes:    1229
+ * Dislikes: 0
+ * Total Accepted:    573.8K
+ * Total Submissions: 1.1M
+ * Testcase Example:  '[5,4,8,11,null,13,4,7,2,null,null,null,1]\n22'
+ *
+ * 给你二叉树的根节点 root 和一个表示目标和的整数 targetSum 。判断该树中是否存在 根节点到叶子节点
+ * 的路径，这条路径上所有节点值相加等于目标和 targetSum 。如果存在，返回 true ；否则，返回 false 。
+ * 叶子节点 是指没有子节点的节点。
+ *
+ * 示例 1：
+ * 输入：root = [5,4,8,11,null,13,4,7,2,null,null,null,1], targetSum = 22
+ * 输出：true
+ * 解释：等于目标和的根节点到叶节点路径如上图所示。
+ *
+ * 示例 2：
+ * 输入：root = [1,2,3], targetSum = 5
+ * 输出：false
+ * 解释：树中存在两条根节点到叶子节点的路径：
+ * (1 --> 2): 和为 3
+ * (1 --> 3): 和为 4
+ * 不存在 sum = 5 的根节点到叶子节点的路径。
+ *
+ * 示例 3：
+ * 输入：root = [], targetSum = 0
+ * 输出：false
+ * 解释：由于树是空的，所以不存在根节点到叶子节点的路径。
+ *
+ * 提示：
+ * 树中节点的数目在范围 [0, 5000] 内
+ * -1000 <= Node.val <= 1000
+ * -1000 <= targetSum <= 1000
+ */
+class PathSum {
+    private boolean has = false;
+
+    public boolean hasPathSum(TreeNode root, int sum) {
+        if (root == null || has) {
+            return has;
+        }
+
+        // 到达叶子节点时，判断路径上的值之和是否等于目标值
+        if (root.left == null && root.right == null) {
+            has = root.val == sum;
+            return has;
+        }
+
+        // 递归遍历左右子树，将目标值减去当前节点的值
+        return hasPathSum(root.left, sum - root.val)
+                || hasPathSum(root.right, sum - root.val);
+    }
+
+
+    public static TreeNode example1() {
+        return new TreeNode(5, new TreeNode(4, new TreeNode(11, new TreeNode(7), new TreeNode(2)), null), new TreeNode(8, new TreeNode(13), new TreeNode(4, null, new TreeNode(1))));
+    }
+    public static TreeNode example2() {
+        return new TreeNode(1, new TreeNode(2), new TreeNode(3));
+    }
+}
+
+/**
+ * @lc app=leetcode.cn id=113 lang=java
+ *
+ * [113] 路径总和 II
+ *
+ * https://leetcode.cn/problems/path-sum-ii/description/
+ *
+ * algorithms
+ * Medium (63.21%)
+ * Likes:    1023
+ * Dislikes: 0
+ * Total Accepted:    361.5K
+ * Total Submissions: 571.8K
+ * Testcase Example:  '[5,4,8,11,null,13,4,7,2,null,null,5,1]\n22'
+ *
+ * 给你二叉树的根节点 root 和一个整数目标和 targetSum ，找出所有 从根节点到叶子节点 路径总和等于给定目标和的路径。
+ * 叶子节点 是指没有子节点的节点。
+ *
+ * 示例 1：
+ * 输入：root = [5,4,8,11,null,13,4,7,2,null,null,5,1], targetSum = 22
+ * 输出：[[5,4,11,2],[5,8,4,5]]
+ *
+ * 示例 2：
+ * 输入：root = [1,2,3], targetSum = 5
+ * 输出：[]
+ *
+ * 示例 3：
+ * 输入：root = [1,2], targetSum = 0
+ * 输出：[]
+ *
+ * 提示：
+ * 树中节点总数在范围 [0, 5000] 内
+ * -1000 <= Node.val <= 1000
+ * -1000 <= targetSum <= 1000
+ */
+class PathSumII {
+    private List<List<Integer>> res = new ArrayList<>();
+
+    public List<List<Integer>> pathSum(TreeNode root, int targetSum) {
+        backtrack(root, targetSum, new ArrayList<>());
+        return res;
+    }
+
+    public void backtrack(TreeNode root, int targetSum, List<Integer> track) {
+        if (root == null) {
+            return;
+        }
+
+        // 添加当前节点值到路径中
+        track.add(root.val);
+        // 到达叶子节点时，判断路径上的值之和是否等于目标值
+        if (targetSum == root.val && root.left == null && root.right == null) {
+            res.add(new ArrayList<>(track));
+        }
+        // 递归遍历左右子树，更新目标值并继续搜索路径
+        backtrack(root.left, targetSum - root.val, track);
+        backtrack(root.right, targetSum - root.val, track);
+
+        // 回溯，移除当前节点值，返回上一层
+        track.remove(track.size() - 1);
+    }
+
+
+    public static TreeNode example1() {
+        return new TreeNode(5, new TreeNode(4, new TreeNode(11, new TreeNode(7), new TreeNode(2)), null), new TreeNode(8, new TreeNode(13), new TreeNode(4, new TreeNode(5), new TreeNode(1))));
+    }
+    public static TreeNode example2() {
+        return new TreeNode(1, new TreeNode(2), new TreeNode(3));
+    }
+    public static TreeNode example3() {
+        return new TreeNode(1, new TreeNode(2), null);
+    }
+}
+
+
+/**
+ * @lc app=leetcode.cn id=114 lang=java
+ *
+ * [114] 二叉树展开为链表
+ *
+ * https://leetcode.cn/problems/flatten-binary-tree-to-linked-list/description/
+ *
+ * algorithms
+ * Medium (73.02%)
+ * Likes:    1527
+ * Dislikes: 0
+ * Total Accepted:    379.1K
+ * Total Submissions: 518.8K
+ * Testcase Example:  '[1,2,5,3,4,null,6]'
+ *
+ * 给你二叉树的根结点 root ，请你将它展开为一个单链表：
+ * 展开后的单链表应该同样使用 TreeNode ，其中 right 子指针指向链表中下一个结点，而左子指针始终为 null 。
+ * 展开后的单链表应该与二叉树 先序遍历 顺序相同。
+ *
+ * 示例 1：
+ * 输入：root = [1,2,5,3,4,null,6]
+ * 输出：[1,null,2,null,3,null,4,null,5,null,6]
+ *
+ * 示例 2：
+ * 输入：root = []
+ * 输出：[]
+ *
+ * 示例 3：
+ * 输入：root = [0]
+ * 输出：[0]
+ *
+ * 提示：
+ * 树中结点数在范围 [0, 2000] 内
+ * -100 <= Node.val <= 100
+ * 进阶：你可以使用原地算法（O(1) 额外空间）展开这棵树吗？
+ */
+class FlattenBinaryTreeToLinkedList {
+    public void flatten(TreeNode root) {
+        // base case
+        if (root == null) {
+            return;
+        }
+        // 先递归拉平左右子树
+        flatten(root.left);
+        flatten(root.right);
+
+        // 1、左右子树已经被拉平成一条链表
+        if (root.left != null) {
+            // 2、将左子树作为右子树
+            TreeNode right = root.right;
+            root.right = root.left;
+            root.left = null;
+            // 3、将原先的右子树接到当前右子树的末端
+            TreeNode cur = root.right;
+            while (cur.right != null) {
+                cur = cur.right;
+            }
+            cur.right = right;
+        }
+    }
+
+
+    public static TreeNode example1() {
+        return new TreeNode(1, new TreeNode(2, new TreeNode(3), new TreeNode(4)), new TreeNode(5, null, new TreeNode(6)));
+    }
+    public static TreeNode example2() {
+        return null;
+    }
+    public static TreeNode example3() {
+        return new TreeNode(0);
+    }
+}
+
+
+/**
+ * @lc app=leetcode.cn id=116 lang=java
+ *
+ * [116] 填充每个节点的下一个右侧节点指针
+ *
+ * https://leetcode.cn/problems/populating-next-right-pointers-in-each-node/description/
+ *
+ * algorithms
+ * Medium (72.61%)
+ * Likes:    1032
+ * Dislikes: 0
+ * Total Accepted:    364.7K
+ * Total Submissions: 501.6K
+ * Testcase Example:  '[1,2,3,4,5,6,7]'
+ *
+ * 给定一个 完美二叉树 ，其所有叶子节点都在同一层，每个父节点都有两个子节点。二叉树定义如下：
+ * struct Node {
+ *   int val;
+ *   Node *left;
+ *   Node *right;
+ *   Node *next;
+ * }
+ * 填充它的每个 next 指针，让这个指针指向其下一个右侧节点。如果找不到下一个右侧节点，则将 next 指针设置为 NULL。
+ * 初始状态下，所有 next 指针都被设置为 NULL。
+ *
+ * 示例 1：
+ * 输入：root = [1,2,3,4,5,6,7]
+ * 输出：[1,#,2,3,#,4,5,6,7,#]
+ * 解释：给定二叉树如图 A 所示，你的函数应该填充它的每个 next 指针，以指向其下一个右侧节点，如图 B
+ * 所示。序列化的输出按层序遍历排列，同一层节点由 next 指针连接，'#' 标志着每一层的结束。
+ *
+ * 示例 2:
+ * 输入：root = []
+ * 输出：[]
+ *
+ * 提示：
+ * 树中节点的数量在 [0, 2^12 - 1] 范围内
+ * -1000 <= node.val <= 1000
+ * 进阶：
+ * 你只能使用常量级额外空间。
+ * 使用递归解题也符合要求，本题中递归程序占用的栈空间不算做额外的空间复杂度。
+ */
+class PopulatingNextRightPointersInEachNode {
+    // 方法1：递归遍历
+    // 主函数
+    public Node connect(Node root) {
+        if (root == null) return null;
+        // 遍历「三叉树」，连接相邻节点
+        traverse(root.left, root.right);
+        return root;
+    }
+
+    // 三叉树遍历框架
+    void traverse(Node node1, Node node2) {
+        if (node1 == null || node2 == null) {
+            return;
+        }
+        /**** 前序位置 ****/
+        // 将传入的两个节点穿起来
+        node1.next = node2;
+
+        // 连接相同父节点的两个子节点
+        traverse(node1.left, node1.right);
+        traverse(node2.left, node2.right);
+        // 连接跨越父节点的两个子节点
+        traverse(node1.right, node2.left);
+    }
+
+    // 方法2：类似上面的层序遍历
+    public Node connect2(Node root) {
+        if (root == null) return null;
+
+        List<Node> layer = new ArrayList<>();
+        layer.add(root);
+        while (!layer.isEmpty()) {
+            List<Node> nextLayer = new ArrayList<>();
+            boolean hasNode = false;
+            Node lastNode = null;
+            for (Node curNode : layer) {
+                if (curNode != null) {
+                    nextLayer.add(curNode.left);
+                    nextLayer.add(curNode.right);
+                    if (lastNode != null) {
+                        lastNode.next = curNode;
+                    }
+                    lastNode = curNode;
+                    if (curNode.left != null || curNode.right != null) {
+                        hasNode = true;
+                    }
+                }
+            }
+            layer = hasNode ? nextLayer : new ArrayList<>();
+        }
+        return root;
+    }
+
+
+    public static Node example1() {
+        return new Node(1, new Node(2, new Node(4), new Node(5)), new Node(3, new Node(6), new Node(7)));
+    }
+    public static Node example2() {
+        return null;
+    }
+}
+
+
+/**
+ * @lc app=leetcode.cn id=117 lang=java
+ *
+ * [117] 填充每个节点的下一个右侧节点指针 II
+ *
+ * https://leetcode.cn/problems/populating-next-right-pointers-in-each-node-ii/description/
+ *
+ * algorithms
+ * Medium (65.92%)
+ * Likes:    739
+ * Dislikes: 0
+ * Total Accepted:    195.7K
+ * Total Submissions: 295.8K
+ * Testcase Example:  '[1,2,3,4,5,null,7]'
+ *
+ * 给定一个二叉树：
+ * struct Node {
+ *   int val;
+ *   Node *left;
+ *   Node *right;
+ *   Node *next;
+ * }
+ * 填充它的每个 next 指针，让这个指针指向其下一个右侧节点。如果找不到下一个右侧节点，则将 next 指针设置为 NULL 。
+ * 初始状态下，所有 next 指针都被设置为 NULL 。
+ *
+ * 示例 1：
+ * 输入：root = [1,2,3,4,5,null,7]
+ * 输出：[1,#,2,3,#,4,5,7,#]
+ * 解释：给定二叉树如图 A 所示，你的函数应该填充它的每个 next 指针，以指向其下一个右侧节点，如图 B 所示。序列化输出按层序遍历顺序（由 next
+ * 指针连接），'#' 表示每层的末尾。
+ *
+ * 示例 2：
+ * 输入：root = []
+ * 输出：[]
+ *
+ * 提示：
+ * 树中的节点数在范围 [0, 6000] 内
+ * -100 <= Node.val <= 100
+ *
+ * 进阶：
+ * 你只能使用常量级额外空间。
+ * 使用递归解题也符合要求，本题中递归程序的隐式栈空间不计入额外空间复杂度。
+ */
+class PopulatingNextRightPointersInEachNodeII {
+    // 类似上面的层序遍历
+    public Node connect(Node root) {
+        if (root == null) return null;
+
+        List<Node> layer = new ArrayList<>();
+        layer.add(root);
+        while (!layer.isEmpty()) {
+            List<Node> nextLayer = new ArrayList<>();
+            boolean hasNode = false;
+            Node lastNode = null;
+            for (Node curNode : layer) {
+                if (curNode != null) {
+                    nextLayer.add(curNode.left);
+                    nextLayer.add(curNode.right);
+                    if (lastNode != null) {
+                        lastNode.next = curNode;
+                    }
+                    lastNode = curNode;
+                    if (curNode.left != null || curNode.right != null) {
+                        hasNode = true;
+                    }
+                }
+            }
+            layer = hasNode ? nextLayer : new ArrayList<>();
+        }
+        return root;
+    }
+
+
+    public static Node example1() {
+        return new Node(1, new Node(2, new Node(4), new Node(5)), new Node(3, null, new Node(7)));
+    }
+    public static Node example2() {
+        return null;
     }
 }
