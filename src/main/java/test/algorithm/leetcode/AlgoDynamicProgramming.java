@@ -3,6 +3,8 @@ package test.algorithm.leetcode;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.Stack;
 
 /**
@@ -46,6 +48,9 @@ public class AlgoDynamicProgramming {
         // [115] 不同的子序列
         log.info("DistinctSubsequences: {}", new DistinctSubsequences().numDistinct("rabbbit", "rabbit"));
         log.info("DistinctSubsequences: {}", new DistinctSubsequences().numDistinct("babgbag", "bag"));
+        // [120] 三角形最小路径和
+        log.info("Triangle: {}", new Triangle().minimumTotal(Triangle.example1()));
+        log.info("Triangle: {}", new Triangle().minimumTotal(Triangle.example2()));
     }
 }
 
@@ -715,5 +720,76 @@ class DistinctSubsequences {
         }
         memo[i][j] = res;
         return res;
+    }
+}
+
+
+/**
+ * @lc app=leetcode.cn id=120 lang=java
+ *
+ * [120] 三角形最小路径和
+ *
+ * https://leetcode.cn/problems/triangle/description/
+ *
+ * algorithms
+ * Medium (68.66%)
+ * Likes:    1252
+ * Dislikes: 0
+ * Total Accepted:    304.2K
+ * Total Submissions: 443K
+ * Testcase Example:  '[[2],[3,4],[6,5,7],[4,1,8,3]]'
+ *
+ * 给定一个三角形 triangle ，找出自顶向下的最小路径和。
+ * 每一步只能移动到下一行中相邻的结点上。相邻的结点 在这里指的是 下标 与 上一层结点下标 相同或者等于 上一层结点下标 + 1
+ * 的两个结点。也就是说，如果正位于当前行的下标 i ，那么下一步可以移动到下一行的下标 i 或 i + 1 。
+ *
+ * 示例 1：
+ * 输入：triangle = [[2],[3,4],[6,5,7],[4,1,8,3]]
+ * 输出：11
+ * 解释：如下面简图所示：
+ *    2
+ *   3 4
+ *  6 5 7
+ * 4 1 8 3
+ * 自顶向下的最小路径和为 11（即，2 + 3 + 5 + 1 = 11）。
+ *
+ * 示例 2：
+ * 输入：triangle = [[-10]]
+ * 输出：-10
+ *
+ * 提示：
+ * 1 <= triangle.length <= 200
+ * triangle[0].length == 1
+ * triangle[i].length == triangle[i - 1].length + 1
+ * -10^4 <= triangle[i][j] <= 10^4
+ *
+ * 进阶：
+ * 你可以只使用 O(n) 的额外空间（n 为三角形的总行数）来解决这个问题吗？
+ */
+class Triangle {
+    public int minimumTotal(List<List<Integer>> triangle) {
+        int n = triangle.size();
+        int[] dp = new int[n];
+
+        // 初始化 dp 数组为最后一行的元素值
+        for (int i = 0; i < n; i++) {
+            dp[i] = triangle.get(n - 1).get(i);
+        }
+
+        // 从倒数第二行开始迭代计算最短路径和
+        for (int i = n - 2; i >= 0; i--) {
+            for (int j = 0; j <= i; j++) {
+                dp[j] = triangle.get(i).get(j) + Math.min(dp[j], dp[j + 1]);
+            }
+        }
+
+        return dp[0];
+    }
+
+    public static List<List<Integer>> example1() {
+        return Arrays.asList(Collections.singletonList(2), Arrays.asList(3,4), Arrays.asList(6,5,7), Arrays.asList(4,1,8,3));
+    }
+    public static List<List<Integer>> example2() {
+        return Collections.singletonList(Collections.singletonList(-10));
     }
 }
