@@ -51,6 +51,18 @@ public class AlgoDynamicProgramming {
         // [120] 三角形最小路径和
         log.info("Triangle: {}", new Triangle().minimumTotal(Triangle.example1()));
         log.info("Triangle: {}", new Triangle().minimumTotal(Triangle.example2()));
+        // [121] 买卖股票的最佳时机
+        log.info("BestTimeToBuyAndSellStock: {}", new BestTimeToBuyAndSellStock().maxProfit(new int[] {7,1,5,3,6,4}));
+        log.info("BestTimeToBuyAndSellStock: {}", new BestTimeToBuyAndSellStock().maxProfit(new int[] {7,6,4,3,1}));
+        // [122] 买卖股票的最佳时机 II
+        log.info("BestTimeToBuyAndSellStockII: {}", new BestTimeToBuyAndSellStockII().maxProfit(new int[] {7,1,5,3,6,4}));
+        log.info("BestTimeToBuyAndSellStockII: {}", new BestTimeToBuyAndSellStockII().maxProfit(new int[] {1,2,3,4,5}));
+        log.info("BestTimeToBuyAndSellStockII: {}", new BestTimeToBuyAndSellStockII().maxProfit(new int[] {7,6,4,3,1}));
+        // [123] 买卖股票的最佳时机 III
+        log.info("BestTimeToBuyAndSellStockIII: {}", new BestTimeToBuyAndSellStockIII().maxProfit(new int[] {3,3,5,0,0,3,1,4}));
+        log.info("BestTimeToBuyAndSellStockIII: {}", new BestTimeToBuyAndSellStockIII().maxProfit(new int[] {1,2,3,4,5}));
+        log.info("BestTimeToBuyAndSellStockIII: {}", new BestTimeToBuyAndSellStockIII().maxProfit(new int[] {7,6,4,3,1}));
+        log.info("BestTimeToBuyAndSellStockIII: {}", new BestTimeToBuyAndSellStockIII().maxProfit(new int[] {1}));
     }
 }
 
@@ -791,5 +803,271 @@ class Triangle {
     }
     public static List<List<Integer>> example2() {
         return Collections.singletonList(Collections.singletonList(-10));
+    }
+}
+
+
+/**
+ * @lc app=leetcode.cn id=121 lang=java
+ *
+ * [121] 买卖股票的最佳时机
+ *
+ * https://leetcode.cn/problems/best-time-to-buy-and-sell-stock/description/
+ *
+ * algorithms
+ * Easy (57.93%)
+ * Likes:    3122
+ * Dislikes: 0
+ * Total Accepted:    1.2M
+ * Total Submissions: 2M
+ * Testcase Example:  '[7,1,5,3,6,4]'
+ *
+ * 给定一个数组 prices ，它的第 i 个元素 prices[i] 表示一支给定股票第 i 天的价格。
+ * 你只能选择 某一天 买入这只股票，并选择在 未来的某一个不同的日子 卖出该股票。设计一个算法来计算你所能获取的最大利润。
+ * 返回你可以从这笔交易中获取的最大利润。如果你不能获取任何利润，返回 0 。
+ *
+ * 示例 1：
+ * 输入：[7,1,5,3,6,4]
+ * 输出：5
+ * 解释：在第 2 天（股票价格 = 1）的时候买入，在第 5 天（股票价格 = 6）的时候卖出，最大利润 = 6-1 = 5 。
+ *      注意利润不能是 7-1 = 6, 因为卖出价格需要大于买入价格；同时，你不能在买入前卖出股票。
+ *
+ * 示例 2：
+ * 输入：prices = [7,6,4,3,1]
+ * 输出：0
+ * 解释：在这种情况下, 没有交易完成, 所以最大利润为 0。
+ *
+ * 提示：
+ * 1 <= prices.length <= 10^5
+ * 0 <= prices[i] <= 10^4
+ */
+class BestTimeToBuyAndSellStock {
+    /**
+     * 股票系列问题状态定义：
+     * dp[i][k][0 or 1]
+     * 0 <= i <= n - 1, 1 <= k <= K
+     * n 为天数，大 K 为交易数的上限，0 和 1 代表是否持有股票。
+     *
+     * 股票系列问题通用状态转移方程：
+     * dp[i][k][0] = max(dp[i-1][k][0], dp[i-1][k][1] + prices[i])
+     *               max( 今天选择 rest,        今天选择 sell       )
+     *
+     * dp[i][k][1] = max(dp[i-1][k][1], dp[i-1][k-1][0] - prices[i])
+     *               max( 今天选择 rest,         今天选择 buy         )
+     *
+     * 通用 base case：
+     * dp[-1][...][0] = dp[...][0][0] = 0
+     * dp[-1][...][1] = dp[...][0][1] = -infinity
+     *
+     * 特化到 k = 1 的情况，状态转移方程和 base case 如下：
+     * 状态转移方程：
+     * dp[i][0] = max(dp[i-1][0], dp[i-1][1] + prices[i])
+     * dp[i][1] = max(dp[i-1][1], -prices[i])
+     *
+     * base case：
+     * dp[i][0] = 0;
+     * dp[i][1] = -prices[i];
+     */
+    public int maxProfit(int[] prices) {
+        if (prices == null || prices.length == 0) {
+            return 0;
+        }
+
+        int n = prices.length;
+        int[][] dp = new int[n][2];
+        // base case
+        dp[0][0] = 0;
+        dp[0][1] = -prices[0];
+        // 状态转移方程
+        for (int i = 1; i < n; i++) {
+            dp[i][0] = Math.max(dp[i - 1][0], dp[i - 1][1] + prices[i]);
+            dp[i][1] = Math.max(dp[i - 1][1], -prices[i]);
+        }
+        return dp[n - 1][0];
+    }
+}
+
+
+/**
+ * @lc app=leetcode.cn id=122 lang=java
+ *
+ * [122] 买卖股票的最佳时机 II
+ *
+ * https://leetcode.cn/problems/best-time-to-buy-and-sell-stock-ii/description/
+ *
+ * algorithms
+ * Medium (72.23%)
+ * Likes:    2230
+ * Dislikes: 0
+ * Total Accepted:    916.4K
+ * Total Submissions: 1.3M
+ * Testcase Example:  '[7,1,5,3,6,4]'
+ *
+ * 给你一个整数数组 prices ，其中 prices[i] 表示某支股票第 i 天的价格。
+ * 在每一天，你可以决定是否购买和/或出售股票。你在任何时候 最多 只能持有 一股 股票。你也可以先购买，然后在 同一天 出售。
+ * 返回 你能获得的 最大 利润 。
+ *
+ * 示例 1：
+ * 输入：prices = [7,1,5,3,6,4]
+ * 输出：7
+ * 解释：在第 2 天（股票价格 = 1）的时候买入，在第 3 天（股票价格 = 5）的时候卖出, 这笔交易所能获得利润 = 5 - 1 = 4 。
+ * 随后，在第 4 天（股票价格 = 3）的时候买入，在第 5 天（股票价格 = 6）的时候卖出, 这笔交易所能获得利润 = 6 - 3 = 3 。
+ *      总利润为 4 + 3 = 7 。
+ *
+ * 示例 2：
+ * 输入：prices = [1,2,3,4,5]
+ * 输出：4
+ * 解释：在第 1 天（股票价格 = 1）的时候买入，在第 5 天 （股票价格 = 5）的时候卖出, 这笔交易所能获得利润 = 5 - 1 = 4 。
+ * 总利润为 4 。
+ *
+ * 示例 3：
+ * 输入：prices = [7,6,4,3,1]
+ * 输出：0
+ * 解释：在这种情况下, 交易无法获得正利润，所以不参与交易可以获得最大利润，最大利润为 0 。
+ *
+ * 提示：
+ * 1 <= prices.length <= 3 * 10^4
+ * 0 <= prices[i] <= 10^4
+ */
+class BestTimeToBuyAndSellStockII {
+    /**
+     * 股票系列问题状态定义：
+     * dp[i][k][0 or 1]
+     * 0 <= i <= n - 1, 1 <= k <= K
+     * n 为天数，大 K 为交易数的上限，0 和 1 代表是否持有股票。
+     *
+     * 股票系列问题通用状态转移方程：
+     * dp[i][k][0] = max(dp[i-1][k][0], dp[i-1][k][1] + prices[i])
+     *               max( 今天选择 rest,        今天选择 sell       )
+     *
+     * dp[i][k][1] = max(dp[i-1][k][1], dp[i-1][k-1][0] - prices[i])
+     *               max( 今天选择 rest,         今天选择 buy         )
+     *
+     * 通用 base case：
+     * dp[-1][...][0] = dp[...][0][0] = 0
+     * dp[-1][...][1] = dp[...][0][1] = -infinity
+     *
+     * 特化到 k 无限制的情况，状态转移方程如下：
+     * dp[i][0] = max(dp[i-1][0], dp[i-1][1] + prices[i])
+     * dp[i][1] = max(dp[i-1][1], dp[i-1][0] - prices[i])
+     */
+    public int maxProfit(int[] prices) {
+        if (prices == null || prices.length == 0) {
+            return 0;
+        }
+
+        int n = prices.length;
+        int[][] dp = new int[n][2];
+        // base case
+        dp[0][0] = 0;
+        dp[0][1] = -prices[0];
+        for (int i = 1; i < n; i++) {
+            dp[i][0] = Math.max(dp[i - 1][0], dp[i - 1][1] + prices[i]);
+            dp[i][1] = Math.max(dp[i - 1][1], dp[i - 1][0] - prices[i]);
+        }
+        return dp[n - 1][0];
+    }
+
+    /**
+     * 解法2：滑动窗口
+     */
+    public int maxProfit2(int[] prices) {
+        int n = prices.length;
+        int res = 0;
+        for (int i = 1; i < n; i++) {
+            int price = prices[i] - prices[i - 1];
+            if (price > 0) {
+                res += price;
+            }
+        }
+        return res;
+    }
+}
+
+
+/**
+ * @lc app=leetcode.cn id=123 lang=java
+ *
+ * [123] 买卖股票的最佳时机 III
+ *
+ * https://leetcode.cn/problems/best-time-to-buy-and-sell-stock-iii/description/
+ *
+ * algorithms
+ * Hard (59.15%)
+ * Likes:    1503
+ * Dislikes: 0
+ * Total Accepted:    274.7K
+ * Total Submissions: 464.1K
+ * Testcase Example:  '[3,3,5,0,0,3,1,4]'
+ *
+ * 给定一个数组，它的第 i 个元素是一支给定的股票在第 i 天的价格。
+ * 设计一个算法来计算你所能获取的最大利润。你最多可以完成 两笔 交易。
+ *
+ * 注意：你不能同时参与多笔交易（你必须在再次购买前出售掉之前的股票）。
+ *
+ * 示例 1:
+ *
+ * 输入：prices = [3,3,5,0,0,3,1,4]
+ * 输出：6
+ * 解释：在第 4 天（股票价格 = 0）的时候买入，在第 6 天（股票价格 = 3）的时候卖出，这笔交易所能获得利润 = 3-0 = 3 。
+ * 随后，在第 7 天（股票价格 = 1）的时候买入，在第 8 天 （股票价格 = 4）的时候卖出，这笔交易所能获得利润 = 4-1 = 3 。
+ *
+ * 示例 2：
+ * 输入：prices = [1,2,3,4,5]
+ * 输出：4
+ * 解释：在第 1 天（股票价格 = 1）的时候买入，在第 5 天 （股票价格 = 5）的时候卖出, 这笔交易所能获得利润 = 5-1 = 4 。
+ * 注意你不能在第 1 天和第 2 天接连购买股票，之后再将它们卖出。  
+ * 因为这样属于同时参与了多笔交易，你必须在再次购买前出售掉之前的股票。
+ *
+ * 示例 3：
+ * 输入：prices = [7,6,4,3,1]
+ * 输出：0
+ * 解释：在这个情况下, 没有交易完成, 所以最大利润为 0。
+ *
+ * 示例 4：
+ * 输入：prices = [1]
+ * 输出：0
+ *
+ * 提示：
+ * 1 <= prices.length <= 10^5
+ * 0 <= prices[i] <= 10^5
+ */
+class BestTimeToBuyAndSellStockIII {
+    /**
+     * 股票系列问题状态定义：
+     * dp[i][k][0 or 1]
+     * 0 <= i <= n - 1, 1 <= k <= K
+     * n 为天数，大 K 为交易数的上限，0 和 1 代表是否持有股票。
+     *
+     * 股票系列问题通用状态转移方程：
+     * dp[i][k][0] = max(dp[i-1][k][0], dp[i-1][k][1] + prices[i])
+     *               max( 今天选择 rest,        今天选择 sell       )
+     *
+     * dp[i][k][1] = max(dp[i-1][k][1], dp[i-1][k-1][0] - prices[i])
+     *               max( 今天选择 rest,         今天选择 buy         )
+     *
+     * 通用 base case：
+     * dp[-1][...][0] = dp[...][0][0] = 0
+     * dp[-1][...][1] = dp[...][0][1] = -infinity
+     */
+    public int maxProfit(int[] prices) {
+        int maxK = 2, n = prices.length;
+        int[][][] dp = new int[n][maxK + 1][2];
+
+        for (int i = 0; i < n; i++) {
+            for (int k = maxK; k > 0; k--) {
+                if (i == 0) {
+                    // 处理 base case
+                    dp[i][k][0] = 0;
+                    dp[i][k][1] = -prices[i];
+                    continue;
+                }
+                dp[i][k][0] = Math.max(dp[i - 1][k][0], dp[i - 1][k][1] + prices[i]);
+                dp[i][k][1] = Math.max(dp[i - 1][k][1], dp[i - 1][k - 1][0] - prices[i]);
+            }
+        }
+
+        // 穷举了 n × max_k × 2 个状态，正确。
+        return dp[n - 1][maxK][0];
     }
 }
