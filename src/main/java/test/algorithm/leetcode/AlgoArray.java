@@ -3,6 +3,7 @@ package test.algorithm.leetcode;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -52,6 +53,13 @@ public class AlgoArray {
         int[][] setMatrixZeroesExample2 = new int[][] {{0,1,2,0},{3,4,5,2},{1,3,1,5}};
         new SetMatrixZeroes().setZeroes(setMatrixZeroesExample2);
         log.info("SetMatrixZeroes: {}", (Object) setMatrixZeroesExample2);
+        // [118] 杨辉三角
+        log.info("PascalsTriangle: {}", new PascalsTriangle().generate(5));
+        log.info("PascalsTriangle: {}", new PascalsTriangle().generate(1));
+        // [119] 杨辉三角 II
+        log.info("PascalsTriangleII: {}", new PascalsTriangleII().getRow(3));
+        log.info("PascalsTriangleII: {}", new PascalsTriangleII().getRow(0));
+        log.info("PascalsTriangleII: {}", new PascalsTriangleII().getRow(1));
     }
 }
 
@@ -556,5 +564,114 @@ class SetMatrixZeroes {
                 }
             }
         }
+    }
+}
+
+
+/**
+ * @lc app=leetcode.cn id=118 lang=java
+ *
+ * [118] 杨辉三角
+ *
+ * https://leetcode.cn/problems/pascals-triangle/description/
+ *
+ * algorithms
+ * Easy (75.51%)
+ * Likes:    1049
+ * Dislikes: 0
+ * Total Accepted:    436.6K
+ * Total Submissions: 578.2K
+ * Testcase Example:  '5'
+ *
+ * 给定一个非负整数 numRows，生成「杨辉三角」的前 numRows 行。
+ * 在「杨辉三角」中，每个数是它左上方和右上方的数的和。
+ *
+ * 示例 1:
+ * 输入: numRows = 5
+ * 输出: [[1],[1,1],[1,2,1],[1,3,3,1],[1,4,6,4,1]]
+ *
+ * 示例 2:
+ * 输入: numRows = 1
+ * 输出: [[1]]
+ *
+ * 提示:
+ * 1 <= numRows <= 30
+ */
+class PascalsTriangle {
+    public List<List<Integer>> generate(int numRows) {
+        List<List<Integer>> res = new ArrayList<>();
+        if (numRows <= 0) return res;
+
+        // 先把第一层装进去作为 base case
+        res.add(Collections.singletonList(1));
+        // 开始一层一层生成，装入 res
+        for (int i = 1; i < numRows; i++) {
+            List<Integer> lastRow = res.get(res.size() - 1);
+            List<Integer> row = new ArrayList<>();
+            for (int j = 0; j < i + 1; j++) {
+                int left = j - 1 < 0 ? 0 : lastRow.get(j - 1);
+                int right = j >= lastRow.size() ? 0 : lastRow.get(j);
+                row.add(left + right);
+            }
+            res.add(row);
+        }
+        return res;
+    }
+}
+
+
+/**
+ * @lc app=leetcode.cn id=119 lang=java
+ *
+ * [119] 杨辉三角 II
+ *
+ * https://leetcode.cn/problems/pascals-triangle-ii/description/
+ *
+ * algorithms
+ * Easy (68.94%)
+ * Likes:    504
+ * Dislikes: 0
+ * Total Accepted:    280.3K
+ * Total Submissions: 406.5K
+ * Testcase Example:  '3'
+ *
+ * 给定一个非负索引 rowIndex，返回「杨辉三角」的第 rowIndex 行。
+ * 在「杨辉三角」中，每个数是它左上方和右上方的数的和。
+ *
+ * 示例 1:
+ * 输入: rowIndex = 3
+ * 输出: [1,3,3,1]
+ *
+ * 示例 2:
+ * 输入: rowIndex = 0
+ * 输出: [1]
+ *
+ * 示例 3:
+ * 输入: rowIndex = 1
+ * 输出: [1,1]
+ *
+ * 提示:
+ * 0 <= rowIndex <= 33
+ * 进阶：
+ * 你可以优化你的算法到 O(rowIndex) 空间复杂度吗？
+ */
+class PascalsTriangleII {
+    public List<Integer> getRow(int rowIndex) {
+        List<Integer> res = new ArrayList<>();
+        if (rowIndex < 0) return res;
+
+        // base case
+        res.add(1);
+        // 遍历计算出下一行
+        for (int i = 1; i <= rowIndex; i++) {
+            List<Integer> row = new ArrayList<>();
+            for (int j = 0; j < i + 1; j++) {
+                int left = j - 1 < 0 ? 0 : res.get(j - 1);
+                int right = j >= res.size() ? 0 : res.get(j);
+                row.add(left + right);
+            }
+            res = row;
+        }
+        return res;
     }
 }

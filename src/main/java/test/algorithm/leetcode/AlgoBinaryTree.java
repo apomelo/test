@@ -110,6 +110,10 @@ public class AlgoBinaryTree {
         new PopulatingNextRightPointersInEachNodeII().connect(populatingNextRightPointersInEachNodeIIExample2);
         log.info("PopulatingNextRightPointersInEachNodeII: {}", populatingNextRightPointersInEachNodeIIExample1);
         log.info("PopulatingNextRightPointersInEachNodeII: {}", populatingNextRightPointersInEachNodeIIExample2);
+        // [124] 二叉树中的最大路径和
+        log.info("BinaryTreeMaximumPathSum: {}", new BinaryTreeMaximumPathSum().maxPathSum(BinaryTreeMaximumPathSum.example1()));
+        log.info("BinaryTreeMaximumPathSum: {}", new BinaryTreeMaximumPathSum().maxPathSum(BinaryTreeMaximumPathSum.example2()));
+        log.info("BinaryTreeMaximumPathSum: {}", new BinaryTreeMaximumPathSum().maxPathSum(BinaryTreeMaximumPathSum.example3()));
     }
 }
 
@@ -1836,5 +1840,77 @@ class PopulatingNextRightPointersInEachNodeII {
     }
     public static Node example2() {
         return null;
+    }
+}
+
+
+/**
+ * @lc app=leetcode.cn id=124 lang=java
+ *
+ * [124] 二叉树中的最大路径和
+ *
+ * https://leetcode.cn/problems/binary-tree-maximum-path-sum/description/
+ *
+ * algorithms
+ * Hard (45.30%)
+ * Likes:    2051
+ * Dislikes: 0
+ * Total Accepted:    343K
+ * Total Submissions: 756.9K
+ * Testcase Example:  '[1,2,3]'
+ *
+ * 二叉树中的 路径 被定义为一条节点序列，序列中每对相邻节点之间都存在一条边。同一个节点在一条路径序列中 至多出现一次 。该路径 至少包含一个
+ * 节点，且不一定经过根节点。
+ * 路径和 是路径中各节点值的总和。
+ * 给你一个二叉树的根节点 root ，返回其 最大路径和 。
+ *
+ * 示例 1：
+ * 输入：root = [1,2,3]
+ * 输出：6
+ * 解释：最优路径是 2 -> 1 -> 3 ，路径和为 2 + 1 + 3 = 6
+ *
+ * 示例 2：
+ * 输入：root = [-10,9,20,null,null,15,7]
+ * 输出：42
+ * 解释：最优路径是 15 -> 20 -> 7 ，路径和为 15 + 20 + 7 = 42
+ *
+ * 提示：
+ * 树中节点数目范围是 [1, 3 * 10^4]
+ * -1000 <= Node.val <= 1000
+ */
+class BinaryTreeMaximumPathSum {
+    // 最大路径和
+    private int maxSum = Integer.MIN_VALUE;
+
+    public int maxPathSum(TreeNode root) {
+        findMaxPathSum(root);
+        return maxSum;
+    }
+
+    private int findMaxPathSum(TreeNode node) {
+        if (node == null) {
+            return 0;
+        }
+
+        // 递归计算左右子树的最大路径和
+        int leftSum = Math.max(0, findMaxPathSum(node.left));
+        int rightSum = Math.max(0, findMaxPathSum(node.right));
+
+        // 更新全局最大路径和
+        maxSum = Math.max(maxSum, node.val + leftSum + rightSum);
+
+        // 返回以当前节点为起点的最大路径和（只能选择左子树或右子树）
+        return node.val + Math.max(leftSum, rightSum);
+    }
+
+
+    public static TreeNode example1() {
+        return new TreeNode(1, new TreeNode(2), new TreeNode(3));
+    }
+    public static TreeNode example2() {
+        return new TreeNode(-10, new TreeNode(9), new TreeNode(20, new TreeNode(15), new TreeNode(7)));
+    }
+    public static TreeNode example3() {
+        return new TreeNode(1, new TreeNode(-2, new TreeNode(1, new TreeNode(-1), null), new TreeNode(3)), new TreeNode(-3, new TreeNode(-2), null));
     }
 }
