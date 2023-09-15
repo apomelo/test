@@ -63,6 +63,9 @@ public class AlgoBackTracking {
         log.info("RestoreIpAddresses: {}", new RestoreIpAddresses().restoreIpAddresses("25525511135"));
         log.info("RestoreIpAddresses: {}", new RestoreIpAddresses().restoreIpAddresses("0000"));
         log.info("RestoreIpAddresses: {}", new RestoreIpAddresses().restoreIpAddresses("101023"));
+        // [131] 分割回文串
+        log.info("PalindromePartitioning: {}", new PalindromePartitioning().partition("aab"));
+        log.info("PalindromePartitioning: {}", new PalindromePartitioning().partition("a"));
     }
 }
 
@@ -1280,6 +1283,78 @@ class RestoreIpAddresses {
         // 如果只有一位数字，合法
         // 排除了开头是 0 的情况，那么如果是两位数，合法
         // 其他情况，合法
+        return true;
+    }
+}
+
+
+/**
+ * @lc app=leetcode.cn id=131 lang=java
+ *
+ * [131] 分割回文串
+ *
+ * https://leetcode.cn/problems/palindrome-partitioning/description/
+ *
+ * algorithms
+ * Medium (73.42%)
+ * Likes:    1624
+ * Dislikes: 0
+ * Total Accepted:    322.8K
+ * Total Submissions: 439.6K
+ * Testcase Example:  '"aab"'
+ *
+ * 给你一个字符串 s，请你将 s 分割成一些子串，使每个子串都是 回文串 。返回 s 所有可能的分割方案。
+ * 回文串 是正着读和反着读都一样的字符串。
+ *
+ * 示例 1：
+ * 输入：s = "aab"
+ * 输出：[["a","a","b"],["aa","b"]]
+ *
+ * 示例 2：
+ * 输入：s = "a"
+ * 输出：[["a"]]
+ *
+ * 提示：
+ * 1 <= s.length <= 16
+ * s 仅由小写英文字母组成
+ */
+class PalindromePartitioning {
+    private List<List<String>> res = new ArrayList<>();
+
+    public List<List<String>> partition(String s) {
+        List<String> track = new ArrayList<>();
+        backtrack(s, 0, s.length() - 1, track);
+        return res;
+    }
+
+    private void backtrack(String s, int start, int end, List<String> track) {
+        // 判断结束条件
+        if (start > end) {
+            res.add(new ArrayList<>(track));
+            return;
+        }
+
+        // 回溯算法
+        for (int i = start; i <= end; i++) {
+            // 判断是否是回文字符
+            if (!isPalindrome(s, start, i)) {
+                continue;
+            }
+            // 选择
+            track.add(s.substring(start, i + 1));
+            // 进入下一层决策树
+            backtrack(s, i + 1, end, track);
+            // 撤销选择
+            track.remove(track.size() - 1);
+        }
+    }
+
+    private boolean isPalindrome(String s, int start, int end) {
+        while (start <= end) {
+            if (s.charAt(start++) != s.charAt(end--)) {
+                return false;
+            }
+        }
         return true;
     }
 }
