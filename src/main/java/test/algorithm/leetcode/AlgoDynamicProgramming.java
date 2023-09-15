@@ -2,10 +2,7 @@ package test.algorithm.leetcode;
 
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Stack;
+import java.util.*;
 
 /**
  * 动态规划
@@ -63,6 +60,10 @@ public class AlgoDynamicProgramming {
         log.info("BestTimeToBuyAndSellStockIII: {}", new BestTimeToBuyAndSellStockIII().maxProfit(new int[] {1,2,3,4,5}));
         log.info("BestTimeToBuyAndSellStockIII: {}", new BestTimeToBuyAndSellStockIII().maxProfit(new int[] {7,6,4,3,1}));
         log.info("BestTimeToBuyAndSellStockIII: {}", new BestTimeToBuyAndSellStockIII().maxProfit(new int[] {1}));
+        // [132] 分割回文串 II
+        log.info("PalindromePartitioningII: {}", new PalindromePartitioningII().minCut("aab"));
+        log.info("PalindromePartitioningII: {}", new PalindromePartitioningII().minCut("a"));
+        log.info("PalindromePartitioningII: {}", new PalindromePartitioningII().minCut("ab"));
     }
 }
 
@@ -1069,5 +1070,75 @@ class BestTimeToBuyAndSellStockIII {
 
         // 穷举了 n × max_k × 2 个状态，正确。
         return dp[n - 1][maxK][0];
+    }
+}
+
+
+/**
+ * @lc app=leetcode.cn id=132 lang=java
+ *
+ * [132] 分割回文串 II
+ *
+ * https://leetcode.cn/problems/palindrome-partitioning-ii/description/
+ *
+ * algorithms
+ * Hard (49.89%)
+ * Likes:    704
+ * Dislikes: 0
+ * Total Accepted:    80.8K
+ * Total Submissions: 161.9K
+ * Testcase Example:  '"aab"'
+ *
+ * 给你一个字符串 s，请你将 s 分割成一些子串，使每个子串都是回文。
+ * 返回符合要求的 最少分割次数 。
+ *
+ * 示例 1：
+ * 输入：s = "aab"
+ * 输出：1
+ * 解释：只需一次分割就可将 s 分割成 ["aa","b"] 这样两个回文子串。
+ *
+ * 示例 2：
+ * 输入：s = "a"
+ * 输出：0
+ *
+ * 示例 3：
+ * 输入：s = "ab"
+ * 输出：1
+ *
+ * 提示：
+ * 1 <= s.length <= 2000
+ * s 仅由小写英文字母组成
+ */
+class PalindromePartitioningII {
+    public int minCut(String s) {
+        int n = s.length();
+        boolean[][] isPalindrome = new boolean[n][n];
+
+        // dp[i] 表示 s[0:i] 子串的最小分割次数
+        int[] dp = new int[n];
+
+        for (int i = 0; i < n; i++) {
+            int minCut = i; // 最坏情况下，每个字符都分割一次
+            for (int j = 0; j <= i; j++) {
+                // 判断 s[j:i] 是否是回文串
+                if (isPalindrome(s, j, i, isPalindrome)) {
+                    isPalindrome[j][i] = true;
+                    if (j == 0) {
+                        // s[0:i] 本身是回文串，不需要分割
+                        minCut = 0;
+                    } else {
+                        // 更新最小分割次数
+                        minCut = Math.min(minCut, dp[j - 1] + 1);
+                    }
+                }
+            }
+            dp[i] = minCut;
+        }
+
+        return dp[n - 1];
+    }
+
+    private boolean isPalindrome(String s, int start, int end, boolean[][] isPalindrome) {
+        return s.charAt(start) == s.charAt(end) && (end - start <= 1 || isPalindrome[start + 1][end - 1]);
     }
 }
