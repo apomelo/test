@@ -15,6 +15,9 @@ public class Main {
         testJniTest();
     }
 
+    /**
+     * 需要把 jniTest.dll 所在的 lib 目录引用到工程里面
+     */
     public static void testJniTest() {
         System.loadLibrary("jniTest");
         JniTest jniTest = new JniTest();

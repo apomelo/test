@@ -13,13 +13,13 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <java.version>1.8</java.version>
+        <java.version>21</java.version>
 
         <package.dir>${project.basedir}/package</package.dir>
         <user.name>apomelo</user.name>
 
         <junit.version>4.12</junit.version>
-        <lombok.version>1.18.16</lombok.version>
+        <lombok.version>1.18.30</lombok.version>
         <log4j.version>2.17.1</log4j.version>
         <slf4j.version>1.7.36</slf4j.version>
         <jackson.version>2.13.4</jackson.version>
@@ -293,13 +293,13 @@
         </dependency>
 
         <!-- local lib -->
-        <dependency>
-            <groupId>com.test</groupId>
-            <artifactId>jniTest</artifactId>
-            <version>1.0</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/src/main/resources/lib/jniTest.dll</systemPath>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.test</groupId>-->
+<!--            <artifactId>jniTest</artifactId>-->
+<!--            <version>1.0</version>-->
+<!--            <scope>system</scope>-->
+<!--            <systemPath>${project.basedir}/src/main/resources/lib/jniTest.dll</systemPath>-->
+<!--        </dependency>-->
         <dependency>
             <groupId>com.sun.tools</groupId>
             <artifactId>tools</artifactId>
@@ -709,22 +709,22 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-clean-plugin</artifactId>
-                    <version>3.1.0</version>
+                    <version>3.2.0</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.7.0</version>
+                    <version>3.10.1</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-jar-plugin</artifactId>
-                    <version>3.1.0</version>
+                    <version>3.2.2</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-assembly-plugin</artifactId>
-                    <version>3.0.0</version>
+                    <version>3.4.2</version>
                 </plugin>
             </plugins>
         </pluginManagement>
