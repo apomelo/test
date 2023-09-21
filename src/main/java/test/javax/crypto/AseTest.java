@@ -1,24 +1,21 @@
 package test.javax.crypto;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import sun.misc.BASE64Decoder;
-import sun.misc.BASE64Encoder;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.crypto.*;
 import javax.crypto.spec.SecretKeySpec;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.util.Base64;
 
 /**
  * Created by C on 2019/4/3.
  */
+@Slf4j
 public class AseTest {
 
-    private static final Logger logger = LoggerFactory.getLogger(AseTest.class);
     private static final String ENCODE_RULES = "123";
 
     public static void main(String[] args) {
@@ -64,28 +61,26 @@ public class AseTest {
             //7.初始化密码器，第一个参数为加密(Encrypt_mode)或者解密解密(Decrypt_mode)操作，第二个参数为使用的KEY
             cipher.init(Cipher.ENCRYPT_MODE, key);
             //8.获取加密内容的字节数组(这里要设置为utf-8)不然内容中如果有中文和英文混合中文就会解密为乱码
-            byte[] byteEncode = content.getBytes("utf-8");
+            byte[] byteEncode = content.getBytes(StandardCharsets.UTF_8);
             //9.根据密码器的初始化方式--加密：将数据加密
             byte[] byteAES = cipher.doFinal(byteEncode);
             //10.将加密后的数据转换为字符串
             //这里用Base64Encoder中会找不到包
             //解决办法：
             //在项目的Build path中先移除JRE System Library，再添加库JRE System Library，重新编译后就一切正常了。
-            String aesEncode = new String(new BASE64Encoder().encode(byteAES));
+            String aesEncode = new String(Base64.getEncoder().encode(byteAES));
             //11.将字符串返回
             return aesEncode;
         } catch (NoSuchAlgorithmException e) {
-            logger.warn("{}", e);
+            log.warn("exception: ", e);
         } catch (NoSuchPaddingException e) {
-            logger.warn("{}", e);
+            log.warn("exception: ", e);
         } catch (InvalidKeyException e) {
-            logger.warn("{}", e);
+            log.warn("exception: ", e);
         } catch (IllegalBlockSizeException e) {
-            logger.warn("{}", e);
+            log.warn("exception: ", e);
         } catch (BadPaddingException e) {
-            logger.warn("{}", e);
-        } catch (UnsupportedEncodingException e) {
-            logger.warn("{}", e);
+            log.warn("exception: ", e);
         }
         //如果有错就返加nulll
         return null;
@@ -118,26 +113,24 @@ public class AseTest {
             //7.初始化密码器，第一个参数为加密(Encrypt_mode)或者解密(Decrypt_mode)操作，第二个参数为使用的KEY
             cipher.init(Cipher.DECRYPT_MODE, key);
             //8.将加密并编码后的内容解码成字节数组
-            byte[] byteContent = new BASE64Decoder().decodeBuffer(content);
+            byte[] byteContent = Base64.getDecoder().decode(content);
             /*
              * 解密
              */
             byte[] byteDecode = cipher.doFinal(byteContent);
-            String aesDecode = new String(byteDecode, "utf-8");
+            String aesDecode = new String(byteDecode, StandardCharsets.UTF_8);
             return aesDecode;
         } catch (NoSuchAlgorithmException e) {
-            logger.warn("{}", e);
+            log.warn("exception: ", e);
         } catch (NoSuchPaddingException e) {
-            logger.warn("{}", e);
+            log.warn("exception: ", e);
         } catch (InvalidKeyException e) {
-            logger.warn("{}", e);
-        } catch (IOException e) {
-            logger.warn("{}", e);
+            log.warn("exception: ", e);
         } catch (IllegalBlockSizeException e) {
             throw new RuntimeException("兄弟，配置文件中的密码需要使用AES加密，请使用com.zheng.common.util.AESUtil工具类修改这些值！");
-            //logger.warn("{}", e);
+            //log.warn("exception: ", e);
         } catch (BadPaddingException e) {
-            logger.warn("{}", e);
+            log.warn("exception: ", e);
         }
         //如果有错就返加nulll
         return null;
