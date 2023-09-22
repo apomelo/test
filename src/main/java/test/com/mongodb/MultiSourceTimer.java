@@ -1,6 +1,6 @@
 package test.com.mongodb;
 
-import com.mongodb.MongoClient;
+import com.mongodb.client.MongoClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.BeanFactory;
@@ -8,8 +8,9 @@ import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.convert.CustomConversions;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.SimpleMongoDbFactory;
+import org.springframework.data.mongodb.core.SimpleMongoClientDatabaseFactory;
 import org.springframework.data.mongodb.core.convert.*;
 import org.springframework.data.mongodb.core.mapping.MongoMappingContext;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -82,7 +83,7 @@ public class MultiSourceTimer {
     }
 
     public MongoTemplate getFreshMongoTemplate(String dbName) {
-        SimpleMongoDbFactory simpleMongoDbFactory = new SimpleMongoDbFactory(commonMongoClient, dbName);
+        SimpleMongoClientDatabaseFactory simpleMongoDbFactory = new SimpleMongoClientDatabaseFactory(commonMongoClient, dbName);
         DbRefResolver dbRefResolver = new DefaultDbRefResolver(simpleMongoDbFactory);
         MappingMongoConverter mappingMongoConverter = new MappingMongoConverter(dbRefResolver, mongoMappingContext);
         try {
