@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import test.algorithm.leetcode.AlgoBinaryTree.Node;
+
 /**
  * 二叉树
  * @author C
@@ -118,6 +120,54 @@ public class AlgoBinaryTree {
         log.info("SumRootToLeafNumbers: {}", new SumRootToLeafNumbers().sumNumbers(SumRootToLeafNumbers.example1()));
         log.info("SumRootToLeafNumbers: {}", new SumRootToLeafNumbers().sumNumbers(SumRootToLeafNumbers.example2()));
     }
+
+
+    static class Node {
+        public int val;
+        public Node left;
+        public Node right;
+        public Node next;
+
+        public Node() {}
+
+        public Node(int _val) {
+            val = _val;
+        }
+
+        public Node(int _val, Node _left, Node _right) {
+            val = _val;
+            left = _left;
+            right = _right;
+        }
+
+        public Node(int _val, Node _left, Node _right, Node _next) {
+            val = _val;
+            left = _left;
+            right = _right;
+            next = _next;
+        }
+
+        @Override
+        public String toString() {
+            return printLayer();
+        }
+
+        private String printLayer() {
+            StringBuilder res = new StringBuilder("[").append(this.val).append(", #");
+            Node nextHead = left;
+            while (nextHead != null) {
+                Node p = nextHead;
+                while (p != null) {
+                    res.append(", ").append(p.val);
+                    p = p.next;
+                }
+                res.append(", #");
+                nextHead = nextHead.left;
+            }
+            res.append("]");
+            return res.toString();
+        }
+    }
 }
 
 class TreeNode {
@@ -160,53 +210,6 @@ class TreeNode {
                 }
             }
             layer = hasNode ? nextLayer : new ArrayList<>();
-        }
-        res.append("]");
-        return res.toString();
-    }
-}
-
-class Node {
-    public int val;
-    public Node left;
-    public Node right;
-    public Node next;
-
-    public Node() {}
-
-    public Node(int _val) {
-        val = _val;
-    }
-
-    public Node(int _val, Node _left, Node _right) {
-        val = _val;
-        left = _left;
-        right = _right;
-    }
-
-    public Node(int _val, Node _left, Node _right, Node _next) {
-        val = _val;
-        left = _left;
-        right = _right;
-        next = _next;
-    }
-
-    @Override
-    public String toString() {
-        return printLayer();
-    }
-
-    private String printLayer() {
-        StringBuilder res = new StringBuilder("[").append(this.val).append(", #");
-        Node nextHead = left;
-        while (nextHead != null) {
-            Node p = nextHead;
-            while (p != null) {
-                res.append(", ").append(p.val);
-                p = p.next;
-            }
-            res.append(", #");
-            nextHead = nextHead.left;
         }
         res.append("]");
         return res.toString();
