@@ -1,7 +1,10 @@
 package test.com.mongodb.config;
 
-import com.mongodb.MongoClient;
-import com.mongodb.MongoClientURI;
+import com.mongodb.ConnectionString;
+import com.mongodb.MongoClientSettings;
+import com.mongodb.MongoDriverInformation;
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.internal.MongoClientImpl;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
@@ -16,14 +19,18 @@ import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.annotation.Persistent;
+import org.springframework.data.convert.CustomConversions;
 import org.springframework.data.mapping.model.FieldNamingStrategy;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.SimpleMongoDbFactory;
-import org.springframework.data.mongodb.core.convert.*;
+import org.springframework.data.mongodb.core.SimpleMongoClientDatabaseFactory;
+import org.springframework.data.mongodb.core.convert.DbRefResolver;
+import org.springframework.data.mongodb.core.convert.DefaultDbRefResolver;
+import org.springframework.data.mongodb.core.convert.DefaultMongoTypeMapper;
+import org.springframework.data.mongodb.core.convert.MappingMongoConverter;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.MongoMappingContext;
 
-import java.util.Collections;
+import java.util.ArrayList;
 
 /**
  * Created by C on 2019/1/12.
@@ -64,7 +71,7 @@ public class MongoTemplateConfiguration {
 
     @Bean
     public CustomConversions mongoCustomConversions() {
-        return new CustomConversions(Collections.emptyList());
+        return new CustomConversions(CustomConversions.StoreConversions.NONE, new ArrayList<>());
     }
 
     @Primary
@@ -89,16 +96,31 @@ public class MongoTemplateConfiguration {
 
     @Bean
     @Primary
-    public SimpleMongoDbFactory commonMongoDbFactory() {
-        return new SimpleMongoDbFactory(commonMongoClient(), this.commonMongoProperties.getMongoClientDatabase());
+    public SimpleMongoClientDatabaseFactory commonMongoDbFactory() {
+        return new SimpleMongoClientDatabaseFactory(commonMongoClient(), this.commonMongoProperties.getMongoClientDatabase());
     }
 
     @Bean
     @Primary
     public MongoClient commonMongoClient() {
-        return new MongoClient(new MongoClientURI(this.commonMongoProperties.getUri()));
+        ConnectionString connectionString = new ConnectionString(this.commonMongoProperties.getUri());
+        MongoClientSettings.builder().applyConnectionString(connectionString);
+        return new MongoClientImpl(commonMongoClientSettings(), commonMongoDriverInformation());
     }
-    
+
+    @Bean
+    @Primary
+    public MongoClientSettings commonMongoClientSettings() {
+        ConnectionString connectionString = new ConnectionString(this.commonMongoProperties.getUri());
+        return MongoClientSettings.builder().applyConnectionString(connectionString).build();
+    }
+
+    @Bean
+    @Primary
+    public MongoDriverInformation commonMongoDriverInformation() {
+        return MongoDriverInformation.builder().build();
+    }
+
     @Bean("db0MongoTemplate")
     public MongoTemplate db0MongoTemplate(MongoMappingContext context, BeanFactory beanFactory) {
         return new MongoTemplate(db0MongoDbFactory(), db0MappingMongoConverter(context, beanFactory));
@@ -118,8 +140,26 @@ public class MongoTemplateConfiguration {
     }
 
     @Bean
-    public SimpleMongoDbFactory db0MongoDbFactory() {
-        MongoClient db0MongoClient = new MongoClient(new MongoClientURI(this.db0MongoProperties.getUri()));
-        return new SimpleMongoDbFactory(db0MongoClient, this.db0MongoProperties.getMongoClientDatabase());
+    public SimpleMongoClientDatabaseFactory db0MongoDbFactory() {
+        return new SimpleMongoClientDatabaseFactory(db0MongoClient(), this.db0MongoProperties.getMongoClientDatabase());
+    }
+
+    @Bean
+    @Primary
+    public MongoClient db0MongoClient() {
+        ConnectionString connectionString = new ConnectionString(this.db0MongoProperties.getUri());
+        MongoClientSettings.builder().applyConnectionString(connectionString);
+        return new MongoClientImpl(db0MongoClientSettings(), db0MongoDriverInformation());
+    }
+
+    @Bean
+    public MongoClientSettings db0MongoClientSettings() {
+        ConnectionString connectionString = new ConnectionString(this.db0MongoProperties.getUri());
+        return MongoClientSettings.builder().applyConnectionString(connectionString).build();
+    }
+
+    @Bean
+    public MongoDriverInformation db0MongoDriverInformation() {
+        return MongoDriverInformation.builder().build();
     }
 }

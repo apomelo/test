@@ -22,8 +22,6 @@ public class TransactionalTest {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
-    @Autowired
-    private TransactionalTest transactionalTest;
 
     public static void main(String[] args) {
         ConfigurableApplicationContext context = SpringApplication.run(SpringBootMain.class, args);
@@ -40,8 +38,8 @@ public class TransactionalTest {
         logger.info("------ insert 1");
         jdbcTemplate.execute("insert test1 (value1) values (1)");
         this.test2();
-        transactionalTest.test3();
-        transactionalTest.test4();
+        test3();
+        test4();
     }
 
     @Transactional(propagation = Propagation.NEVER)
