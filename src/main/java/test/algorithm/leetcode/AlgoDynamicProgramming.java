@@ -64,6 +64,10 @@ public class AlgoDynamicProgramming {
         log.info("PalindromePartitioningII: {}", new PalindromePartitioningII().minCut("aab"));
         log.info("PalindromePartitioningII: {}", new PalindromePartitioningII().minCut("a"));
         log.info("PalindromePartitioningII: {}", new PalindromePartitioningII().minCut("ab"));
+        // [139] 单词拆分
+        log.info("WordBreak: {}", new WordBreak().wordBreak("leetcode", Arrays.asList("leet", "code")));
+        log.info("WordBreak: {}", new WordBreak().wordBreak("applepenapple", Arrays.asList("apple", "pen")));
+        log.info("WordBreak: {}", new WordBreak().wordBreak("catsandog", Arrays.asList("cats", "dog", "sand", "and", "cat")));
     }
 }
 
@@ -1140,5 +1144,117 @@ class PalindromePartitioningII {
 
     private boolean isPalindrome(String s, int start, int end, boolean[][] isPalindrome) {
         return s.charAt(start) == s.charAt(end) && (end - start <= 1 || isPalindrome[start + 1][end - 1]);
+    }
+}
+
+
+/**
+ * @lc app=leetcode.cn id=139 lang=java
+ *
+ * [139] 单词拆分
+ *
+ * https://leetcode.cn/problems/word-break/description/
+ *
+ * algorithms
+ * Medium (54.41%)
+ * Likes:    2292
+ * Dislikes: 0
+ * Total Accepted:    485.6K
+ * Total Submissions: 892.1K
+ * Testcase Example:  '"leetcode"\n["leet","code"]'
+ *
+ * 给你一个字符串 s 和一个字符串列表 wordDict 作为字典。请你判断是否可以利用字典中出现的单词拼接出 s 。
+ * 注意：不要求字典中出现的单词全部都使用，并且字典中的单词可以重复使用。
+ *
+ * 示例 1：
+ * 输入: s = "leetcode", wordDict = ["leet", "code"]
+ * 输出: true
+ * 解释: 返回 true 因为 "leetcode" 可以由 "leet" 和 "code" 拼接成。
+ *
+ * 示例 2：
+ * 输入: s = "applepenapple", wordDict = ["apple", "pen"]
+ * 输出: true
+ * 解释: 返回 true 因为 "applepenapple" 可以由 "apple" "pen" "apple" 拼接成。
+ * 注意，你可以重复使用字典中的单词。
+ *
+ * 示例 3：
+ * 输入: s = "catsandog", wordDict = ["cats", "dog", "sand", "and", "cat"]
+ * 输出: false
+ *
+ * 提示：
+ * 1 <= s.length <= 300
+ * 1 <= wordDict.length <= 1000
+ * 1 <= wordDict[i].length <= 20
+ * s 和 wordDict[i] 仅由小写英文字母组成
+ * wordDict 中的所有字符串 互不相同
+ */
+class WordBreak {
+    /**
+     * 用于记录状态 （s[start] -> s[end] 是否可以拼成）
+     * 0 表示没有计算过 1 表示可以 -1 表示不可以
+     */
+    private int[] dp;
+
+    public boolean wordBreak(String s, List<String> wordDict) {
+        if (s == null || s.isEmpty()) {
+            return false;
+        }
+        dp = new int[s.length()];
+        return wordBreak(s, wordDict, 0);
+    }
+
+    private boolean wordBreak(String s, List<String> wordDict, int start) {
+        int length = s.length();
+        // 判断结束条件
+        if (start >= length) {
+            return true;
+        }
+        // 判断是否计算过
+        if (dp[start] != 0) {
+            return dp[start] == 1;
+        }
+        // 回溯算法
+        for (String word : wordDict) {
+            // 不相等直接跳过
+            if (!s.startsWith(word, start)) {
+                continue;
+            }
+            // 进入下一层决策树并记录状态
+            if (wordBreak(s, wordDict, start + word.length())) {
+                dp[start] = 1;
+                return true;
+            }
+        }
+        // 都不成功记录失败
+        dp[start] = -1;
+        return false;
+    }
+
+    /**
+     * 方法2： 回溯方法，回进行大量计算导致超时
+     */
+    private boolean res2;
+    public boolean wordBreak2(String s, List<String> wordDict) {
+        if (s == null || s.isEmpty()) {
+            return false;
+        }
+        wordBreak2(s, wordDict, 0);
+        return res2;
+    }
+    private void wordBreak2(String s, List<String> wordDict, int start) {
+        int length = s.length();
+        if (res2 || start >= length) {
+            res2 = true;
+            return;
+        }
+
+        for (String word : wordDict) {
+            // 判断是否匹配
+            if (!s.startsWith(word, start)) {
+                continue;
+            }
+            // 进入下一层决策树
+            wordBreak2(s, wordDict, start + word.length());
+        }
     }
 }
