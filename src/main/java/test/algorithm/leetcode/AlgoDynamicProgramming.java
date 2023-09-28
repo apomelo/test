@@ -68,6 +68,10 @@ public class AlgoDynamicProgramming {
         log.info("WordBreak: {}", new WordBreak().wordBreak("leetcode", Arrays.asList("leet", "code")));
         log.info("WordBreak: {}", new WordBreak().wordBreak("applepenapple", Arrays.asList("apple", "pen")));
         log.info("WordBreak: {}", new WordBreak().wordBreak("catsandog", Arrays.asList("cats", "dog", "sand", "and", "cat")));
+        // [140] 单词拆分 II
+        log.info("WordBreakII: {}", new WordBreakII().wordBreak("catsanddog", Arrays.asList("cat","cats","and","sand","dog")));
+        log.info("WordBreakII: {}", new WordBreakII().wordBreak("pineapplepenapple", Arrays.asList("apple","pen","applepen","pine","pineapple")));
+        log.info("WordBreakII: {}", new WordBreakII().wordBreak("catsandog", Arrays.asList("cats","dog","sand","and","cat")));
     }
 }
 
@@ -1256,5 +1260,149 @@ class WordBreak {
             // 进入下一层决策树
             wordBreak2(s, wordDict, start + word.length());
         }
+    }
+}
+
+
+/**
+ * @lc app=leetcode.cn id=140 lang=java
+ *
+ * [140] 单词拆分 II
+ *
+ * https://leetcode.cn/problems/word-break-ii/description/
+ *
+ * algorithms
+ * Hard (57.68%)
+ * Likes:    720
+ * Dislikes: 0
+ * Total Accepted:    92.9K
+ * Total Submissions: 160.9K
+ * Testcase Example:  '"catsanddog"\n["cat","cats","and","sand","dog"]'
+ *
+ * 给定一个字符串 s 和一个字符串字典 wordDict ，在字符串 s 中增加空格来构建一个句子，使得句子中所有的单词都在词典中。以任意顺序
+ * 返回所有这些可能的句子。
+ * 注意：词典中的同一个单词可能在分段中被重复使用多次。
+ *
+ * 示例 1：
+ * 输入:s = "catsanddog", wordDict = ["cat","cats","and","sand","dog"]
+ * 输出:["cats and dog","cat sand dog"]
+ *
+ * 示例 2：
+ * 输入:s = "pineapplepenapple", wordDict =
+ * ["apple","pen","applepen","pine","pineapple"]
+ * 输出:["pine apple pen apple","pineapple pen apple","pine applepen apple"]
+ * 解释: 注意你可以重复使用字典中的单词。
+ *
+ * 示例 3：
+ * 输入:s = "catsandog", wordDict = ["cats","dog","sand","and","cat"]
+ * 输出:[]
+ *
+ * 提示：
+ * 1 <= s.length <= 20
+ * 1 <= wordDict.length <= 1000
+ * 1 <= wordDict[i].length <= 10
+ * s 和 wordDict[i] 仅有小写英文字母组成
+ * wordDict 中所有字符串都 不同
+ */
+class WordBreakII {
+    // 算法1 记录 s[i...] 的路径
+    List<String> res = new LinkedList<>();
+    // 记录回溯路径
+    LinkedList<String> track = new LinkedList<>();
+
+    public List<String> wordBreak(String s, List<String> wordDict) {
+        // 根据函数定义，判断 s[0..] 是否能够被拼出
+        backtrack(s, 0, wordDict);
+        return res;
+    }
+
+    // 回溯算法框架
+    void backtrack(String s, int i, List<String> wordDict) {
+        // base case，整个 s 都被拼出来了
+        if (i == s.length()) {
+            res.add(String.join(" ", track));
+            return;
+        }
+        if (i > s.length()) {
+            return;
+        }
+
+        // 遍历所有单词，尝试匹配 s[i..] 的前缀
+        for (String word : wordDict) {
+            int len = word.length();
+            // 单词太长，跳过
+            if (i + len > s.length()) {
+                continue;
+            }
+            // 无法匹配，跳过
+            String subStr = s.substring(i, i + len);
+            if (!subStr.equals(word)) {
+                continue;
+            }
+            // s[i..] 的前缀被 word 匹配，做选择
+            track.addLast(word);
+            backtrack(s, i + len, wordDict);
+            // 撤销选择
+            track.removeLast();
+        }
+    }
+
+    // 算法2 记录 s[start] -> s[end] 所有能拼成的字符串
+    /**
+     * 用于记录状态 （s[start] -> s[end] 是否可以拼成）
+     * 0 表示没有计算过 1 表示可以 -1 表示不可以
+     */
+    private int[] dp;
+    /**
+     * 用于记录 s[start] -> s[end] 可拼成的所有字符串
+     */
+    private Map<Integer, List<String>> memo = new HashMap<>();
+
+    public List<String> wordBreak2(String s, List<String> wordDict) {
+        if (s == null || s.isEmpty()) {
+            return new ArrayList<>();
+        }
+        dp = new int[s.length()];
+        wordBreak2(s, wordDict, 0);
+        return memo.getOrDefault(0, new ArrayList<>());
+    }
+
+    private boolean wordBreak2(String s, List<String> wordDict, int start) {
+        int length = s.length();
+        // 判断结束条件
+        if (start >= length) {
+            return true;
+        }
+        // 判断是否计算过
+        if (dp[start] != 0) {
+            return dp[start] == 1;
+        }
+        // 回溯算法
+        for (String word : wordDict) {
+            // 不相等直接跳过
+            if (!s.startsWith(word, start)) {
+                continue;
+            }
+            // 进入下一层决策树并记录状态
+            int len = word.length();
+            if (wordBreak2(s, wordDict, start + len)) {
+                // 成功
+                dp[start] = 1;
+                // 是否是最后一个单词
+                List<String> list = memo.get(start + len);
+                if (list == null) {
+                    memo.computeIfAbsent(start, k -> new ArrayList<>()).add(word);
+                } else {
+                    list.forEach(subStr -> {
+                        memo.computeIfAbsent(start, k -> new ArrayList<>()).add(word + " " + subStr);
+                    });
+                }
+            }
+        }
+        // 都不成功记录失败
+        if (dp[start] == 0) {
+            dp[start] = -1;
+        }
+        return dp[start] == 1;
     }
 }
