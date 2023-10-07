@@ -2,6 +2,8 @@ package test.algorithm.leetcode;
 
 import lombok.extern.slf4j.Slf4j;
 
+import test.algorithm.leetcode.AlgoLinkedList.Node;
+
 /**
  * 链表
  * @author C
@@ -41,6 +43,44 @@ public class AlgoLinkedList {
         log.info("ReverseLinkedListII: {}", new ReverseLinkedListII().reverseBetween(ReverseLinkedListII.example1(), 2, 4));
         log.info("ReverseLinkedListII: {}", new ReverseLinkedListII().reverseBetween(ReverseLinkedListII.example2(), 1, 1));
         log.info("ReverseLinkedListII: {}", new ReverseLinkedListII().reverseBetween(ReverseLinkedListII.example3(), 1, 2));
+        // [138] 复制带随机指针的链表
+        log.info("CopyListWithRandomPointer: {}", new CopyListWithRandomPointer().copyRandomList(CopyListWithRandomPointer.example1()));
+        log.info("CopyListWithRandomPointer: {}", new CopyListWithRandomPointer().copyRandomList(CopyListWithRandomPointer.example2()));
+        log.info("CopyListWithRandomPointer: {}", new CopyListWithRandomPointer().copyRandomList(CopyListWithRandomPointer.example3()));
+        // [141] 环形链表
+        log.info("LinkedListCycle: {}", new LinkedListCycle().hasCycle(LinkedListCycle.example1()));
+        log.info("LinkedListCycle: {}", new LinkedListCycle().hasCycle(LinkedListCycle.example2()));
+        log.info("LinkedListCycle: {}", new LinkedListCycle().hasCycle(LinkedListCycle.example3()));
+        // [142] 环形链表 II
+        log.info("LinkedListCycleII: {}", new LinkedListCycleII().detectCycle(LinkedListCycle.example1()));
+        log.info("LinkedListCycleII: {}", new LinkedListCycleII().detectCycle(LinkedListCycle.example2()));
+        log.info("LinkedListCycleII: {}", new LinkedListCycleII().detectCycle(LinkedListCycle.example3()));
+        // [143] 重排链表
+        ListNode reorderListExample1 = ReorderList.example1();
+        new ReorderList().reorderList(reorderListExample1);
+        log.info("ReorderList: {}", reorderListExample1);
+        ListNode reorderListExample2 = ReorderList.example2();
+        new ReorderList().reorderList(reorderListExample2);
+        log.info("ReorderList: {}", reorderListExample2);
+    }
+
+    static class Node {
+        int val;
+        Node next;
+        Node random;
+
+        public Node(int val) {
+            this.val = val;
+            this.next = null;
+            this.random = null;
+        }
+
+        @Override
+        public String toString() {
+            return random != null
+                    ? "[" + val + ", " + random.val + "], " + next
+                    : "[" + val + ", null], " + next;
+        }
     }
 }
 
@@ -675,5 +715,384 @@ class ReverseLinkedListII {
 
     public static ListNode example3() {
         return new ListNode(3, new ListNode(5));
+    }
+}
+
+
+/**
+ * @lc app=leetcode.cn id=138 lang=java
+ *
+ * [138] 复制带随机指针的链表
+ *
+ * https://leetcode.cn/problems/copy-list-with-random-pointer/description/
+ *
+ * algorithms
+ * Medium (66.02%)
+ * Likes:    1220
+ * Dislikes: 0
+ * Total Accepted:    217.8K
+ * Total Submissions: 329.9K
+ * Testcase Example:  '[[7,null],[13,0],[11,4],[10,2],[1,0]]'
+ *
+ * 给你一个长度为 n 的链表，每个节点包含一个额外增加的随机指针 random ，该指针可以指向链表中的任何节点或空节点。
+ * 构造这个链表的 深拷贝。 深拷贝应该正好由 n 个 全新 节点组成，其中每个新节点的值都设为其对应的原节点的值。新节点的 next 指针和 random
+ * 指针也都应指向复制链表中的新节点，并使原链表和复制链表中的这些指针能够表示相同的链表状态。复制链表中的指针都不应指向原链表中的节点 。
+ * 例如，如果原链表中有 X 和 Y 两个节点，其中 X.random --> Y 。那么在复制链表中对应的两个节点 x 和 y ，同样有 x.random --> y 。
+ * 返回复制链表的头节点。
+ *
+ * 用一个由 n 个节点组成的链表来表示输入/输出中的链表。每个节点用一个 [val, random_index] 表示：
+ * val：一个表示 Node.val 的整数。
+ * random_index：随机指针指向的节点索引（范围从 0 到 n-1）；如果不指向任何节点，则为  null 。
+ * 你的代码 只 接受原链表的头节点 head 作为传入参数。
+ *
+ * 示例 1：
+ * 输入：head = [[7,null],[13,0],[11,4],[10,2],[1,0]]
+ * 输出：[[7,null],[13,0],[11,4],[10,2],[1,0]]
+ *
+ * 示例 2：
+ * 输入：head = [[1,1],[2,1]]
+ * 输出：[[1,1],[2,1]]
+ *
+ * 示例 3：
+ * 输入：head = [[3,null],[3,0],[3,null]]
+ * 输出：[[3,null],[3,0],[3,null]]
+ *
+ * 提示：
+ * 0 <= n <= 1000
+ * -10^4 <= Node.val <= 10^4
+ * Node.random 为 null 或指向链表中的节点。
+ *
+ * 注意：本题与主站 138 题相同：https://leetcode-cn.com/problems/copy-list-with-random-pointer/
+ */
+class CopyListWithRandomPointer {
+    public Node copyRandomList(Node head) {
+        if (head == null) {
+            return null;
+        }
+        // 复制链表
+        Node p = head;
+        while (p != null) {
+            Node copy = new Node(p.val);
+            Node next = p.next;
+            p.next = copy;
+            copy.next = next;
+            p = next;
+        }
+        // 复制随机节点
+        p = head;
+        while (p != null) {
+            // 复制随机节点
+            p.next.random = p.random == null ? null : p.random.next;
+            // 指针前进
+            p = p.next.next;
+        }
+        // 拆分链表
+        p = head;
+        Node copyHead = new Node(-1);
+        Node copyP = copyHead;
+        while (p != null) {
+            // 连接复制的链表节点
+            copyP.next = p.next;
+            // 删除复制的链表节点
+            p.next = p.next.next;
+            // 复制链表指针前进
+            copyP = copyP.next;
+            copyP.next = null;
+            // 原链表指针前进
+            p = p.next;
+        }
+        return copyHead.next;
+    }
+
+
+    public static Node example1() {
+        Node node0 = new Node(7);
+        Node node1 = new Node(13);
+        Node node2 = new Node(11);
+        Node node3 = new Node(10);
+        Node node4 = new Node(1);
+        node0.next = node1;
+        node1.next = node2;
+        node1.random = node0;
+        node2.next = node3;
+        node2.random = node4;
+        node3.next = node4;
+        node3.random = node2;
+        node4.random = node0;
+        return node0;
+    }
+
+    public static Node example2() {
+        Node node0 = new Node(1);
+        Node node1 = new Node(2);
+        node0.next = node1;
+        node0.random = node1;
+        node1.random = node1;
+        return node0;
+    }
+
+    public static Node example3() {
+        Node node0 = new Node(3);
+        Node node1 = new Node(3);
+        Node node2 = new Node(3);
+        node0.next = node1;
+        node1.next = node2;
+        node1.random = node0;
+        return node0;
+    }
+}
+
+
+/**
+ * @lc app=leetcode.cn id=141 lang=java
+ *
+ * [141] 环形链表
+ *
+ * https://leetcode.cn/problems/linked-list-cycle/description/
+ *
+ * algorithms
+ * Easy (51.85%)
+ * Likes:    2007
+ * Dislikes: 0
+ * Total Accepted:    1.1M
+ * Total Submissions: 2.1M
+ * Testcase Example:  '[3,2,0,-4]\n1'
+ *
+ * 给你一个链表的头节点 head ，判断链表中是否有环。
+ * 如果链表中有某个节点，可以通过连续跟踪 next 指针再次到达，则链表中存在环。 为了表示给定链表中的环，评测系统内部使用整数 pos
+ * 来表示链表尾连接到链表中的位置（索引从 0 开始）。注意：pos 不作为参数进行传递 。仅仅是为了标识链表的实际情况。
+ * 如果链表中存在环 ，则返回 true 。 否则，返回 false 。
+ *
+ * 示例 1：
+ * 输入：head = [3,2,0,-4], pos = 1
+ * 输出：true
+ * 解释：链表中有一个环，其尾部连接到第二个节点。
+ *
+ * 示例 2：
+ * 输入：head = [1,2], pos = 0
+ * 输出：true
+ * 解释：链表中有一个环，其尾部连接到第一个节点。
+ *
+ * 示例 3：
+ * 输入：head = [1], pos = -1
+ * 输出：false
+ * 解释：链表中没有环。
+ *
+ * 提示：
+ * 链表中节点的数目范围是 [0, 10^4]
+ * -10^5 <= Node.val <= 10^5
+ * pos 为 -1 或者链表中的一个 有效索引 。
+ *
+ * 进阶：你能用 O(1)（即，常量）内存解决此问题吗？
+ */
+class LinkedListCycle {
+    public boolean hasCycle(ListNode head) {
+        ListNode fast = head, slow = head;
+        while (fast != null && fast.next != null) {
+            fast = fast.next.next;
+            slow = slow.next;
+            if (fast == slow) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    public static ListNode example1() {
+        ListNode listNode = new ListNode(3);
+        ListNode listNode1 = new ListNode(2);
+        ListNode listNode2 = new ListNode(0);
+        ListNode listNode3 = new ListNode(-4);
+        listNode.next = listNode1;
+        listNode1.next = listNode2;
+        listNode2.next = listNode3;
+        listNode3.next = listNode1;
+        return listNode;
+    }
+
+    public static ListNode example2() {
+        ListNode listNode = new ListNode(1);
+        ListNode listNode1 = new ListNode(2);
+        listNode.next = listNode1;
+        listNode1.next = listNode;
+        return listNode;
+    }
+
+    public static ListNode example3() {
+        return new ListNode(1);
+    }
+}
+
+
+/**
+ * @lc app=leetcode.cn id=142 lang=java
+ *
+ * [142] 环形链表 II
+ *
+ * https://leetcode.cn/problems/linked-list-cycle-ii/description/
+ *
+ * algorithms
+ * Medium (57.67%)
+ * Likes:    2337
+ * Dislikes: 0
+ * Total Accepted:    751K
+ * Total Submissions: 1.3M
+ * Testcase Example:  '[3,2,0,-4]\n1'
+ *
+ * 给定一个链表的头节点  head ，返回链表开始入环的第一个节点。 如果链表无环，则返回 null。
+ * 如果链表中有某个节点，可以通过连续跟踪 next 指针再次到达，则链表中存在环。 为了表示给定链表中的环，评测系统内部使用整数 pos
+ * 来表示链表尾连接到链表中的位置（索引从 0 开始）。如果 pos 是 -1，则在该链表中没有环。注意：pos
+ * 不作为参数进行传递，仅仅是为了标识链表的实际情况。
+ * 不允许修改 链表。
+ *
+ * 示例 1：
+ * 输入：head = [3,2,0,-4], pos = 1
+ * 输出：返回索引为 1 的链表节点
+ * 解释：链表中有一个环，其尾部连接到第二个节点。
+ *
+ * 示例 2：
+ * 输入：head = [1,2], pos = 0
+ * 输出：返回索引为 0 的链表节点
+ * 解释：链表中有一个环，其尾部连接到第一个节点。
+ *
+ * 示例 3：
+ * 输入：head = [1], pos = -1
+ * 输出：返回 null
+ * 解释：链表中没有环。
+ *
+ * 提示：
+ * 链表中节点的数目范围在范围 [0, 10^4] 内
+ * -10^5 <= Node.val <= 10^5
+ * pos 的值为 -1 或者链表中的一个有效索引
+ *
+ * 进阶：你是否可以使用 O(1) 空间解决此题？
+ */
+class LinkedListCycleII {
+    public ListNode detectCycle(ListNode head) {
+        ListNode fast = head, slow = head;
+        while (fast != null && fast.next != null) {
+            fast = fast.next.next;
+            slow = slow.next;
+            if (fast == slow) break;
+        }
+        // 上面的代码类似 hasCycle 函数
+        if (fast == null || fast.next == null) {
+            // fast 遇到空指针说明没有环
+            return null;
+        }
+
+        // 重新指向头结点
+        slow = head;
+        // 快慢指针同步前进，相交点就是环起点
+        while (slow != fast) {
+            fast = fast.next;
+            slow = slow.next;
+        }
+        return slow;
+    }
+
+
+    public static ListNode example1() {
+        ListNode listNode = new ListNode(3);
+        ListNode listNode1 = new ListNode(2);
+        ListNode listNode2 = new ListNode(0);
+        ListNode listNode3 = new ListNode(-4);
+        listNode.next = listNode1;
+        listNode1.next = listNode2;
+        listNode2.next = listNode3;
+        listNode3.next = listNode1;
+        return listNode;
+    }
+
+    public static ListNode example2() {
+        ListNode listNode = new ListNode(1);
+        ListNode listNode1 = new ListNode(2);
+        listNode.next = listNode1;
+        listNode1.next = listNode;
+        return listNode;
+    }
+
+    public static ListNode example3() {
+        return new ListNode(1);
+    }
+}
+
+
+/**
+ * @lc app=leetcode.cn id=143 lang=java
+ *
+ * [143] 重排链表
+ *
+ * https://leetcode.cn/problems/reorder-list/description/
+ *
+ * algorithms
+ * Medium (65.80%)
+ * Likes:    1379
+ * Dislikes: 0
+ * Total Accepted:    288.1K
+ * Total Submissions: 437.8K
+ * Testcase Example:  '[1,2,3,4]'
+ *
+ * 给定一个单链表 L 的头节点 head ，单链表 L 表示为：
+ * L0 → L1 → … → Ln - 1 → Ln
+ * 请将其重新排列后变为：
+ * L0 → Ln → L1 → Ln - 1 → L2 → Ln - 2 → …
+ * 不能只是单纯的改变节点内部的值，而是需要实际的进行节点交换。
+ *
+ * 示例 1：
+ * 输入：head = [1,2,3,4]
+ * 输出：[1,4,2,3]
+ *
+ * 示例 2：
+ * 输入：head = [1,2,3,4,5]
+ * 输出：[1,5,2,4,3]
+ *
+ * 提示：
+ * 链表的长度范围为 [1, 5 * 10^4]
+ * 1 <= node.val <= 1000
+ */
+class ReorderList {
+    public void reorderList(ListNode head) {
+        if (head == null) {
+            return;
+        }
+        // 找到链表中点
+        ListNode left = head, right = head;
+        while (right != null && right.next != null) {
+            left = left.next;
+            right = right.next.next;
+        }
+        // 拆分并旋转后半部分链表
+        ListNode last = null;
+        ListNode p = left.next;
+        // 断掉前半部分
+        left.next = null;
+        // 翻转后半部分
+        while (p != null) {
+            ListNode tmp = p.next;
+            p.next = last;
+            last = p;
+            p = tmp;
+        }
+
+        // 合并链表
+        ListNode p1 = head, p2 = last;
+        while (p1 != null && p2 != null) {
+            ListNode tmp1 = p1.next;
+            ListNode tmp2 = p2.next;
+            p1.next = p2;
+            p2.next = tmp1;
+            p1 = tmp1;
+            p2 = tmp2;
+        }
+    }
+
+
+    public static ListNode example1() {
+        return new ListNode(1, new ListNode(2, new ListNode(3, new ListNode(4))));
+    }
+    public static ListNode example2() {
+        return new ListNode(1, new ListNode(2, new ListNode(3, new ListNode(4, new ListNode(5)))));
     }
 }
