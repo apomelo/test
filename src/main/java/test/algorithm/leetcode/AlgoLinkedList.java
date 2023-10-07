@@ -55,6 +55,13 @@ public class AlgoLinkedList {
         log.info("LinkedListCycleII: {}", new LinkedListCycleII().detectCycle(LinkedListCycle.example1()));
         log.info("LinkedListCycleII: {}", new LinkedListCycleII().detectCycle(LinkedListCycle.example2()));
         log.info("LinkedListCycleII: {}", new LinkedListCycleII().detectCycle(LinkedListCycle.example3()));
+        // [143] 重排链表
+        ListNode reorderListExample1 = ReorderList.example1();
+        new ReorderList().reorderList(reorderListExample1);
+        log.info("ReorderList: {}", reorderListExample1);
+        ListNode reorderListExample2 = ReorderList.example2();
+        new ReorderList().reorderList(reorderListExample2);
+        log.info("ReorderList: {}", reorderListExample2);
     }
 
     static class Node {
@@ -1008,5 +1015,84 @@ class LinkedListCycleII {
 
     public static ListNode example3() {
         return new ListNode(1);
+    }
+}
+
+
+/**
+ * @lc app=leetcode.cn id=143 lang=java
+ *
+ * [143] 重排链表
+ *
+ * https://leetcode.cn/problems/reorder-list/description/
+ *
+ * algorithms
+ * Medium (65.80%)
+ * Likes:    1379
+ * Dislikes: 0
+ * Total Accepted:    288.1K
+ * Total Submissions: 437.8K
+ * Testcase Example:  '[1,2,3,4]'
+ *
+ * 给定一个单链表 L 的头节点 head ，单链表 L 表示为：
+ * L0 → L1 → … → Ln - 1 → Ln
+ * 请将其重新排列后变为：
+ * L0 → Ln → L1 → Ln - 1 → L2 → Ln - 2 → …
+ * 不能只是单纯的改变节点内部的值，而是需要实际的进行节点交换。
+ *
+ * 示例 1：
+ * 输入：head = [1,2,3,4]
+ * 输出：[1,4,2,3]
+ *
+ * 示例 2：
+ * 输入：head = [1,2,3,4,5]
+ * 输出：[1,5,2,4,3]
+ *
+ * 提示：
+ * 链表的长度范围为 [1, 5 * 10^4]
+ * 1 <= node.val <= 1000
+ */
+class ReorderList {
+    public void reorderList(ListNode head) {
+        if (head == null) {
+            return;
+        }
+        // 找到链表中点
+        ListNode left = head, right = head;
+        while (right != null && right.next != null) {
+            left = left.next;
+            right = right.next.next;
+        }
+        // 拆分并旋转后半部分链表
+        ListNode last = null;
+        ListNode p = left.next;
+        // 断掉前半部分
+        left.next = null;
+        // 翻转后半部分
+        while (p != null) {
+            ListNode tmp = p.next;
+            p.next = last;
+            last = p;
+            p = tmp;
+        }
+
+        // 合并链表
+        ListNode p1 = head, p2 = last;
+        while (p1 != null && p2 != null) {
+            ListNode tmp1 = p1.next;
+            ListNode tmp2 = p2.next;
+            p1.next = p2;
+            p2.next = tmp1;
+            p1 = tmp1;
+            p2 = tmp2;
+        }
+    }
+
+
+    public static ListNode example1() {
+        return new ListNode(1, new ListNode(2, new ListNode(3, new ListNode(4))));
+    }
+    public static ListNode example2() {
+        return new ListNode(1, new ListNode(2, new ListNode(3, new ListNode(4, new ListNode(5)))));
     }
 }
