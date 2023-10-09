@@ -62,6 +62,12 @@ public class AlgoLinkedList {
         ListNode reorderListExample2 = ReorderList.example2();
         new ReorderList().reorderList(reorderListExample2);
         log.info("ReorderList: {}", reorderListExample2);
+        // [147] 对链表进行插入排序
+        log.info("InsertionSortList: {}", new InsertionSortList().insertionSortList(InsertionSortList.example1()));
+        log.info("InsertionSortList: {}", new InsertionSortList().insertionSortList(InsertionSortList.example2()));
+        // [148] 排序链表
+        log.info("SortList: {}", new SortList().sortList(SortList.example1()));
+        log.info("SortList: {}", new SortList().sortList(SortList.example2()));
     }
 
     static class Node {
@@ -1094,5 +1100,171 @@ class ReorderList {
     }
     public static ListNode example2() {
         return new ListNode(1, new ListNode(2, new ListNode(3, new ListNode(4, new ListNode(5)))));
+    }
+}
+
+
+/**
+ * @lc app=leetcode.cn id=147 lang=java
+ *
+ * [147] 对链表进行插入排序
+ *
+ * https://leetcode.cn/problems/insertion-sort-list/description/
+ *
+ * algorithms
+ * Medium (69.49%)
+ * Likes:    636
+ * Dislikes: 0
+ * Total Accepted:    155K
+ * Total Submissions: 223.2K
+ * Testcase Example:  '[4,2,1,3]'
+ *
+ * 给定单个链表的头 head ，使用 插入排序 对链表进行排序，并返回 排序后链表的头 。
+ *
+ * 插入排序 算法的步骤:
+ * 插入排序是迭代的，每次只移动一个元素，直到所有元素可以形成一个有序的输出列表。
+ * 每次迭代中，插入排序只从输入数据中移除一个待排序的元素，找到它在序列中适当的位置，并将其插入。
+ * 重复直到所有输入数据插入完为止。
+ *
+ * 下面是插入排序算法的一个图形示例。部分排序的列表(黑色)最初只包含列表中的第一个元素。每次迭代时，从输入数据中删除一个元素(红色)，并就地插入已排序的列表中。
+ * 对链表进行插入排序。
+ *
+ * 示例 1：
+ * 输入: head = [4,2,1,3]
+ * 输出: [1,2,3,4]
+ *
+ * 示例 2：
+ * 输入: head = [-1,5,3,4,0]
+ * 输出: [-1,0,3,4,5]
+ *
+ * 提示：
+ * 列表中的节点数在 [1, 5000]范围内
+ * -5000 <= Node.val <= 5000
+ */
+class InsertionSortList {
+    public ListNode insertionSortList(ListNode head) {
+        if (head == null || head.next == null) {
+            return head;
+        }
+
+        ListNode dummy = new ListNode(0); // 创建一个虚拟头节点
+        ListNode p = head;
+        while (p != null) {
+            ListNode cur = p;
+            p = p.next;
+            cur.next = null;
+            insertNode(dummy, cur);
+        }
+
+        return dummy.next;
+    }
+
+    private void insertNode(ListNode prev, ListNode node) {
+        ListNode p = prev;
+        while (p.next != null && p.next.val < node.val) {
+            p = p.next;
+        }
+
+        node.next = p.next;
+        p.next = node;
+    }
+
+
+    public static ListNode example1() {
+        return new ListNode(4, new ListNode(2, new ListNode(1, new ListNode(3))));
+    }
+    public static ListNode example2() {
+        return new ListNode(-1, new ListNode(5, new ListNode(3, new ListNode(4, new ListNode(0)))));
+    }
+}
+
+
+/**
+ * @lc app=leetcode.cn id=148 lang=java
+ *
+ * [148] 排序链表
+ *
+ * https://leetcode.cn/problems/sort-list/description/
+ *
+ * algorithms
+ * Medium (65.61%)
+ * Likes:    2135
+ * Dislikes: 0
+ * Total Accepted:    436.6K
+ * Total Submissions: 665.5K
+ * Testcase Example:  '[4,2,1,3]'
+ *
+ * 给你链表的头结点 head ，请将其按 升序 排列并返回 排序后的链表 。
+ *
+ * 示例 1：
+ * 输入：head = [4,2,1,3]
+ * 输出：[1,2,3,4]
+ *
+ * 示例 2：
+ * 输入：head = [-1,5,3,4,0]
+ * 输出：[-1,0,3,4,5]
+ *
+ * 示例 3：
+ * 输入：head = []
+ * 输出：[]
+ *
+ * 提示：
+ * 链表中节点的数目在范围 [0, 5 * 10^4] 内
+ * -10^5 <= Node.val <= 10^5
+ * 进阶：你可以在 O(n log n) 时间复杂度和常数级空间复杂度下，对链表进行排序吗？
+ */
+class SortList {
+    public ListNode sortList(ListNode head) {
+        if (head == null || head.next == null) {
+            return head;
+        }
+
+        // 找到中点
+        ListNode slow = head, fast = head.next;
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+
+        // 断开两个链表
+        ListNode left = head, right = slow.next;
+        slow.next = null;
+
+        // 并归排序
+        left = sortList(left);
+        right = sortList(right);
+        // 合并左右两部分
+        return mergeList(left, right);
+    }
+
+    private ListNode mergeList(ListNode left, ListNode right) {
+        // 合并两个链表
+        ListNode dummy = new ListNode(-1);
+        ListNode p = dummy;
+        while (left != null && right != null) {
+            if (left.val < right.val) {
+                p.next = left;
+                left = left.next;
+            } else {
+                p.next = right;
+                right = right.next;
+            }
+            p = p.next;
+        }
+        if (left != null) {
+            p.next = left;
+        }
+        if (right != null) {
+            p.next = right;
+        }
+        return dummy.next;
+    }
+
+
+    public static ListNode example1() {
+        return new ListNode(4, new ListNode(2, new ListNode(1, new ListNode(3))));
+    }
+    public static ListNode example2() {
+        return new ListNode(-1, new ListNode(5, new ListNode(3, new ListNode(4, new ListNode(0)))));
     }
 }
