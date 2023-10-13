@@ -119,6 +119,16 @@ public class AlgoBinaryTree {
         // [129] 求根节点到叶节点数字之和
         log.info("SumRootToLeafNumbers: {}", new SumRootToLeafNumbers().sumNumbers(SumRootToLeafNumbers.example1()));
         log.info("SumRootToLeafNumbers: {}", new SumRootToLeafNumbers().sumNumbers(SumRootToLeafNumbers.example2()));
+        // [144] 二叉树的前序遍历
+        log.info("BinaryTreePreorderTraversal: {}", new BinaryTreePreorderTraversal().preorderTraversal(BinaryTreePreorderTraversal.example1()));
+        log.info("BinaryTreePreorderTraversal: {}", new BinaryTreePreorderTraversal().preorderTraversal(BinaryTreePreorderTraversal.example2()));
+        log.info("BinaryTreePreorderTraversal: {}", new BinaryTreePreorderTraversal().preorderTraversal(BinaryTreePreorderTraversal.example3()));
+        log.info("BinaryTreePreorderTraversal: {}", new BinaryTreePreorderTraversal().preorderTraversal(BinaryTreePreorderTraversal.example4()));
+        log.info("BinaryTreePreorderTraversal: {}", new BinaryTreePreorderTraversal().preorderTraversal(BinaryTreePreorderTraversal.example5()));
+        // [145] 二叉树的后序遍历
+        log.info("BinaryTreePostorderTraversal: {}", new BinaryTreePostorderTraversal().postorderTraversal(BinaryTreePostorderTraversal.example1()));
+        log.info("BinaryTreePostorderTraversal: {}", new BinaryTreePostorderTraversal().postorderTraversal(BinaryTreePostorderTraversal.example2()));
+        log.info("BinaryTreePostorderTraversal: {}", new BinaryTreePostorderTraversal().postorderTraversal(BinaryTreePostorderTraversal.example3()));
     }
 
 
@@ -1999,5 +2009,146 @@ class SumRootToLeafNumbers {
     }
     public static TreeNode example2() {
         return new TreeNode(4, new TreeNode(9, new TreeNode(5), new TreeNode(1)), new TreeNode(0));
+    }
+}
+
+
+/**
+ * @lc app=leetcode.cn id=144 lang=java
+ *
+ * [144] 二叉树的前序遍历
+ *
+ * https://leetcode.cn/problems/binary-tree-preorder-traversal/description/
+ *
+ * algorithms
+ * Easy (71.34%)
+ * Likes:    1150
+ * Dislikes: 0
+ * Total Accepted:    938.7K
+ * Total Submissions: 1.3M
+ * Testcase Example:  '[1,null,2,3]'
+ *
+ * 给你二叉树的根节点 root ，返回它节点值的 前序 遍历。
+ *
+ * 示例 1：
+ * 输入：root = [1,null,2,3]
+ * 输出：[1,2,3]
+ *
+ * 示例 2：
+ * 输入：root = []
+ * 输出：[]
+ *
+ * 示例 3：
+ * 输入：root = [1]
+ * 输出：[1]
+ *
+ * 示例 4：
+ * 输入：root = [1,2]
+ * 输出：[1,2]
+ *
+ * 示例 5：
+ * 输入：root = [1,null,2]
+ * 输出：[1,2]
+ *
+ * 提示：
+ * 树中节点数目在范围 [0, 100] 内
+ * -100 <= Node.val <= 100
+ * 进阶：递归算法很简单，你可以通过迭代算法完成吗？
+ */
+class BinaryTreePreorderTraversal {
+    public List<Integer> preorderTraversal(TreeNode root) {
+        List<Integer> res = new ArrayList<>();
+        preorderTraversal(root, res);
+        return res;
+    }
+
+    private void preorderTraversal(TreeNode root, List<Integer> path) {
+        if (root == null) {
+            return;
+        }
+        path.add(root.val);
+        preorderTraversal(root.left, path);
+        preorderTraversal(root.right, path);
+    }
+
+
+    public static TreeNode example1() {
+        return new TreeNode(1, null, new TreeNode(2, new TreeNode(3), null));
+    }
+    public static TreeNode example2() {
+        return null;
+    }
+    public static TreeNode example3() {
+        return new TreeNode(1);
+    }
+    public static TreeNode example4() {
+        return new TreeNode(1, new TreeNode(2), null);
+    }
+    public static TreeNode example5() {
+        return new TreeNode(1, null, new TreeNode(2));
+    }
+}
+
+
+/**
+ * @lc app=leetcode.cn id=145 lang=java
+ *
+ * [145] 二叉树的后序遍历
+ *
+ * https://leetcode.cn/problems/binary-tree-postorder-traversal/description/
+ *
+ * algorithms
+ * Easy (76.30%)
+ * Likes:    1104
+ * Dislikes: 0
+ * Total Accepted:    679.3K
+ * Total Submissions: 890.4K
+ * Testcase Example:  '[1,null,2,3]'
+ *
+ * 给你一棵二叉树的根节点 root ，返回其节点值的 后序遍历 。
+ *
+ * 示例 1：
+ * 输入：root = [1,null,2,3]
+ * 输出：[3,2,1]
+ *
+ * 示例 2：
+ * 输入：root = []
+ * 输出：[]
+ *
+ * 示例 3：
+ * 输入：root = [1]
+ * 输出：[1]
+ *
+ * 提示：
+ * 树中节点的数目在范围 [0, 100] 内
+ * -100 <= Node.val <= 100
+ *
+ * 进阶：递归算法很简单，你可以通过迭代算法完成吗？
+ */
+class BinaryTreePostorderTraversal {
+    public List<Integer> postorderTraversal(TreeNode root) {
+        List<Integer> res = new ArrayList<>();
+        postorderTraversal(root, res);
+        return res;
+    }
+
+    private void postorderTraversal(TreeNode root, List<Integer> path) {
+        if (root == null) {
+            return;
+        }
+        postorderTraversal(root.left, path);
+        postorderTraversal(root.right, path);
+        path.add(root.val);
+    }
+
+
+    public static TreeNode example1() {
+        return new TreeNode(1, null, new TreeNode(2, new TreeNode(3), null));
+    }
+    public static TreeNode example2() {
+        return null;
+    }
+    public static TreeNode example3() {
+        return new TreeNode(1);
     }
 }

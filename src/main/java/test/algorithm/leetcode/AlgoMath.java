@@ -2,6 +2,9 @@ package test.algorithm.leetcode;
 
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * 数学
  *
@@ -31,6 +34,9 @@ public class AlgoMath {
         // x 的平方根
         log.info("Sqrtx: {}", new Sqrtx().mySqrt(4));
         log.info("Sqrtx: {}", new Sqrtx().mySqrt(8));
+        // [149] 直线上最多的点数
+        log.info("MaxPointsOnALine: {}", new MaxPointsOnALine().maxPoints(new int[][] {{1,1},{2,2},{3,3}}));
+        log.info("MaxPointsOnALine: {}", new MaxPointsOnALine().maxPoints(new int[][] {{1,1},{3,2},{5,3},{4,1},{2,3},{1,4}}));
     }
 }
 
@@ -461,5 +467,91 @@ class Sqrtx {
         }
 
         return (int) left;
+    }
+}
+
+
+/**
+ * @lc app=leetcode.cn id=149 lang=java
+ *
+ * [149] 直线上最多的点数
+ *
+ * https://leetcode.cn/problems/max-points-on-a-line/description/
+ *
+ * algorithms
+ * Hard (39.53%)
+ * Likes:    514
+ * Dislikes: 0
+ * Total Accepted:    83.2K
+ * Total Submissions: 210.4K
+ * Testcase Example:  '[[1,1],[2,2],[3,3]]'
+ *
+ * 给你一个数组 points ，其中 points[i] = [xi, yi] 表示 X-Y 平面上的一个点。求最多有多少个点在同一条直线上。
+ *
+ * 示例 1：
+ * 输入：points = [[1,1],[2,2],[3,3]]
+ * 输出：3
+ *
+ * 示例 2：
+ * 输入：points = [[1,1],[3,2],[5,3],[4,1],[2,3],[1,4]]
+ * 输出：4
+ *
+ * 提示：
+ * 1 <= points.length <= 300
+ * points[i].length == 2
+ * -10^4 <= xi, yi <= 10^4
+ * points 中的所有点 互不相同
+ */
+class MaxPointsOnALine {
+    public int maxPoints(int[][] points) {
+        if (points == null || points.length == 0) {
+            return 0;
+        }
+
+        int n = points.length;
+        if (n <= 2) {
+            return n; // 如果点的数量小于等于2，直接返回点的数量
+        }
+
+        int maxPoints = 2; // 最小可能是两个点
+        for (int i = 0; i < n - 1; i++) {
+            Map<String, Integer> slopeCount = new HashMap<>();
+            int duplicate = 0;
+            int localMax = 1;
+
+            for (int j = i + 1; j < n; j++) {
+                int deltaX = points[j][0] - points[i][0];
+                int deltaY = points[j][1] - points[i][1];
+
+                // 处理重复点
+                if (deltaX == 0 && deltaY == 0) {
+                    duplicate++; // 统计与当前点重合的点
+                    continue;
+                }
+
+                // 求最大公约数
+                int gcd = generateGCD(deltaX, deltaY);
+                // 相当于 deltaX / deltaY 的分数表现形式
+                String slope = (deltaX / gcd) + "_" + (deltaY / gcd);
+
+                slopeCount.put(slope, slopeCount.getOrDefault(slope, 1) + 1);
+                localMax = Math.max(localMax, slopeCount.get(slope));
+            }
+
+            // 更新全局最大点数，考虑重复点以及以当前点为基准的最大点数
+            // localMax 已经包含当前点
+            maxPoints = Math.max(maxPoints, localMax + duplicate);
+        }
+
+        return maxPoints;
+    }
+
+    // 辗转相除法求最大公约数
+    private int generateGCD(int a, int b) {
+        if (b == 0) {
+            return a;
+        } else {
+            return generateGCD(b, a % b);
+        }
     }
 }
