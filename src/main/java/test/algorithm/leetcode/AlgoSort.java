@@ -12,11 +12,11 @@ import java.util.*;
 @Slf4j
 public class AlgoSort {
     public static void main(String[] args) {
-        // 合并区间
+        // [56] 合并区间
         log.info("MergeIntervals: {}", (Object) new MergeIntervals().merge(new int[][] {{1,3},{2,6},{8,10},{15,18}}));
         log.info("MergeIntervals: {}", (Object) new MergeIntervals().merge(new int[][] {{1,4},{4,5}}));
         log.info("MergeIntervals: {}", (Object) new MergeIntervals().merge(new int[][] {{2,3},{4,5},{1,6}}));
-        // 插入区间
+        // [57] 插入区间
         log.info("InsertInterval: {}", (Object) new InsertInterval().insert(new int[][] {{1,3},{6,9}}, new int[] {2,5}));
         log.info("InsertInterval: {}", (Object) new InsertInterval().insert(new int[][] {{1,2},{3,5},{6,7},{8,10},{12,16}}, new int[] {4,8}));
         log.info("InsertInterval: {}", (Object) new InsertInterval().insert(new int[][] {}, new int[] {5,7}));
@@ -24,6 +24,10 @@ public class AlgoSort {
         log.info("InsertInterval: {}", (Object) new InsertInterval().insert(new int[][] {{1,3}}, new int[] {2,7}));
         log.info("InsertInterval: {}", (Object) new InsertInterval().insert(new int[][] {{1,3}}, new int[] {0,5}));
         log.info("InsertInterval: {}", (Object) new InsertInterval().insert(new int[][] {{1,3}}, new int[] {0,0}));
+        // [164] 最大间距
+        log.info("MaximumGap: {}", new MaximumGap().maximumGap(new int[] {3,6,9,1}));
+        log.info("MaximumGap: {}", new MaximumGap().maximumGap(new int[] {10}));
+        log.info("MaximumGap: {}", new MaximumGap().maximumGap(new int[] {1,2,7,8,9}));
     }
 }
 
@@ -188,3 +192,85 @@ class InsertInterval {
     }
 }
 
+/**
+ * @lc app=leetcode.cn id=164 lang=java
+ *
+ * [164] 最大间距
+ *
+ * https://leetcode.cn/problems/maximum-gap/description/
+ *
+ * algorithms
+ * Medium (60.07%)
+ * Likes:    592
+ * Dislikes: 0
+ * Total Accepted:    87.5K
+ * Total Submissions: 145.7K
+ * Testcase Example:  '[3,6,9,1]'
+ *
+ * 给定一个无序的数组 nums，返回 数组在排序之后，相邻元素之间最大的差值 。如果数组元素个数小于 2，则返回 0 。
+ * 您必须编写一个在「线性时间」内运行并使用「线性额外空间」的算法。
+ *
+ * 示例 1:
+ * 输入: nums = [3,6,9,1]
+ * 输出: 3
+ * 解释: 排序后的数组是 [1,3,6,9], 其中相邻元素 (3,6) 和 (6,9) 之间都存在最大差值 3。
+ *
+ * 示例 2:
+ * 输入: nums = [10]
+ * 输出: 0
+ * 解释: 数组元素个数小于 2，因此返回 0。
+ *
+ * 提示:
+ * 1 <= nums.length <= 10^5
+ * 0 <= nums[i] <= 10^9
+ */
+class MaximumGap {
+    /**
+     * 桶排序
+     */
+    public int maximumGap(int[] nums) {
+        if (nums == null || nums.length < 2) {
+            return 0;
+        }
+
+        // 找到数组的最大值和最小值
+        int maxVal = Arrays.stream(nums).max().getAsInt();
+        int minVal = Arrays.stream(nums).min().getAsInt();
+        // 计算桶的大小和数量
+        int bucketSize = Math.max(1, (maxVal - minVal) / (nums.length - 1));
+        int bucketCount = (maxVal - minVal) / bucketSize + 1;
+
+        // 创建桶数组
+        Bucket[] buckets = new Bucket[bucketCount];
+        for (int i = 0; i < bucketCount; i++) {
+            buckets[i] = new Bucket();
+        }
+
+        // 将元素放入桶中并更新桶的最小值和最大值
+        for (int num : nums) {
+            int index = (num - minVal) / bucketSize;
+            buckets[index].used = true;
+            buckets[index].min = Math.min(buckets[index].min, num);
+            buckets[index].max = Math.max(buckets[index].max, num);
+        }
+
+        int maxGap = 0;
+        int prevMax = minVal;
+        // 计算相邻非空桶之间的最大差值
+        for (int i = 0; i < bucketCount; i++) {
+            if (!buckets[i].used) {
+                continue; // 跳过空桶
+            }
+            maxGap = Math.max(maxGap, buckets[i].min - prevMax);
+            prevMax = buckets[i].max;
+        }
+
+        return maxGap;
+    }
+
+    class Bucket {
+        boolean used;
+        int min = Integer.MAX_VALUE;
+        int max = Integer.MIN_VALUE;
+    }
+}
