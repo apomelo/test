@@ -127,6 +127,18 @@ public class HashMapTest {
             result2.merge(k, v, (v1, v2) -> v2 > v1 ? v2 : v1);
         });
         log.info("result2: {}", result2);
+        Map<Integer, Integer> result3 = new HashMap<>();
+        result3.put(1, 1);
+        result3.put(2, 2);
+        result3.put(3, 7);
+        result3.put(4, 6);
+        map.forEach((k, v) -> {
+            result3.merge(k, v, (v1, v2) -> {
+                log.info("v1={},v2={}", v1, v2);
+                return v1 - v2 > 0 ? v1 - v2 : 0;
+            });
+        });
+        log.info("result3: {}", result3);
         log.info("---------- testMerge end ----------");
     }
 
