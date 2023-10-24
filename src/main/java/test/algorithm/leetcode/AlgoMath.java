@@ -37,6 +37,10 @@ public class AlgoMath {
         // [149] 直线上最多的点数
         log.info("MaxPointsOnALine: {}", new MaxPointsOnALine().maxPoints(new int[][] {{1,1},{2,2},{3,3}}));
         log.info("MaxPointsOnALine: {}", new MaxPointsOnALine().maxPoints(new int[][] {{1,1},{3,2},{5,3},{4,1},{2,3},{1,4}}));
+        // [166] 分数到小数
+        log.info("FractionToRecurringDecimal: {}", new FractionToRecurringDecimal().fractionToDecimal(1, 2));
+        log.info("FractionToRecurringDecimal: {}", new FractionToRecurringDecimal().fractionToDecimal(2, 1));
+        log.info("FractionToRecurringDecimal: {}", new FractionToRecurringDecimal().fractionToDecimal(4, 333));
     }
 }
 
@@ -553,5 +557,93 @@ class MaxPointsOnALine {
         } else {
             return generateGCD(b, a % b);
         }
+    }
+}
+
+
+/**
+ * @lc app=leetcode.cn id=166 lang=java
+ *
+ * [166] 分数到小数
+ *
+ * https://leetcode.cn/problems/fraction-to-recurring-decimal/description/
+ *
+ * algorithms
+ * Medium (33.44%)
+ * Likes:    478
+ * Dislikes: 0
+ * Total Accepted:    66.5K
+ * Total Submissions: 198.7K
+ * Testcase Example:  '1\n2'
+ *
+ * 给定两个整数，分别表示分数的分子 numerator 和分母 denominator，以 字符串形式返回小数 。
+ * 如果小数部分为循环小数，则将循环的部分括在括号内。
+ * 如果存在多个答案，只需返回 任意一个 。
+ * 对于所有给定的输入，保证 答案字符串的长度小于 10^4 。
+ *
+ * 示例 1：
+ * 输入：numerator = 1, denominator = 2
+ * 输出："0.5"
+ *
+ * 示例 2：
+ * 输入：numerator = 2, denominator = 1
+ * 输出："2"
+ *
+ * 示例 3：
+ * 输入：numerator = 4, denominator = 333
+ * 输出："0.(012)"
+ *
+ * 提示：
+ * -2^31 <= numerator, denominator <= 2^31 - 1
+ * denominator != 0
+ */
+class FractionToRecurringDecimal {
+    public String fractionToDecimal(int numerator, int denominator) {
+        // 处理特殊情况
+        if (numerator == 0) {
+            return "0";
+        }
+
+        StringBuilder result = new StringBuilder();
+
+        // 判断结果的正负号
+        if ((numerator < 0) ^ (denominator < 0)) {
+            result.append("-");
+        }
+
+        // 将分子和分母都转换为正数，并取绝对值
+        long num = Math.abs((long) numerator);
+        long denom = Math.abs((long) denominator);
+
+        // 处理整数部分
+        result.append(num / denom);
+        num %= denom;
+
+        // 如果分子为 0，直接返回结果
+        if (num == 0) {
+            return result.toString();
+        }
+
+        // 处理小数部分
+        result.append(".");
+        Map<Long, Integer> remainderMap = new HashMap<>();
+        while (num != 0) {
+            if (remainderMap.containsKey(num)) {
+                // 出现重复的余数，表示循环
+                int index = remainderMap.get(num);
+                result.insert(index, "(");
+                result.append(")");
+                break;
+            }
+
+            // 记录当前余数和结果长度
+            remainderMap.put(num, result.length());
+
+            num *= 10;
+            result.append(num / denom);
+            num %= denom;
+        }
+
+        return result.toString();
     }
 }
