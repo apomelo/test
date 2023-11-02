@@ -75,6 +75,9 @@ public class AlgoDynamicProgramming {
         // [152] 乘积最大子数组
         log.info("MaximumProductSubarray: {}", new MaximumProductSubarray().maxProduct(new int[] {2,3,-2,4}));
         log.info("MaximumProductSubarray: {}", new MaximumProductSubarray().maxProduct(new int[] {-2,0,-1}));
+        // [174] 地下城游戏
+        log.info("DungeonGame: {}", new DungeonGame().calculateMinimumHP(new int[][] {{-2,-3,3}, {-5,-10,1},{10,30,-5}}));
+        log.info("DungeonGame: {}", new DungeonGame().calculateMinimumHP(new int[][] {{0}}));
     }
 }
 
@@ -1411,7 +1414,7 @@ class WordBreakII {
 }
 
 
-/*
+/**
  * @lc app=leetcode.cn id=152 lang=java
  *
  * [152] 乘积最大子数组
@@ -1468,5 +1471,100 @@ class MaximumProductSubarray {
             res = Math.max(res, dp[i][0]);
         }
         return res;
+    }
+}
+
+
+/**
+ * @lc app=leetcode.cn id=174 lang=java
+ *
+ * [174] 地下城游戏
+ *
+ * https://leetcode.cn/problems/dungeon-game/description/
+ *
+ * algorithms
+ * Hard (48.65%)
+ * Likes:    792
+ * Dislikes: 0
+ * Total Accepted:    68.1K
+ * Total Submissions: 139.9K
+ * Testcase Example:  '[[-2,-3,3],[-5,-10,1],[10,30,-5]]'
+ *
+ * 恶魔们抓住了公主并将她关在了地下城 dungeon 的 右下角 。地下城是由 m x n 个房间组成的二维网格。我们英勇的骑士最初被安置在 左上角
+ * 的房间里，他必须穿过地下城并通过对抗恶魔来拯救公主。
+ * 骑士的初始健康点数为一个正整数。如果他的健康点数在某一时刻降至 0 或以下，他会立即死亡。
+ * 有些房间由恶魔守卫，因此骑士在进入这些房间时会失去健康点数（若房间里的值为负整数，则表示骑士将损失健康点数）；其他房间要么是空的（房间里的值为
+ * 0），要么包含增加骑士健康点数的魔法球（若房间里的值为正整数，则表示骑士将增加健康点数）。
+ * 为了尽快解救公主，骑士决定每次只 向右 或 向下 移动一步。
+ * 返回确保骑士能够拯救到公主所需的最低初始健康点数。
+ *
+ * 注意：任何房间都可能对骑士的健康点数造成威胁，也可能增加骑士的健康点数，包括骑士进入的左上角房间以及公主被监禁的右下角房间。
+ *
+ * 示例 1：
+ * 输入：dungeon = [[-2,-3,3],[-5,-10,1],[10,30,-5]]
+ * 输出：7
+ * 解释：如果骑士遵循最佳路径：右 -> 右 -> 下 -> 下 ，则骑士的初始健康点数至少为 7 。
+ *
+ * 示例 2：
+ * 输入：dungeon = [[0]]
+ * 输出：1
+ *
+ * 提示：
+ * m == dungeon.length
+ * n == dungeon[i].length
+ * 1 <= m, n <= 200
+ * -1000 <= dungeon[i][j] <= 1000
+ */
+class DungeonGame {
+    /**
+     * dp 函数的定义： 从 grid[i][j] 到达终点（右下角）所需的最少生命值是 dp(grid, i, j)。
+     * 我们想求 dp(0, 0)，那就应该试图通过 dp(i, j+1) 和 dp(i+1, j) 推导出 dp(i, j)，这样才能不断逼近 base case，正确进行状态转移。
+     * 状态转移方程：
+     * int res = min(
+     *     dp(i + 1, j),
+     *     dp(i, j + 1)
+     * ) - grid[i][j];
+     * dp(i, j) = res <= 0 ? 1 : res;
+     */
+
+    // 备忘录，消除重叠子问题
+    int[][] memo;
+
+    public int calculateMinimumHP(int[][] grid) {
+        int m = grid.length;
+        int n = grid[0].length;
+        // 备忘录中都初始化为 -1
+        memo = new int[m][n];
+        for (int[] row : memo) {
+            Arrays.fill(row, -1);
+        }
+
+        return dp(grid, 0, 0);
+    }
+
+    /* 定义：从 (i, j) 到达右下角，需要的初始血量至少是多少 */
+    int dp(int[][] grid, int i, int j) {
+        int m = grid.length;
+        int n = grid[0].length;
+        // base case
+        if (i == m - 1 && j == n - 1) {
+            return grid[i][j] >= 0 ? 1 : -grid[i][j] + 1;
+        }
+        if (i == m || j == n) {
+            return Integer.MAX_VALUE;
+        }
+        // 避免重复计算
+        if (memo[i][j] != -1) {
+            return memo[i][j];
+        }
+        // 状态转移逻辑
+        int res = Math.min(
+                dp(grid, i, j + 1),
+                dp(grid, i + 1, j)
+        ) - grid[i][j];
+        // 骑士的生命值至少为 1
+        memo[i][j] = res <= 0 ? 1 : res;
+
+        return memo[i][j];
     }
 }
