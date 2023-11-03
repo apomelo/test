@@ -28,6 +28,9 @@ public class AlgoSort {
         log.info("MaximumGap: {}", new MaximumGap().maximumGap(new int[] {3,6,9,1}));
         log.info("MaximumGap: {}", new MaximumGap().maximumGap(new int[] {10}));
         log.info("MaximumGap: {}", new MaximumGap().maximumGap(new int[] {1,2,7,8,9}));
+        // [179] 最大数
+        log.info("LargestNumber: {}", new LargestNumber().largestNumber(new int[] {10,2}));
+        log.info("LargestNumber: {}", new LargestNumber().largestNumber(new int[] {3,30,34,5,9}));
     }
 }
 
@@ -272,5 +275,62 @@ class MaximumGap {
         boolean used;
         int min = Integer.MAX_VALUE;
         int max = Integer.MIN_VALUE;
+    }
+}
+
+
+/**
+ * @lc app=leetcode.cn id=179 lang=java
+ *
+ * [179] 最大数
+ *
+ * https://leetcode.cn/problems/largest-number/description/
+ *
+ * algorithms
+ * Medium (40.96%)
+ * Likes:    1212
+ * Dislikes: 0
+ * Total Accepted:    211.5K
+ * Total Submissions: 516.5K
+ * Testcase Example:  '[10,2]'
+ *
+ * 给定一组非负整数 nums，重新排列每个数的顺序（每个数不可拆分）使之组成一个最大的整数。
+ * 注意：输出结果可能非常大，所以你需要返回一个字符串而不是整数。
+ *
+ * 示例 1：
+ * 输入：nums = [10,2]
+ * 输出："210"
+ *
+ * 示例 2：
+ * 输入：nums = [3,30,34,5,9]
+ * 输出："9534330"
+ *
+ * 提示：
+ * 1 <= nums.length <= 100
+ * 0 <= nums[i] <= 10^9
+ */
+class LargestNumber {
+    public String largestNumber(int[] nums) {
+        // 将整数数组转化为字符串数组
+        String[] numStrs = new String[nums.length];
+        for (int i = 0; i < nums.length; i++) {
+            numStrs[i] = String.valueOf(nums[i]);
+        }
+
+        // 自定义比较函数，将字符串拼接后比较
+        Arrays.sort(numStrs, (a, b) -> (b + a).compareTo(a + b));
+
+        // 如果排序后的第一个字符串是 "0"，说明所有数字都是 0，直接返回 "0"
+        if (numStrs[0].equals("0")) {
+            return "0";
+        }
+
+        // 将排序后的字符串数组拼接成最大的数字
+        StringBuilder result = new StringBuilder();
+        for (String numStr : numStrs) {
+            result.append(numStr);
+        }
+
+        return result.toString();
     }
 }
