@@ -2,8 +2,7 @@ package test.algorithm.leetcode;
 
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 数学
@@ -55,6 +54,13 @@ public class AlgoMath {
         log.info("FactorialTrailingZeroes: {}", new FactorialTrailingZeroes().trailingZeroes(5));
         log.info("FactorialTrailingZeroes: {}", new FactorialTrailingZeroes().trailingZeroes(0));
         log.info("FactorialTrailingZeroes: {}", new FactorialTrailingZeroes().trailingZeroes(13));
+        // [202] 快乐数
+        log.info("HappyNumber: {}", new HappyNumber().isHappy(19));
+        log.info("HappyNumber: {}", new HappyNumber().isHappy(2));
+        // [204] 计数质数
+        log.info("CountPrimes: {}", new CountPrimes().countPrimes(10));
+        log.info("CountPrimes: {}", new CountPrimes().countPrimes(0));
+        log.info("CountPrimes: {}", new CountPrimes().countPrimes(1));
     }
 }
 
@@ -854,5 +860,159 @@ class FactorialTrailingZeroes {
             divisor *= 5;
         }
         return res;
+    }
+}
+
+
+/**
+ * @lc app=leetcode.cn id=202 lang=java
+ *
+ * [202] 快乐数
+ *
+ * https://leetcode.cn/problems/happy-number/description/
+ *
+ * algorithms
+ * Easy (63.54%)
+ * Likes:    1466
+ * Dislikes: 0
+ * Total Accepted:    440.3K
+ * Total Submissions: 692.4K
+ * Testcase Example:  '19'
+ *
+ * 编写一个算法来判断一个数 n 是不是快乐数。
+ * 「快乐数」 定义为：
+ * 对于一个正整数，每一次将该数替换为它每个位置上的数字的平方和。
+ * 然后重复这个过程直到这个数变为 1，也可能是 无限循环 但始终变不到 1。
+ * 如果这个过程 结果为 1，那么这个数就是快乐数。
+ * 如果 n 是 快乐数 就返回 true ；不是，则返回 false 。
+ *
+ * 示例 1：
+ * 输入：n = 19
+ * 输出：true
+ * 解释：
+ * 1^2 + 9^2 = 82
+ * 8^2 + 2^2 = 68
+ * 6^2 + 8^2 = 100
+ * 1^2 + 0^2 + 0^2 = 1
+ *
+ * 示例 2：
+ * 输入：n = 2
+ * 输出：false
+ *
+ * 提示：
+ * 1 <= n <= 2^31 - 1
+ */
+class HappyNumber {
+    /**
+     * 方法1:
+     * 用快慢指针的思想来判断一个数是否为快乐数
+     */
+    public boolean isHappy(int n) {
+        int slow = n; // 慢指针初始指向n
+        int fast = getNext(n); // 快指针初始指向n的下一次迭代结果
+
+        // 快慢指针迭代，直到快指针等于1或快指针等于慢指针
+        while (fast != 1 && fast != slow) {
+            slow = getNext(slow); // 慢指针移动一次
+            fast = getNext(getNext(fast)); // 快指针移动两次
+        }
+
+        return fast == 1; // 如果快指针等于1，表示给定的数是快乐数，返回true；否则返回false
+    }
+
+    // 计算给定数的下一次迭代后的平方和
+    private int getNext(int n) {
+        int sum = 0;
+        while (n > 0) {
+            int digit = n % 10; // 获取当前位的数字
+            sum += digit * digit; // 平方相加
+            n /= 10; // 去掉当前位
+        }
+        return sum;
+    }
+
+    /**
+     * 方法2:
+     * 用 hash 表记录运算过的数，重复运算表示进入了循环
+     */
+    public boolean isHappy2(int n) {
+        // 记录计算过的数
+        Set<Integer> useSet = new HashSet<>();
+        while (n != 1) {
+            if (useSet.contains(n)) {
+                return false;
+            }
+            useSet.add(n);
+            int sum = 0;
+            for (int i = n; i > 0; i /= 10) {
+                int remainder = i % 10;
+                sum += remainder * remainder;
+            }
+            n = sum;
+        }
+        return true;
+    }
+}
+
+
+/**
+ * @lc app=leetcode.cn id=204 lang=java
+ *
+ * [204] 计数质数
+ *
+ * https://leetcode.cn/problems/count-primes/description/
+ *
+ * algorithms
+ * Medium (37.14%)
+ * Likes:    1111
+ * Dislikes: 0
+ * Total Accepted:    264K
+ * Total Submissions: 711.4K
+ * Testcase Example:  '10'
+ *
+ * 给定整数 n ，返回 所有小于非负整数 n 的质数的数量 。
+ *
+ * 示例 1：
+ * 输入：n = 10
+ * 输出：4
+ * 解释：小于 10 的质数一共有 4 个, 它们是 2, 3, 5, 7 。
+ *
+ * 示例 2：
+ * 输入：n = 0
+ * 输出：0
+ *
+ * 示例 3：
+ * 输入：n = 1
+ * 输出：0
+ *
+ * 提示：
+ * 0 <= n <= 5 * 10^6
+ */
+class CountPrimes {
+    /**
+     * 用埃拉托斯特尼筛法来计算小于非负整数 n 的质数的数量。
+     * 通过遍历和标记非质数，最终统计质数的数量。
+     */
+    public int countPrimes(int n) {
+        boolean[] isPrime = new boolean[n];
+        // 将 isPrime 数组初始化为true
+        Arrays.fill(isPrime, true);
+
+        // 根据埃拉托斯特尼筛法，标记非质数
+        for (int i = 2; i * i < n; i++) {
+            if (isPrime[i]) {
+                for (int j = i * i; j < n; j += i) {
+                    isPrime[j] = false;
+                }
+            }
+        }
+
+        // 统计质数的数量
+        int count = 0;
+        for (int i = 2; i < n; i++) {
+            if (isPrime[i]) count++;
+        }
+
+        return count;
     }
 }

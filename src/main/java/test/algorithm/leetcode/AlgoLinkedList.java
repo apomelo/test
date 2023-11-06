@@ -71,6 +71,14 @@ public class AlgoLinkedList {
         // [160] 相交链表
         log.info("IntersectionOfTwoLinkedLists: {}", new IntersectionOfTwoLinkedLists().getIntersectionNode(IntersectionOfTwoLinkedLists.example1(), IntersectionOfTwoLinkedLists.example2()));
         log.info("IntersectionOfTwoLinkedLists: {}", new IntersectionOfTwoLinkedLists().getIntersectionNode(IntersectionOfTwoLinkedLists.example3(), IntersectionOfTwoLinkedLists.example4()));
+        // [160] 相交链表
+        log.info("RemoveLinkedListElements: {}", new RemoveLinkedListElements().removeElements(RemoveLinkedListElements.example1(), 6));
+        log.info("RemoveLinkedListElements: {}", new RemoveLinkedListElements().removeElements(RemoveLinkedListElements.example2(), 1));
+        log.info("RemoveLinkedListElements: {}", new RemoveLinkedListElements().removeElements(RemoveLinkedListElements.example3(), 7));
+        // [160] 相交链表
+        log.info("ReverseLinkedList: {}", new ReverseLinkedList().reverseList(ReverseLinkedList.example1()));
+        log.info("ReverseLinkedList: {}", new ReverseLinkedList().reverseList(ReverseLinkedList.example2()));
+        log.info("ReverseLinkedList: {}", new ReverseLinkedList().reverseList(ReverseLinkedList.example3()));
     }
 
     static class Node {
@@ -1387,5 +1395,126 @@ class IntersectionOfTwoLinkedLists {
     }
     public static ListNode example4() {
         return new ListNode(1, new ListNode(5));
+    }
+}
+
+
+/**
+ * @lc app=leetcode.cn id=203 lang=java
+ *
+ * [203] 移除链表元素
+ *
+ * https://leetcode.cn/problems/remove-linked-list-elements/description/
+ *
+ * algorithms
+ * Easy (55.48%)
+ * Likes:    1355
+ * Dislikes: 0
+ * Total Accepted:    643K
+ * Total Submissions: 1.2M
+ * Testcase Example:  '[1,2,6,3,4,5,6]\n6'
+ *
+ * 给你一个链表的头节点 head 和一个整数 val ，请你删除链表中所有满足 Node.val == val 的节点，并返回 新的头节点 。
+ *
+ * 示例 1：
+ * 输入：head = [1,2,6,3,4,5,6], val = 6
+ * 输出：[1,2,3,4,5]
+ *
+ * 示例 2：
+ * 输入：head = [], val = 1
+ * 输出：[]
+ *
+ * 示例 3：
+ * 输入：head = [7,7,7,7], val = 7
+ * 输出：[]
+ *
+ * 提示：
+ * 列表中的节点数目在范围 [0, 10^4] 内
+ * 1 <= Node.val <= 50
+ * 0 <= val <= 50
+ */
+class RemoveLinkedListElements {
+    public ListNode removeElements(ListNode head, int val) {
+        ListNode dummy = new ListNode(-1);
+        dummy.next = head;
+        ListNode last = dummy, cur = head;
+        while (cur != null) {
+            if (cur.val == val) {
+                last.next = cur.next;
+            } else {
+                last = last.next;
+            }
+            cur = cur.next;
+        }
+        return dummy.next;
+    }
+
+    public static ListNode example1() {
+        return new ListNode(1, new ListNode(2, new ListNode(6, new ListNode(3, new ListNode(4, new ListNode(5, new ListNode(6)))))));
+    }
+    public static ListNode example2() {
+        return null;
+    }
+    public static ListNode example3() {
+        return new ListNode(7, new ListNode(7, new ListNode(7, new ListNode(7))));
+    }
+}
+
+
+/**
+ * @lc app=leetcode.cn id=206 lang=java
+ *
+ * [206] 反转链表
+ *
+ * https://leetcode.cn/problems/reverse-linked-list/description/
+ *
+ * algorithms
+ * Easy (73.67%)
+ * Likes:    3419
+ * Dislikes: 0
+ * Total Accepted:    1.7M
+ * Total Submissions: 2.3M
+ * Testcase Example:  '[1,2,3,4,5]'
+ *
+ * 给你单链表的头节点 head ，请你反转链表，并返回反转后的链表。
+ *
+ * 示例 1：
+ * 输入：head = [1,2,3,4,5]
+ * 输出：[5,4,3,2,1]
+ *
+ * 示例 2：
+ * 输入：head = [1,2]
+ * 输出：[2,1]
+ *
+ * 示例 3：
+ * 输入：head = []
+ * 输出：[]
+ *
+ * 提示：
+ * 链表中节点的数目范围是 [0, 5000]
+ * -5000 <= Node.val <= 5000
+ *
+ * 进阶：链表可以选用迭代或递归方式完成反转。你能否用两种方法解决这道题？
+ */
+class ReverseLinkedList {
+    public ListNode reverseList(ListNode head) {
+        ListNode pre = null;
+        while (head != null) {
+            ListNode next = head.next;
+            head.next = pre;
+            pre = head;
+            head = next;
+        }
+        return pre;
+    }
+
+    public static ListNode example1() {
+        return new ListNode(1, new ListNode(2, new ListNode(3, new ListNode(4, new ListNode(5)))));
+    }
+    public static ListNode example2() {
+        return new ListNode(1, new ListNode(2));
+    }
+    public static ListNode example3() {
+        return null;
     }
 }

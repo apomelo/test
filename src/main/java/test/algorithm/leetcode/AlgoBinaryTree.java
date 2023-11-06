@@ -128,6 +128,10 @@ public class AlgoBinaryTree {
         log.info("BinaryTreePostorderTraversal: {}", new BinaryTreePostorderTraversal().postorderTraversal(BinaryTreePostorderTraversal.example3()));
         // [173] 二叉搜索树迭代器
         BSTIterator.example1();
+        // [199] 二叉树的右视图
+        log.info("BinaryTreeRightSideView: {}", new BinaryTreeRightSideView().rightSideView(BinaryTreeRightSideView.example1()));
+        log.info("BinaryTreeRightSideView: {}", new BinaryTreeRightSideView().rightSideView(BinaryTreeRightSideView.example2()));
+        log.info("BinaryTreeRightSideView: {}", new BinaryTreeRightSideView().rightSideView(BinaryTreeRightSideView.example3()));
     }
 
 
@@ -2153,7 +2157,7 @@ class BinaryTreePostorderTraversal {
 }
 
 
-/*
+/**
  * @lc app=leetcode.cn id=173 lang=java
  *
  * [173] 二叉搜索树迭代器
@@ -2273,5 +2277,73 @@ class BSTIterator {
         log.info("{}", bSTIterator.hasNext()); // 返回 True
         log.info("{}", bSTIterator.next());    // 返回 20
         log.info("{}", bSTIterator.hasNext()); // 返回 False
+    }
+}
+
+
+/**
+ * @lc app=leetcode.cn id=199 lang=java
+ *
+ * [199] 二叉树的右视图
+ *
+ * https://leetcode.cn/problems/binary-tree-right-side-view/description/
+ *
+ * algorithms
+ * Medium (66.23%)
+ * Likes:    988
+ * Dislikes: 0
+ * Total Accepted:    337.8K
+ * Total Submissions: 509.7K
+ * Testcase Example:  '[1,2,3,null,5,null,4]'
+ *
+ * 给定一个二叉树的 根节点 root，想象自己站在它的右侧，按照从顶部到底部的顺序，返回从右侧所能看到的节点值。
+ *
+ * 示例 1:
+ * 输入: [1,2,3,null,5,null,4]
+ * 输出: [1,3,4]
+ *
+ * 示例 2:
+ * 输入: [1,null,3]
+ * 输出: [1,3]
+ *
+ * 示例 3:
+ * 输入: []
+ * 输出: []
+ *
+ * 提示:
+ * 二叉树的节点个数的范围是 [0,100]
+ * -100 <= Node.val <= 100
+ */
+class BinaryTreeRightSideView {
+    public List<Integer> rightSideView(TreeNode root) {
+        List<Integer> res = new ArrayList<>();
+        if (root == null) {
+            return res;
+        }
+
+        List<TreeNode> layer = new ArrayList<>();
+        layer.add(root);
+        while (!layer.isEmpty()) {
+            res.add(layer.get(0).val);
+            List<TreeNode> nextLayer = new ArrayList<>();
+            for (int i = 0; i < layer.size(); i++) {
+                TreeNode node = layer.get(i);
+                if (node.right != null) nextLayer.add(node.right);
+                if (node.left != null) nextLayer.add(node.left);
+            }
+            layer = nextLayer;
+        }
+        return res;
+    }
+
+
+    public static TreeNode example1() {
+        return new TreeNode(1, new TreeNode(2, null, new TreeNode(5)), new TreeNode(3, null, new TreeNode(4)));
+    }
+    public static TreeNode example2() {
+        return new TreeNode(1, null, new TreeNode(3));
+    }
+    public static TreeNode example3() {
+        return null;
     }
 }

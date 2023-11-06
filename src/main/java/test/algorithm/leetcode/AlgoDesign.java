@@ -2,10 +2,7 @@ package test.algorithm.leetcode;
 
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Stack;
+import java.util.*;
 
 /**
  * 设计
@@ -16,10 +13,14 @@ import java.util.Stack;
 public class AlgoDesign {
     public static void main(String[] args) {
         // [146] LRU 缓存
+        LRUCache.example1();
+        LRUCache.example2();
         LRUCache2.example1();
         LRUCache2.example2();
         // [155] 最小栈
         MinStack.example1();
+        // [208] 实现 Trie (前缀树)
+        Trie.example1();
     }
 }
 
@@ -73,6 +74,7 @@ public class AlgoDesign {
  * 最多调用 2 * 10^5 次 get 和 put
  */
 // 解法1： 使用 LinkedHashMap
+@Slf4j
 class LRUCache {
     int cap;
     LinkedHashMap<Integer, Integer> cache = new LinkedHashMap<>();
@@ -112,6 +114,30 @@ class LRUCache {
         // 删除 key，重新插入到队尾
         cache.remove(key);
         cache.put(key, val);
+    }
+
+
+    public static void example1() {
+        LRUCache lruCache = new LRUCache(2);
+        lruCache.put(1, 1); // 缓存是 {1=1}
+        lruCache.put(2, 2); // 缓存是 {1=1, 2=2}
+        log.info("{}", lruCache.get(1));    // 返回 1
+        lruCache.put(3, 3); // 该操作会使得关键字 2 作废，缓存是 {1=1, 3=3}
+        log.info("{}", lruCache.get(2));    // 返回 -1 (未找到)
+        lruCache.put(4, 4); // 该操作会使得关键字 1 作废，缓存是 {4=4, 3=3}
+        log.info("{}", lruCache.get(1));    // 返回 -1 (未找到)
+        log.info("{}", lruCache.get(3));    // 返回 3
+        log.info("{}", lruCache.get(4));    // 返回 4
+        lruCache.put(4, 5); // 该操作会更新缓存，缓存是 {4=5, 3=3}
+        log.info("{}", lruCache.get(4));    // 返回 5
+    }
+    public static void example2() {
+        LRUCache lruCache = new LRUCache(1);
+        lruCache.put(1, 1); // 缓存是 {1=1}
+        lruCache.put(2, 2); // 缓存是 {1=1, 2=2}
+        log.info("{}", lruCache.get(1));    // 返回 -1
+        lruCache.put(3, 3); // 该操作会使得关键字 2 作废，缓存是 {1=1, 3=3}
+        log.info("{}", lruCache.get(2));    // 返回 -1 (未找到)
     }
 }
 // 解法2： 使用自定义链表 + HashMap
@@ -199,34 +225,26 @@ class LRUCache2 {
 
 
     public static void example1() {
-        LRUCache2 lRUCache2 = new LRUCache2(2);
-        lRUCache2.put(1, 1); // 缓存是 {1=1}
-        lRUCache2.put(2, 2); // 缓存是 {1=1, 2=2}
-        lRUCache2.get(1);    // 返回 1
-        log.info("{}", lRUCache2.get(1));
-        lRUCache2.put(3, 3); // 该操作会使得关键字 2 作废，缓存是 {1=1, 3=3}
-        lRUCache2.get(2);    // 返回 -1 (未找到)
-        log.info("{}", lRUCache2.get(2));
-        lRUCache2.put(4, 4); // 该操作会使得关键字 1 作废，缓存是 {4=4, 3=3}
-        lRUCache2.get(1);    // 返回 -1 (未找到)
-        log.info("{}", lRUCache2.get(1));
-        lRUCache2.get(3);    // 返回 3
-        log.info("{}", lRUCache2.get(3));
-        lRUCache2.get(4);    // 返回 4
-        log.info("{}", lRUCache2.get(4));
-        lRUCache2.put(4, 5); // 该操作会更新缓存，缓存是 {4=5, 3=3}
-        lRUCache2.get(4);    // 返回 5
-        log.info("{}", lRUCache2.get(4));
+        LRUCache2 lruCache2 = new LRUCache2(2);
+        lruCache2.put(1, 1); // 缓存是 {1=1}
+        lruCache2.put(2, 2); // 缓存是 {1=1, 2=2}
+        log.info("{}", lruCache2.get(1));    // 返回 1
+        lruCache2.put(3, 3); // 该操作会使得关键字 2 作废，缓存是 {1=1, 3=3}
+        log.info("{}", lruCache2.get(2));    // 返回 -1 (未找到)
+        lruCache2.put(4, 4); // 该操作会使得关键字 1 作废，缓存是 {4=4, 3=3}
+        log.info("{}", lruCache2.get(1));    // 返回 -1 (未找到)
+        log.info("{}", lruCache2.get(3));    // 返回 3
+        log.info("{}", lruCache2.get(4));    // 返回 4
+        lruCache2.put(4, 5); // 该操作会更新缓存，缓存是 {4=5, 3=3}
+        log.info("{}", lruCache2.get(4));    // 返回 5
     }
     public static void example2() {
-        LRUCache2 lRUCache2 = new LRUCache2(1);
-        lRUCache2.put(1, 1); // 缓存是 {1=1}
-        lRUCache2.put(2, 2); // 缓存是 {1=1, 2=2}
-        lRUCache2.get(1);    // 返回 -1
-        log.info("{}", lRUCache2.get(1));
-        lRUCache2.put(3, 3); // 该操作会使得关键字 2 作废，缓存是 {1=1, 3=3}
-        lRUCache2.get(2);    // 返回 -1 (未找到)
-        log.info("{}", lRUCache2.get(2));
+        LRUCache2 lruCache2 = new LRUCache2(1);
+        lruCache2.put(1, 1); // 缓存是 {1=1}
+        lruCache2.put(2, 2); // 缓存是 {1=1, 2=2}
+        log.info("{}", lruCache2.get(1));    // 返回 -1
+        lruCache2.put(3, 3); // 该操作会使得关键字 2 作废，缓存是 {1=1, 3=3}
+        log.info("{}", lruCache2.get(2));    // 返回 -1 (未找到)
     }
 }
 
@@ -320,5 +338,152 @@ class MinStack {
         minStack.pop();
         log.info("{}", minStack.top()); // 返回 0.
         log.info("{}", minStack.getMin()); // 返回 -2.
+    }
+}
+
+
+/**
+ * @lc app=leetcode.cn id=208 lang=java
+ *
+ * [208] 实现 Trie (前缀树)
+ *
+ * https://leetcode.cn/problems/implement-trie-prefix-tree/description/
+ *
+ * algorithms
+ * Medium (71.91%)
+ * Likes:    1553
+ * Dislikes: 0
+ * Total Accepted:    292.1K
+ * Total Submissions: 406.3K
+ * Testcase Example:  '["Trie","insert","search","search","startsWith","insert","search"]\n' +
+  '[[],["apple"],["apple"],["app"],["app"],["app"],["app"]]'
+ *
+ * Trie（发音类似 "try"）或者说 前缀树 是一种树形数据结构，用于高效地存储和检索字符串数据集中的键。
+ * 这一数据结构有相当多的应用情景，例如自动补完和拼写检查。
+ *
+ * 请你实现 Trie 类：
+ * Trie() 初始化前缀树对象。
+ * void insert(String word) 向前缀树中插入字符串 word 。
+ * boolean search(String word) 如果字符串 word 在前缀树中，返回 true（即，在检索之前已经插入）；否则，返回 false 。
+ * boolean startsWith(String prefix) 如果之前已经插入的字符串 word 的前缀之一为 prefix ，返回 true ；否则，返回 false 。
+ *
+ * 示例：
+ * 输入
+ * ["Trie", "insert", "search", "search", "startsWith", "insert", "search"]
+ * [[], ["apple"], ["apple"], ["app"], ["app"], ["app"], ["app"]]
+ * 输出
+ * [null, null, true, false, true, null, true]
+ * 解释
+ * Trie trie = new Trie();
+ * trie.insert("apple");
+ * trie.search("apple");   // 返回 True
+ * trie.search("app");     // 返回 False
+ * trie.startsWith("app"); // 返回 True
+ * trie.insert("app");
+ * trie.search("app");     // 返回 True
+ *
+ * 提示：
+ * 1 <= word.length, prefix.length <= 2000
+ * word 和 prefix 仅由小写英文字母组成
+ * insert、search 和 startsWith 调用次数 总计 不超过 3 * 10^4 次
+ */
+@Slf4j
+class Trie {
+    private TrieNode root;
+
+    public Trie() {
+        root = new TrieNode();
+    }
+
+    public void insert(String word) {
+        TrieNode node = root;
+        for (char ch : word.toCharArray()) {
+            if (!node.containsKey(ch)) {
+                node.put(ch, new TrieNode());
+            }
+            node = node.get(ch);
+        }
+        node.setEnd();
+    }
+
+    public boolean search(String word) {
+        TrieNode node = searchPrefix(word);
+        return node != null && node.isEnd();
+    }
+
+    private TrieNode searchPrefix(String word) {
+        TrieNode node = root;
+        for (char ch : word.toCharArray()) {
+            if (node.containsKey(ch)) {
+                node = node.get(ch);
+            } else {
+                return null;
+            }
+        }
+        return node;
+    }
+
+    public boolean startsWith(String prefix) {
+        return searchPrefix(prefix) != null;
+    }
+
+
+    /**
+     * TrieNode 表示 Trie 的节点。
+     * 每个节点有一个大小为 26 的 links 数组，用来存储指向子节点的引用，R 是字符集的大小（这里为小写字母 a-z）。
+     * isEnd 标记是否是一个单词的结束。
+     *
+     * 以下是一个示例前缀树的结构，用于存储字符串集合 ["apple", "apply", "abc", "api", "book"]
+     *           (root)
+     *           /    \
+     *         a       b
+     *        / \       \
+     *       p   b       o
+     *      / \   \       \
+     *     p   i   c       o
+     *    /                 \
+     *   l                   k
+     *  / \
+     * e   y
+     */
+    class TrieNode {
+        private TrieNode[] links;
+        private final int R = 26;
+        private boolean isEnd;
+
+        public TrieNode() {
+            links = new TrieNode[R];
+        }
+
+        public boolean containsKey(char ch) {
+            return links[ch - 'a'] != null;
+        }
+
+        public TrieNode get(char ch) {
+            return links[ch - 'a'];
+        }
+
+        public void put(char ch, TrieNode node) {
+            links[ch - 'a'] = node;
+        }
+
+        public void setEnd() {
+            isEnd = true;
+        }
+
+        public boolean isEnd() {
+            return isEnd;
+        }
+    }
+
+
+    public static void example1() {
+        Trie trie = new Trie();
+        trie.insert("apple");
+        log.info("{}", trie.search("apple"));   // 返回 True
+        log.info("{}", trie.search("app"));     // 返回 False
+        log.info("{}", trie.startsWith("app"));       // 返回 True
+        trie.insert("app");
+        log.info("{}", trie.search("app"));     // 返回 True
     }
 }

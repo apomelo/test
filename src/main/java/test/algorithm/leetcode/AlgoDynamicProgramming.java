@@ -78,6 +78,12 @@ public class AlgoDynamicProgramming {
         // [174] 地下城游戏
         log.info("DungeonGame: {}", new DungeonGame().calculateMinimumHP(new int[][] {{-2,-3,3}, {-5,-10,1},{10,30,-5}}));
         log.info("DungeonGame: {}", new DungeonGame().calculateMinimumHP(new int[][] {{0}}));
+        // [188] 买卖股票的最佳时机 IV
+        log.info("BestTimeToBuyAndSellStockIV: {}", new BestTimeToBuyAndSellStockIV().maxProfit(2, new int[] {2,4,1}));
+        log.info("BestTimeToBuyAndSellStockIV: {}", new BestTimeToBuyAndSellStockIV().maxProfit(2, new int[] {3,2,6,5,0,3}));
+        // [198] 打家劫舍
+        log.info("HouseRobber: {}", new HouseRobber().rob(new int[] {1,2,3,1}));
+        log.info("HouseRobber: {}", new HouseRobber().rob(new int[] {2,7,9,3,1}));
     }
 }
 
@@ -1566,5 +1572,203 @@ class DungeonGame {
         memo[i][j] = res <= 0 ? 1 : res;
 
         return memo[i][j];
+    }
+}
+
+
+/**
+ * @lc app=leetcode.cn id=188 lang=java
+ *
+ * [188] 买卖股票的最佳时机 IV
+ *
+ * https://leetcode.cn/problems/best-time-to-buy-and-sell-stock-iv/description/
+ *
+ * algorithms
+ * Hard (47.89%)
+ * Likes:    1106
+ * Dislikes: 0
+ * Total Accepted:    225.5K
+ * Total Submissions: 469.8K
+ * Testcase Example:  '2\n[2,4,1]'
+ *
+ * 给你一个整数数组 prices 和一个整数 k ，其中 prices[i] 是某支给定的股票在第 i 天的价格。
+ * 设计一个算法来计算你所能获取的最大利润。你最多可以完成 k 笔交易。也就是说，你最多可以买 k 次，卖 k 次。
+ * 注意：你不能同时参与多笔交易（你必须在再次购买前出售掉之前的股票）。
+ *
+ * 示例 1：
+ * 输入：k = 2, prices = [2,4,1]
+ * 输出：2
+ * 解释：在第 1 天 (股票价格 = 2) 的时候买入，在第 2 天 (股票价格 = 4) 的时候卖出，这笔交易所能获得利润 = 4-2 = 2 。
+ *
+ * 示例 2：
+ * 输入：k = 2, prices = [3,2,6,5,0,3]
+ * 输出：7
+ * 解释：在第 2 天 (股票价格 = 2) 的时候买入，在第 3 天 (股票价格 = 6) 的时候卖出, 这笔交易所能获得利润 = 6-2 = 4 。
+ *      随后，在第 5 天 (股票价格 = 0) 的时候买入，在第 6 天 (股票价格 = 3) 的时候卖出, 这笔交易所能获得利润 = 3-0 = 3 。
+ *
+ * 提示：
+ * 1 <= k <= 100
+ * 1 <= prices.length <= 1000
+ * 0 <= prices[i] <= 1000
+ */
+class BestTimeToBuyAndSellStockIV {
+    /**
+     * 股票系列问题状态定义：
+     * dp[i][k][0 or 1]
+     * 0 <= i <= n - 1, 1 <= k <= K
+     * n 为天数，大 K 为交易数的上限，0 和 1 代表是否持有股票。
+     *
+     * 股票系列问题通用状态转移方程和 base case：
+     * 状态转移方程：
+     * dp[i][k][0] = max(dp[i-1][k][0], dp[i-1][k][1] + prices[i])
+     * dp[i][k][1] = max(dp[i-1][k][1], dp[i-1][k-1][0] - prices[i])
+     * base case：
+     * dp[-1][...][0] = dp[...][0][0] = 0
+     * dp[-1][...][1] = dp[...][0][1] = -infinity
+     *
+     * 一个关键点在于限制 k 的大小，否则会出现内存超限的错误。
+     * 一次交易由买入和卖出构成，至少需要两天，所以说有效的限制 k 应该不超过 n/2，如果超过，就没有约束作用了，相当于 k = +infinity
+     */
+    public int maxProfit(int max_k, int[] prices) {
+        int n = prices.length;
+        if (n <= 0) {
+            return 0;
+        }
+        if (max_k > n / 2) {
+            // 交易次数 k 没有限制的情况
+            return maxProfit_k_inf(prices);
+        }
+
+        // base case：
+        // dp[-1][...][0] = dp[...][0][0] = 0
+        // dp[-1][...][1] = dp[...][0][1] = -infinity
+        int[][][] dp = new int[n][max_k + 1][2];
+        // k = 0 时的 base case
+        for (int i = 0; i < n; i++) {
+            dp[i][0][1] = Integer.MIN_VALUE;
+            dp[i][0][0] = 0;
+        }
+
+        for (int i = 0; i < n; i++)
+            for (int k = max_k; k >= 1; k--) {
+                if (i - 1 == -1) {
+                    // 处理 i = -1 时的 base case
+                    dp[i][k][0] = 0;
+                    dp[i][k][1] = -prices[i];
+                    continue;
+                }
+                // 状态转移方程
+                dp[i][k][0] = Math.max(dp[i - 1][k][0], dp[i - 1][k][1] + prices[i]);
+                dp[i][k][1] = Math.max(dp[i - 1][k][1], dp[i - 1][k - 1][0] - prices[i]);
+            }
+        return dp[n - 1][max_k][0];
+    }
+
+    // 第 122 题，k 无限的解法
+    private int maxProfit_k_inf(int[] prices) {
+        int n = prices.length;
+        int[][] dp = new int[n][2];
+        for (int i = 0; i < n; i++) {
+            if (i - 1 == -1) {
+                // base case
+                dp[i][0] = 0;
+                dp[i][1] = -prices[i];
+                continue;
+            }
+            dp[i][0] = Math.max(dp[i - 1][0], dp[i - 1][1] + prices[i]);
+            dp[i][1] = Math.max(dp[i - 1][1], dp[i - 1][0] - prices[i]);
+        }
+        return dp[n - 1][0];
+    }
+}
+
+
+/**
+ * @lc app=leetcode.cn id=198 lang=java
+ *
+ * [198] 打家劫舍
+ *
+ * https://leetcode.cn/problems/house-robber/description/
+ *
+ * algorithms
+ * Medium (54.76%)
+ * Likes:    2833
+ * Dislikes: 0
+ * Total Accepted:    860.2K
+ * Total Submissions: 1.6M
+ * Testcase Example:  '[1,2,3,1]'
+ *
+ * 你是一个专业的小偷，计划偷窃沿街的房屋。每间房内都藏有一定的现金，
+ * 影响你偷窃的唯一制约因素就是相邻的房屋装有相互连通的防盗系统，如果两间相邻的房屋在同一晚上被小偷闯入，系统会自动报警。
+ * 给定一个代表每个房屋存放金额的非负整数数组，计算你 不触动警报装置的情况下 ，一夜之内能够偷窃到的最高金额。
+ *
+ * 示例 1：
+ * 输入：[1,2,3,1]
+ * 输出：4
+ * 解释：偷窃 1 号房屋 (金额 = 1) ，然后偷窃 3 号房屋 (金额 = 3)。
+ * 偷窃到的最高金额 = 1 + 3 = 4 。
+ *
+ * 示例 2：
+ * 输入：[2,7,9,3,1]
+ * 输出：12
+ * 解释：偷窃 1 号房屋 (金额 = 2), 偷窃 3 号房屋 (金额 = 9)，接着偷窃 5 号房屋 (金额 = 1)。
+ * 偷窃到的最高金额 = 2 + 9 + 1 = 12 。
+ *
+ * 提示：
+ * 1 <= nums.length <= 100
+ * 0 <= nums[i] <= 400
+ */
+class HouseRobber {
+    // 解法1
+    public int rob(int[] nums) {
+        if (nums == null || nums.length == 0) {
+            return 0;
+        }
+        int n = nums.length;
+        if (n == 1) {
+            return nums[0];
+        }
+        int[] dp = new int[n];
+        for (int i = 0; i < n; i++) {
+            if (i <= 1) {
+                dp[i] = nums[i];
+            } else if (i == 2) {
+                dp[i] = dp[i - 2] + nums[i];
+            } else {
+                dp[i] = Math.max(dp[i - 3], dp[i - 2]) + nums[i];
+            }
+        }
+        return Math.max(dp[n - 2], dp[n - 1]);
+    }
+
+    // 解法2
+    // 备忘录
+    private int[] memo;
+    // 主函数
+    public int rob2(int[] nums) {
+        // 初始化备忘录
+        memo = new int[nums.length];
+        Arrays.fill(memo, -1);
+        // 强盗从第 0 间房子开始抢劫
+        return dp(nums, 0);
+    }
+
+    // 返回 dp[start..] 能抢到的最大值
+    private int dp(int[] nums, int start) {
+        if (start >= nums.length) {
+            return 0;
+        }
+        // 避免重复计算
+        if (memo[start] != -1) return memo[start];
+
+        int res = Math.max(
+                // 不抢，去下家
+                dp(nums, start + 1),
+                // 抢，去下下家
+                nums[start] + dp(nums, start + 2)
+        );
+        // 记入备忘录
+        memo[start] = res;
+        return res;
     }
 }
