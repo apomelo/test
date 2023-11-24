@@ -67,6 +67,10 @@ public class AlgoTwoPointer {
         log.info("TwoSumIiInputArrayIsSorted: {}", new TwoSumIiInputArrayIsSorted().twoSum(new int[] {2,7,11,15}, 9));
         log.info("TwoSumIiInputArrayIsSorted: {}", new TwoSumIiInputArrayIsSorted().twoSum(new int[] {2,3,4}, 6));
         log.info("TwoSumIiInputArrayIsSorted: {}", new TwoSumIiInputArrayIsSorted().twoSum(new int[] {-1,0}, -1));
+        // [209] 长度最小的子数组
+        log.info("MinimumSizeSubarraySum: {}", new MinimumSizeSubarraySum().minSubArrayLen(7, new int[] {2,3,1,2,4,3}));
+        log.info("MinimumSizeSubarraySum: {}", new MinimumSizeSubarraySum().minSubArrayLen(4, new int[] {1,4,4}));
+        log.info("MinimumSizeSubarraySum: {}", new MinimumSizeSubarraySum().minSubArrayLen(11, new int[] {1,1,1,1,1,1,1,1}));
     }
 }
 
@@ -1114,5 +1118,99 @@ class TwoSumIiInputArrayIsSorted {
         return null;
     }
 }
-// @lc code=end
 
+
+/**
+ * @lc app=leetcode.cn id=209 lang=java
+ *
+ * [209] 长度最小的子数组
+ *
+ * https://leetcode.cn/problems/minimum-size-subarray-sum/description/
+ *
+ * algorithms
+ * Medium (46.47%)
+ * Likes:    1970
+ * Dislikes: 0
+ * Total Accepted:    647.7K
+ * Total Submissions: 1.4M
+ * Testcase Example:  '7\n[2,3,1,2,4,3]'
+ *
+ * 给定一个含有 n 个正整数的数组和一个正整数 target 。
+ * 找出该数组中满足其总和大于等于 target 的长度最小的 连续子数组 [numsl, numsl+1, ..., numsr-1, numsr] ，并返回其长度。
+ * 如果不存在符合条件的子数组，返回 0 。
+ *
+ * 示例 1：
+ * 输入：target = 7, nums = [2,3,1,2,4,3]
+ * 输出：2
+ * 解释：子数组 [4,3] 是该条件下的长度最小的子数组。
+ *
+ * 示例 2：
+ * 输入：target = 4, nums = [1,4,4]
+ * 输出：1
+ *
+ * 示例 3：
+ * 输入：target = 11, nums = [1,1,1,1,1,1,1,1]
+ * 输出：0
+ *
+ * 提示：
+ * 1 <= target <= 10^9
+ * 1 <= nums.length <= 10^5
+ * 1 <= nums[i] <= 10^5
+ *
+ * 进阶：
+ * 如果你已经实现 O(n) 时间复杂度的解法, 请尝试设计一个 O(n log(n)) 时间复杂度的解法。
+ */
+class MinimumSizeSubarraySum {
+    /**
+     * 解法1
+     */
+    public int minSubArrayLen(int target, int[] nums) {
+        // 定义左右指针
+        int left = 0, right = 0;
+        // 左右指针之间数的总和
+        int sum = 0;
+        // 最小长度
+        int length = 0;
+        // 遍历
+        while (right < nums.length) {
+            // 加上右指针数
+            sum += nums[right];
+            // 当满足条件时
+            if (sum >= target) {
+                // 判断是否需要移动左指针
+                while (sum - nums[left] >= target) {
+                    sum -= nums[left++];
+                }
+                // 判断是否需要更新最小长度
+                int curLength = right - left + 1;
+                if (length == 0 || curLength < length) {
+                    length = curLength;
+                }
+            }
+            // 移动右指针
+            right++;
+        }
+        return length;
+    }
+
+    /**
+     * 解法2
+     */
+    public int minSubArrayLen2(int s, int[] nums) {
+        int minLength = Integer.MAX_VALUE; // 记录最小子数组的长度
+        int left = 0; // 滑动窗口左指针
+        int sum = 0; // 滑动窗口内元素的和
+
+        for (int right = 0; right < nums.length; right++) {
+            sum += nums[right]; // 右指针移动，更新窗口内元素和
+
+            // 当窗口内元素和大于等于目标值 s 时，开始缩小窗口
+            while (sum >= s) {
+                minLength = Math.min(minLength, right - left + 1); // 更新最小长度
+                sum -= nums[left++]; // 左指针向右移动，缩小窗口，更新窗口内元素和
+            }
+        }
+
+        return minLength == Integer.MAX_VALUE ? 0 : minLength; // 返回最小长度，若无满足条件的子数组则返回 0
+    }
+}

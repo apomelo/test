@@ -2,10 +2,7 @@ package test.algorithm.leetcode;
 
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 /**
  * 数组
@@ -60,6 +57,13 @@ public class AlgoArray {
         log.info("PascalsTriangleII: {}", new PascalsTriangleII().getRow(3));
         log.info("PascalsTriangleII: {}", new PascalsTriangleII().getRow(0));
         log.info("PascalsTriangleII: {}", new PascalsTriangleII().getRow(1));
+        // [189] 轮转数组
+        int[] rotateArrayExample1 = RotateArray.example1();
+        new RotateArray().rotate(rotateArrayExample1, 3);
+        log.info("RotateArray: {}", rotateArrayExample1);
+        int[] rotateArrayExample2 = RotateArray.example2();
+        new RotateArray().rotate(rotateArrayExample2, 2);
+        log.info("RotateArray: {}", rotateArrayExample2);
     }
 }
 
@@ -673,5 +677,98 @@ class PascalsTriangleII {
             res = row;
         }
         return res;
+    }
+}
+
+
+/**
+ * @lc app=leetcode.cn id=189 lang=java
+ *
+ * [189] 轮转数组
+ *
+ * https://leetcode.cn/problems/rotate-array/description/
+ *
+ * algorithms
+ * Medium (44.34%)
+ * Likes:    2017
+ * Dislikes: 0
+ * Total Accepted:    738.3K
+ * Total Submissions: 1.7M
+ * Testcase Example:  '[1,2,3,4,5,6,7]\n3'
+ *
+ * 给定一个整数数组 nums，将数组中的元素向右轮转 k 个位置，其中 k 是非负数。
+ *
+ * 示例 1:
+ * 输入: nums = [1,2,3,4,5,6,7], k = 3
+ * 输出: [5,6,7,1,2,3,4]
+ * 解释:
+ * 向右轮转 1 步: [7,1,2,3,4,5,6]
+ * 向右轮转 2 步: [6,7,1,2,3,4,5]
+ * 向右轮转 3 步: [5,6,7,1,2,3,4]
+ *
+ * 示例 2:
+ * 输入：nums = [-1,-100,3,99], k = 2
+ * 输出：[3,99,-1,-100]
+ * 解释:
+ * 向右轮转 1 步: [99,-1,-100,3]
+ * 向右轮转 2 步: [3,99,-1,-100]
+ *
+ * 提示：
+ * 1 <= nums.length <= 10^5
+ * -2^31 <= nums[i] <= 2^31 - 1
+ * 0 <= k <= 10^5
+ *
+ * 进阶：
+ * 尽可能想出更多的解决方案，至少有 三种 不同的方法可以解决这个问题。
+ * 你可以使用空间复杂度为 O(1) 的 原地 算法解决这个问题吗？
+ */
+class RotateArray {
+    // 解法1： 使用额外的数组
+    public void rotate(int[] nums, int k) {
+        if (nums == null || nums.length == 0) {
+            return;
+        }
+
+        int length = nums.length;
+        k %= length;
+        if (k == 0) {
+            return;
+        }
+
+        int[] copy = Arrays.copyOfRange(nums, length - k, length);
+        for (int i = length - 1; i >= k; i--) {
+            nums[i] = nums[i - k];
+        }
+        System.arraycopy(copy, 0, nums, 0, copy.length);
+    }
+
+    // 解法2： 翻转数组
+    public void rotate2(int[] nums, int k) {
+        int n = nums.length;
+        k %= n;  // 防止 k 大于 n 的情况
+
+        // 反转整个数组
+        reverse(nums, 0, n - 1);
+        // 反转前 k 个元素
+        reverse(nums, 0, k - 1);
+        // 反转剩余的元素
+        reverse(nums, k, n - 1);
+    }
+
+    private void reverse(int[] nums, int start, int end) {
+        while (start < end) {
+            int temp = nums[start];
+            nums[start] = nums[end];
+            nums[end] = temp;
+            start++;
+            end--;
+        }
+    }
+
+    public static int[] example1() {
+        return new int[] {1,2,3,4,5,6,7};
+    }
+    public static int[] example2() {
+        return new int[] {-1,-100,3,99};
     }
 }
