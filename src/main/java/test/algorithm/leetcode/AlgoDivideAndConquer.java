@@ -13,16 +13,20 @@ import java.util.PriorityQueue;
 @Slf4j
 public class AlgoDivideAndConquer {
     public static void main(String[] args) {
-        // 合并K个升序链表
+        // [23] 合并K个升序链表
         log.info("MergeKSortedLists: {}", new MergeKSortedLists().mergeKLists(MergeKSortedLists.example1()));
         log.info("MergeKSortedLists: {}", new MergeKSortedLists().mergeKLists(MergeKSortedLists.example2()));
         log.info("MergeKSortedLists: {}", new MergeKSortedLists().mergeKLists(MergeKSortedLists.example3()));
-        // 最大子数组和
+        // [53] 最大子数组和
         log.info("MaximumSubarray: {}", new MaximumSubarray().maxSubArray(new int[] {-2,1,-3,4,-1,2,1,-5,4}));
         log.info("MaximumSubarray: {}", new MaximumSubarray().maxSubArray(new int[] {1}));
         log.info("MaximumSubarray: {}", new MaximumSubarray().maxSubArray(new int[] {5,4,-1,7,8}));
+        // [215] 数组中的第K个最大元素
+        log.info("KthLargestElementInAnArray: {}", new KthLargestElementInAnArray().findKthLargest(new int[]{3,2,1,5,6,4}, 2));
+        log.info("KthLargestElementInAnArray: {}", new KthLargestElementInAnArray().findKthLargest(new int[]{3,2,3,1,2,4,5,5,6}, 4));
     }
 }
+
 
 /**
  * @lc app=leetcode.cn id=23 lang=java
@@ -185,3 +189,52 @@ class MaximumSubarray {
     }
 }
 
+
+/**
+ * @lc app=leetcode.cn id=215 lang=java
+ *
+ * [215] 数组中的第K个最大元素
+ *
+ * https://leetcode.cn/problems/kth-largest-element-in-an-array/description/
+ *
+ * algorithms
+ * Medium (62.52%)
+ * Likes:    2358
+ * Dislikes: 0
+ * Total Accepted:    958.4K
+ * Total Submissions: 1.5M
+ * Testcase Example:  '[3,2,1,5,6,4]\n2'
+ *
+ * 给定整数数组 nums 和整数 k，请返回数组中第 k 个最大的元素。
+ * 请注意，你需要找的是数组排序后的第 k 个最大的元素，而不是第 k 个不同的元素。
+ * 你必须设计并实现时间复杂度为 O(n) 的算法解决此问题。
+ *
+ * 示例 1:
+ * 输入: [3,2,1,5,6,4], k = 2
+ * 输出: 5
+ *
+ * 示例 2:
+ * 输入: [3,2,3,1,2,4,5,5,6], k = 4
+ * 输出: 4
+ *
+ * 提示：
+ * 1 <= k <= nums.length <= 10^5
+ * -10^4 <= nums[i] <= 10^4
+ */
+class KthLargestElementInAnArray {
+    public int findKthLargest(int[] nums, int k) {
+        // 小顶堆，堆顶是最小元素
+        PriorityQueue<Integer> queue = new PriorityQueue<>();
+        for (int e : nums) {
+            // 每个元素都要过一遍二叉堆
+            queue.offer(e);
+            // 堆中元素多于 k 个时，删除堆顶元素
+            if (queue.size() > k) {
+                queue.poll();
+            }
+        }
+        // queue 中剩下的是 nums 中 k 个最大元素，
+        // 堆顶是最小的那个，即第 k 个最大元素
+        return queue.peek();
+    }
+}
