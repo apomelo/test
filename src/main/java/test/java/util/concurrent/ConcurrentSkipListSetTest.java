@@ -18,6 +18,8 @@ public class ConcurrentSkipListSetTest {
     public static void main(String[] args) {
         testStreamForeachRemove();
         testSort();
+        testSortNCount();
+        testSortNCount2();
     }
 
     public static void testStreamForeachRemove() {
@@ -44,7 +46,7 @@ public class ConcurrentSkipListSetTest {
      */
     public static void testSort() {
         log.info("---------- testSort begin ----------");
-        Set<State> stateSortedSet1 = new ConcurrentSkipListSet<>(Comparator.comparing(State::getPriority));
+        ConcurrentSkipListSet<State> stateSortedSet1 = new ConcurrentSkipListSet<>(Comparator.comparing(State::getPriority));
         stateSortedSet1.add(new State(1, 1));
         stateSortedSet1.add(new State(1, 1));
         stateSortedSet1.add(new State(2, 2));
@@ -53,12 +55,12 @@ public class ConcurrentSkipListSetTest {
         log.info("stateSortedSet1: {}", stateSortedSet1);
         log.info("stateSortedSet1: {}", JSON.toJSONString(stateSortedSet1));
 
-        Set<State> stateSortedSet2 = new ConcurrentSkipListSet<>((a, b) -> {
+        ConcurrentSkipListSet<State> stateSortedSet2 = new ConcurrentSkipListSet<>((a, b) -> {
             if (a.getPriority() != b.getPriority()) {
                 return a.getPriority() - b.getPriority();
             } else {
-//                return 1;   // 这句表示优先级相等时后加入的排序在后面
-                return -1;  // 这句表示优先级相等时后加入的排序在前面
+//                return 1;   // 这句表示优先级相等时后加入的排序在后面 (这样可能会导致插入相同优先级节点时成环)
+                return -1;  // 这句表示优先级相等时后加入的排序在前面 (这样不会导致插入相同优先级节点时成环)
             }
         });
         stateSortedSet2.add(new State(1, 1));
@@ -66,9 +68,42 @@ public class ConcurrentSkipListSetTest {
         stateSortedSet2.add(new State(2, 2));
         stateSortedSet2.add(new State(3, 2));
         stateSortedSet2.add(new State(2, 3));
+        stateSortedSet2.add(new State(1, 3));
         log.info("stateSortedSet2: {}", stateSortedSet2);
         log.info("stateSortedSet2: {}", JSON.toJSONString(stateSortedSet2));
         log.info("---------- testSort end ----------");
+    }
+
+    /**
+     * 测试 {@link java.util.concurrent.ConcurrentSkipListSet} 排序 N 次
+     */
+    public static void testSortNCount() {
+        log.info("---------- testSortNCount begin ----------");
+        for (int i = 0; i < 1000; i++) {
+            testSort(); // 测试时去掉注释
+        }
+        log.info("---------- testSortNCount end ----------");
+    }
+
+    /**
+     * 测试 {@link java.util.concurrent.ConcurrentSkipListSet} 排序 N 次
+     */
+    public static void testSortNCount2() {
+        log.info("---------- testSortNCount2 begin ----------");
+        ConcurrentSkipListSet<State> stateSortedSet = new ConcurrentSkipListSet<>((a, b) -> {
+            if (a.getPriority() != b.getPriority()) {
+                return a.getPriority() - b.getPriority();
+            } else {
+                return 1;   // 这句表示优先级相等时后加入的排序在后面 (这样可能会导致插入相同优先级节点时成环)
+//                return -1;  // 这句表示优先级相等时后加入的排序在前面 (这样不会导致插入相同优先级节点时成环)
+            }
+        });
+        for (int i = 0; i < 1000; i++) {
+            stateSortedSet.add(new State(i, i));
+        }
+        log.info("stateSortedSet: {}", stateSortedSet);
+        log.info("stateSortedSet: {}", JSON.toJSONString(stateSortedSet));
+        log.info("---------- testSortNCount2 end ----------");
     }
 
 
