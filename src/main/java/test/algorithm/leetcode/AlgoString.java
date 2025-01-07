@@ -65,6 +65,9 @@ public class AlgoString {
         log.info("CompareVersionNumbers: {}", new CompareVersionNumbers().compareVersion("1.01", "1.001"));
         log.info("CompareVersionNumbers: {}", new CompareVersionNumbers().compareVersion("1.0", "1.0.0"));
         log.info("CompareVersionNumbers: {}", new CompareVersionNumbers().compareVersion("0.1", "1.1"));
+        // [214] 最短回文串
+        log.info("ShortestPalindrome: {}", new ShortestPalindrome().shortestPalindrome("aacecaaa"));
+        log.info("ShortestPalindrome: {}", new ShortestPalindrome().shortestPalindrome("abcd"));
     }
 }
 
@@ -1119,7 +1122,7 @@ class ReverseWordsInAString {
 }
 
 
-/*
+/**
  * @lc app=leetcode.cn id=165 lang=java
  *
  * [165] 比较版本号
@@ -1191,5 +1194,71 @@ class CompareVersionNumbers {
         }
 
         return 0;  // 两个版本号相等
+    }
+}
+
+
+/*
+ * @lc app=leetcode.cn id=214 lang=java
+ *
+ * [214] 最短回文串
+ *
+ * https://leetcode.cn/problems/shortest-palindrome/description/
+ *
+ * algorithms
+ * Hard (40.25%)
+ * Likes:    566
+ * Dislikes: 0
+ * Total Accepted:    49.2K
+ * Total Submissions: 122.2K
+ * Testcase Example:  '"aacecaaa"'
+ *
+ * 给定一个字符串 s，你可以通过在字符串前面添加字符将其转换为回文串。找到并返回可以用这种方式转换的最短回文串。
+ *
+ * 示例 1：
+ * 输入：s = "aacecaaa"
+ * 输出："aaacecaaa"
+ *
+ * 示例 2：
+ * 输入：s = "abcd"
+ * 输出："dcbabcd"
+ *
+ * 提示：
+ * 0 <= s.length <= 5 * 10^4
+ * s 仅由小写英文字母组成
+ */
+class ShortestPalindrome {
+    public String shortestPalindrome(String s) {
+        // 反转字符串
+        String rev = new StringBuilder(s).reverse().toString();
+        // 构建 s 和反转字符串的连接
+        String str = s + "#" + rev;
+        // 构建部分匹配表
+        int[] table = buildTable(str);
+
+        // 找到最长回文前缀的长度，剩下的部分即为需要在 s 前添加的字符
+        return rev.substring(0, s.length() - table[table.length - 1]) + s;
+    }
+
+    // 构建部分匹配表
+    private int[] buildTable(String s) {
+        int[] table = new int[s.length()];
+        int index = 0;
+        for (int i = 1; i < s.length(); i++) {
+            if (s.charAt(index) == s.charAt(i)) {
+                table[i] = table[i - 1] + 1;
+                index++;
+            } else {
+                index = table[i - 1];
+                while (index > 0 && s.charAt(index) != s.charAt(i)) {
+                    index = table[index - 1];
+                }
+                if (s.charAt(index) == s.charAt(i)) {
+                    index++;
+                }
+                table[i] = index;
+            }
+        }
+        return table;
     }
 }

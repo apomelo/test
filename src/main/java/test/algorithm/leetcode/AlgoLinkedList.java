@@ -52,9 +52,9 @@ public class AlgoLinkedList {
         log.info("LinkedListCycle: {}", new LinkedListCycle().hasCycle(LinkedListCycle.example2()));
         log.info("LinkedListCycle: {}", new LinkedListCycle().hasCycle(LinkedListCycle.example3()));
         // [142] 环形链表 II
-        log.info("LinkedListCycleII: {}", new LinkedListCycleII().detectCycle(LinkedListCycle.example1()));
-        log.info("LinkedListCycleII: {}", new LinkedListCycleII().detectCycle(LinkedListCycle.example2()));
-        log.info("LinkedListCycleII: {}", new LinkedListCycleII().detectCycle(LinkedListCycle.example3()));
+        log.info("LinkedListCycleII: {}", new LinkedListCycleII().detectCycle(LinkedListCycleII.example1()));
+        log.info("LinkedListCycleII: {}", new LinkedListCycleII().detectCycle(LinkedListCycleII.example2()));
+        log.info("LinkedListCycleII: {}", new LinkedListCycleII().detectCycle(LinkedListCycleII.example3()));
         // [143] 重排链表
         ListNode reorderListExample1 = ReorderList.example1();
         new ReorderList().reorderList(reorderListExample1);
