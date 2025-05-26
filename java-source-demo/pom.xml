@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.test</groupId>
+        <artifactId>test-project</artifactId>
+        <version>1.0.0</version>
+    </parent>
+
+    <artifactId>java-source-demo</artifactId>
+
+    <properties>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <dependencies>
+        <!-- local lib -->
+        <dependency>
+            <groupId>com.test</groupId>
+            <artifactId>media-core-codec-g711</artifactId>
+            <version>8.0.0-SNAPSHOT</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/src/main/resources/lib/media-core-codec-g711-8.0.0-SNAPSHOT.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>com.test</groupId>
+            <artifactId>media-core-codec-g729</artifactId>
+            <version>8.0.0-SNAPSHOT</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/src/main/resources/lib/media-core-codec-g729-8.0.0-SNAPSHOT.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>com.test</groupId>
+            <artifactId>media-core-codec-gsm</artifactId>
+            <version>8.0.0-SNAPSHOT</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/src/main/resources/lib/media-core-codec-gsm-8.0.0-SNAPSHOT.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>com.test</groupId>
+            <artifactId>media-core-concurrent</artifactId>
+            <version>8.0.0-SNAPSHOT</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/src/main/resources/lib/media-core-concurrent-8.0.0-SNAPSHOT.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>com.test</groupId>
+            <artifactId>media-core-scheduler</artifactId>
+            <version>8.0.0-SNAPSHOT</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/src/main/resources/lib/media-core-scheduler-8.0.0-SNAPSHOT.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>com.test</groupId>
+            <artifactId>media-core-spi</artifactId>
+            <version>8.0.0-SNAPSHOT</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/src/main/resources/lib/media-core-spi-8.0.0-SNAPSHOT.jar</systemPath>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <!-- jar package -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <!-- 设置主类，相同的 entry 优先级比父 pom.xml 中优先级更高，其他配置使用父 pom.xml 配置 -->
+                        <manifest>
+                            <mainClass>com.jnitest.Main</mainClass>
+                        </manifest>
+<!--                        <manifestEntries>-->
+<!--                            <Agent-Class>test.java.lang.instrument.AgentTest</Agent-Class>-->
+<!--                            <Can-Retransform-Classes>true</Can-Retransform-Classes >-->
+<!--                        </manifestEntries>-->
+                    </archive>
+                </configuration>
+            </plugin>
+
+            <!-- assembly package -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>com.jnitest.Main</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+        </plugins>
+
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>**/*.dll</include> <!-- 包含 DLL 文件 -->
+                </includes>
+            </resource>
+        </resources>
+    </build>
+</project>

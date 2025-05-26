@@ -29,13 +29,13 @@ nice		= 0
 # * Basic Settings
 #
 user		= mysql
-pid-file	= /var/run/mysqld/mysqld.pid
+pid-file    = /var/run/mysqld/mysqld.pid
 socket		= /var/run/mysqld/mysqld.sock
 port		= 3306
 basedir		= /usr
 datadir		= /var/lib/mysql
 tmpdir		= /tmp
-lc-messages-dir	= /usr/share/mysql
+lc-messages-dir    = /usr/share/mysql
 skip-external-locking
 #
 # Instead of skip-networking the default is now to listen only on
@@ -45,7 +45,7 @@ bind-address		= 0.0.0.0
 # * Fine Tuning
 #
 key_buffer_size		= 16M
-max_allowed_packet	= 16M
+max_allowed_packet    = 16M
 thread_stack		= 192K
 thread_cache_size       = 8
 # This replaces the startup script and checks MyISAM tables if needed
@@ -57,7 +57,7 @@ myisam-recover-options  = BACKUP
 #
 # * Query Cache Configuration
 #
-query_cache_limit	= 1M
+query_cache_limit    = 1M
 query_cache_size        = 16M
 #
 # * Logging and Replication
@@ -74,7 +74,7 @@ log_error = /var/log/mysql/error.log
 #
 # Here you can see queries with especially long duration
 slow_query_log		= 1
-slow_query_log_file	= /var/log/mysql/mysql-slow.log
+slow_query_log_file    = /var/log/mysql/mysql-slow.log
 long_query_time = 1
 log-queries-not-using-indexes
 #
@@ -83,10 +83,10 @@ log-queries-not-using-indexes
 #       other settings you may need to change.
 #server-id		= 1
 #log_bin			= /var/log/mysql/mysql-bin.log
-expire_logs_days	= 10
+expire_logs_days    = 10
 max_binlog_size   = 100M
 #binlog_do_db		= include_database_name
-#binlog_ignore_db	= include_database_name
+#binlog_ignore_db    = include_database_name
 #
 # * InnoDB
 #

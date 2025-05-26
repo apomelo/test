@@ -17,7 +17,7 @@
             <includes>
                 <!-- 缩写 groupId:artifactId 或全限定符 groupId:artifactId:type[:classifier]:version -->
                 <!-- 这里是缩写 -->
-                <include>com.test:test-project</include>
+                <include>com.test:${project.name}</include>
             </includes>
             <scope>runtime</scope>
             <unpack>true</unpack>
