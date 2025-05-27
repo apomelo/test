@@ -6,28 +6,35 @@
     <groupId>com.test</groupId>
     <artifactId>test-project</artifactId>
     <version>1.0.0</version>
-    <packaging>jar</packaging>
+    <packaging>pom</packaging>
 
     <name>test-project</name>
     <url>http://maven.apache.org/</url>
+    <modules>
+        <module>sprint-boot-demo</module>
+        <module>java-source-demo</module>
+        <module>payment-demo</module>
+    </modules>
 
     <properties>
+        <java.version>21</java.version>
+<!--        <maven.compiler.source>21</maven.compiler.source>-->
+<!--        <maven.compiler.target>21</maven.compiler.target>-->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <java.version>1.8</java.version>
 
         <package.dir>${project.basedir}/package</package.dir>
         <user.name>apomelo</user.name>
 
         <junit.version>4.12</junit.version>
-        <lombok.version>1.18.16</lombok.version>
-        <log4j.version>2.17.1</log4j.version>
-        <slf4j.version>1.7.36</slf4j.version>
+        <lombok.version>1.18.36</lombok.version>
+        <log4j.version>2.24.3</log4j.version>
+        <slf4j.version>2.0.17</slf4j.version>
         <jackson.version>2.13.4</jackson.version>
-        <fastjson.version>1.2.83</fastjson.version>
+        <fastjson2.version>2.0.57</fastjson2.version>
         <mysql-connector-java.version>8.0.28</mysql-connector-java.version>
         <mybatis.version>3.5.10</mybatis.version>
         <commons-io.version>2.6</commons-io.version>
-        <commons-lang3.version>3.8.1</commons-lang3.version>
+        <commons-lang3.version>3.17.0</commons-lang3.version>
         <commons-beanutils.version>1.9.3</commons-beanutils.version>
         <commons-dbcp2.version>2.5.0</commons-dbcp2.version>
         <commons-logging.version>1.2</commons-logging.version>
@@ -36,83 +43,23 @@
         <protobuf.version>3.16.3</protobuf.version>
         <jedis.version>2.9.0</jedis.version>
         <disruptor.version>3.3.6</disruptor.version>
-        <netty.version>4.1.79.Final</netty.version>
+        <netty.version>4.2.1.Final</netty.version>
+        <jetty.version>12.0.19</jetty.version>
+        <jersey.version>3.1.10</jersey.version>
+        <jakarta.version>3.1.0</jakarta.version>
         <poi.version>4.1.2</poi.version>
-        <simplejavamail.version>6.0.3</simplejavamail.version>
-        <javamail.version>1.6.2</javamail.version>
+        <simplejavamail.version>8.12.6</simplejavamail.version>
         <asm.version>9.3</asm.version>
-        <javassist.version>3.29.0-GA</javassist.version>
-        <alipay-sdk.version>4.33.1.ALL</alipay-sdk.version>
+        <javassist.version>3.30.2-GA</javassist.version>
         <guava.version>31.1-jre</guava.version>
         <jctools-core.version>4.0.1</jctools-core.version>
-        <jmh.version>1.36</jmh.version>
+        <jmh.version>1.37</jmh.version>
 
         <!-- provided -->
         <jol-core.version>0.17</jol-core.version>
     </properties>
 
-    <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.1.1.RELEASE</version>
-    </parent>
-
     <dependencies>
-        <!-- springboot -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-starter-logging</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-redis</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-mongodb</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-jdbc</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-amqp</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-log4j2</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-starter-logging</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-aop</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-devtools</artifactId>
-            <scope>runtime</scope>
-        </dependency>
-
         <!-- junit -->
         <dependency>
             <groupId>junit</groupId>
@@ -128,22 +75,24 @@
         </dependency>
 
         <!-- log4j2 -->
+<!--        <dependency>-->
+<!--            <groupId>org.apache.logging.log4j</groupId>-->
+<!--            <artifactId>log4j-api</artifactId>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>org.apache.logging.log4j</groupId>-->
+<!--            <artifactId>log4j-core</artifactId>-->
+<!--        </dependency>-->
+        <!-- 如果不需要ext的功能，理论上只需要这一个包即可 -->
+        <!-- 下面的slf4j是2.0接口的时候，只能使用log4j-slf4j2-impl，不能使用log4j-slf4j-impl -->
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-api</artifactId>
+            <artifactId>log4j-slf4j2-impl</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-slf4j-impl</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.slf4j</groupId>-->
+<!--            <artifactId>slf4j-api</artifactId>-->
+<!--        </dependency>-->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-ext</artifactId>
@@ -163,10 +112,10 @@
             <artifactId>jackson-core</artifactId>
         </dependency>
 
-        <!-- fastjson -->
+        <!-- fastjson2 -->
         <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>fastjson</artifactId>
+            <groupId>com.alibaba.fastjson2</groupId>
+            <artifactId>fastjson2</artifactId>
         </dependency>
 
         <!-- mysql-connector-java -->
@@ -223,6 +172,47 @@
             <artifactId>netty-all</artifactId>
         </dependency>
 
+        <!-- jetty -->
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-server</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.jetty.ee10</groupId>
+            <artifactId>jetty-ee10-servlet</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-client</artifactId>
+        </dependency>
+
+        <!-- Jersey 核心与 HK2 注入 -->
+        <dependency>
+            <groupId>org.glassfish.jersey.core</groupId>
+            <artifactId>jersey-server</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.jersey.containers</groupId>
+            <artifactId>jersey-container-jetty-servlet</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.jersey.inject</groupId>
+            <artifactId>jersey-hk2</artifactId>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/jakarta.annotation/jakarta.annotation-api -->
+        <dependency>
+            <groupId>jakarta.annotation</groupId>
+            <artifactId>jakarta.annotation-api</artifactId>
+            <version>3.0.0</version>
+        </dependency>
+
+        <!-- jakarta -->
+        <dependency>
+            <groupId>jakarta.ws.rs</groupId>
+            <artifactId>jakarta.ws.rs-api</artifactId>
+<!--            <scope>provided</scope>-->
+        </dependency>
+
         <!--读取excel 转换为bean的依赖-->
         <dependency>
             <groupId>org.apache.poi</groupId>
@@ -239,12 +229,6 @@
             <artifactId>simple-java-mail</artifactId>
         </dependency>
 
-        <!-- java mail -->
-        <dependency>
-            <groupId>com.sun.mail</groupId>
-            <artifactId>javax.mail</artifactId>
-        </dependency>
-
         <!-- asm -->
         <dependency>
             <groupId>org.ow2.asm</groupId>
@@ -255,13 +239,6 @@
         <dependency>
             <groupId>org.javassist</groupId>
             <artifactId>javassist</artifactId>
-        </dependency>
-
-        <!-- 支付 -->
-        <!-- alipay-sdk -->
-        <dependency>
-            <groupId>com.alipay.sdk</groupId>
-            <artifactId>alipay-sdk-java</artifactId>
         </dependency>
 
         <!-- guava -->
@@ -290,64 +267,6 @@
         <dependency>
             <groupId>org.openjdk.jol</groupId>
             <artifactId>jol-core</artifactId>
-        </dependency>
-
-        <!-- local lib -->
-        <dependency>
-            <groupId>com.test</groupId>
-            <artifactId>jniTest</artifactId>
-            <version>1.0</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/src/main/resources/lib/jniTest.dll</systemPath>
-        </dependency>
-        <dependency>
-            <groupId>com.sun.tools</groupId>
-            <artifactId>tools</artifactId>
-            <version>1.0</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/src/main/resources/lib/tools.jar</systemPath>
-        </dependency>
-        <dependency>
-            <groupId>com.test</groupId>
-            <artifactId>media-core-codec-g711</artifactId>
-            <version>8.0.0-SNAPSHOT</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/src/main/resources/lib/media-core-codec-g711-8.0.0-SNAPSHOT.jar</systemPath>
-        </dependency>
-        <dependency>
-            <groupId>com.test</groupId>
-            <artifactId>media-core-codec-g729</artifactId>
-            <version>8.0.0-SNAPSHOT</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/src/main/resources/lib/media-core-codec-g729-8.0.0-SNAPSHOT.jar</systemPath>
-        </dependency>
-        <dependency>
-            <groupId>com.test</groupId>
-            <artifactId>media-core-codec-gsm</artifactId>
-            <version>8.0.0-SNAPSHOT</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/src/main/resources/lib/media-core-codec-gsm-8.0.0-SNAPSHOT.jar</systemPath>
-        </dependency>
-        <dependency>
-            <groupId>com.test</groupId>
-            <artifactId>media-core-concurrent</artifactId>
-            <version>8.0.0-SNAPSHOT</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/src/main/resources/lib/media-core-concurrent-8.0.0-SNAPSHOT.jar</systemPath>
-        </dependency>
-        <dependency>
-            <groupId>com.test</groupId>
-            <artifactId>media-core-scheduler</artifactId>
-            <version>8.0.0-SNAPSHOT</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/src/main/resources/lib/media-core-scheduler-8.0.0-SNAPSHOT.jar</systemPath>
-        </dependency>
-        <dependency>
-            <groupId>com.test</groupId>
-            <artifactId>media-core-spi</artifactId>
-            <version>8.0.0-SNAPSHOT</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/src/main/resources/lib/media-core-spi-8.0.0-SNAPSHOT.jar</systemPath>
         </dependency>
     </dependencies>
 
@@ -382,7 +301,7 @@
             </dependency>
             <dependency>
                 <groupId>org.apache.logging.log4j</groupId>
-                <artifactId>log4j-slf4j-impl</artifactId>
+                <artifactId>log4j-slf4j2-impl</artifactId>
                 <version>${log4j.version}</version>
             </dependency>
             <dependency>
@@ -413,11 +332,11 @@
                 <version>${jackson.version}</version>
             </dependency>
 
-            <!-- fastjson -->
+            <!-- fastjson2 -->
             <dependency>
-                <groupId>com.alibaba</groupId>
-                <artifactId>fastjson</artifactId>
-                <version>${fastjson.version}</version>
+                <groupId>com.alibaba.fastjson2</groupId>
+                <artifactId>fastjson2</artifactId>
+                <version>${fastjson2.version}</version>
             </dependency>
 
             <!-- mysql-connector-java -->
@@ -500,6 +419,55 @@
                 <version>${netty.version}</version>
             </dependency>
 
+            <!-- jetty -->
+            <dependency>
+                <groupId>org.eclipse.jetty</groupId>
+                <artifactId>jetty-server</artifactId>
+                <version>${jetty.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.eclipse.jetty.ee10</groupId>
+                <artifactId>jetty-ee10-servlet</artifactId>
+                <version>${jetty.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.eclipse.jetty</groupId>
+                <artifactId>jetty-client</artifactId>
+                <version>${jetty.version}</version>
+            </dependency>
+
+            <!-- Jersey 核心与 HK2 注入 -->
+            <!-- https://mvnrepository.com/artifact/org.glassfish.jersey/jersey-bom -->
+            <dependency>
+                <groupId>org.glassfish.jersey</groupId>
+                <artifactId>jersey-bom</artifactId>
+                <version>${jersey.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.glassfish.jersey.core</groupId>
+                <artifactId>jersey-server</artifactId>
+                <version>${jersey.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.glassfish.jersey.containers</groupId>
+                <artifactId>jersey-container-jetty-servlet</artifactId>
+                <version>${jersey.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.glassfish.jersey.inject</groupId>
+                <artifactId>jersey-hk2</artifactId>
+                <version>${jersey.version}</version>
+            </dependency>
+
+            <!-- jakarta -->
+            <dependency>
+                <groupId>jakarta.ws.rs</groupId>
+                <artifactId>jakarta.ws.rs-api</artifactId>
+                <version>${jakarta.version}</version>
+            </dependency>
+
             <!-- 读取excel 转换为bean的依赖 -->
             <dependency>
                 <groupId>org.apache.poi</groupId>
@@ -519,13 +487,6 @@
                 <version>${simplejavamail.version}</version>
             </dependency>
 
-            <!-- java mail -->
-            <dependency>
-                <groupId>com.sun.mail</groupId>
-                <artifactId>javax.mail</artifactId>
-                <version>${javamail.version}</version>
-            </dependency>
-
             <!-- asm -->
             <dependency>
                 <groupId>org.ow2.asm</groupId>
@@ -538,14 +499,6 @@
                 <groupId>org.javassist</groupId>
                 <artifactId>javassist</artifactId>
                 <version>${javassist.version}</version>
-            </dependency>
-
-            <!-- 支付 -->
-            <!-- alipay-sdk -->
-            <dependency>
-                <groupId>com.alipay.sdk</groupId>
-                <artifactId>alipay-sdk-java</artifactId>
-                <version>${alipay-sdk.version}</version>
             </dependency>
 
             <!-- guava -->
@@ -581,7 +534,7 @@
                 <artifactId>jol-core</artifactId>
                 <version>${jol-core.version}</version>
                 <!-- 这里不是 provided 而是默认值时会导致日志打印不出来和其他异常 -->
-                <scope>provided</scope>
+<!--                <scope>provided</scope>-->
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -622,9 +575,9 @@
                     <!-- encoding -->
                     <encoding>${project.build.sourceEncoding}</encoding>
                     <!-- use this before version 3.1 -->
-                    <!--					<compilerArguments>-->
-                    <!--						<extdirs>src/main/resources/lib</extdirs>-->
-                    <!--					</compilerArguments>-->
+                    <!--<compilerArguments>-->
+                    <!--    <extdirs>src/main/resources/lib</extdirs>-->
+                    <!--</compilerArguments>-->
                     <!-- 编译参数 -->
                     <compilerArgs>
                         <!-- 引用本地包的目录 -->
@@ -645,10 +598,13 @@
                             <addClasspath>false</addClasspath>
                             <!-- classpathPrefix: classpath的前缀。 -->
                             <classpathPrefix>lib/</classpathPrefix>
-                            <mainClass>com.jnitest.Main</mainClass>
+                            <!-- mainClass: 指定jar包的入口类 -->
+                            <mainClass>please add this in child pom.xml</mainClass>
                         </manifest>
                         <manifestEntries>
                             <Built-By>${user.name}</Built-By>
+                            <Agent-Class>test.java.lang.instrument.AgentTest</Agent-Class>
+                            <Can-Retransform-Classes>true</Can-Retransform-Classes >
                         </manifestEntries>
                     </archive>
                     <!-- 自定义输出目录 -->
@@ -668,10 +624,13 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>com.jnitest.Main</mainClass>
+                            <!-- mainClass: 指定jar包的入口类 -->
+                            <mainClass>please add this in child pom.xml</mainClass>
                         </manifest>
                         <manifestEntries>
                             <Built-By>${user.name}</Built-By>
+                            <Agent-Class>test.java.lang.instrument.AgentTest</Agent-Class>
+                            <Can-Retransform-Classes>true</Can-Retransform-Classes >
                         </manifestEntries>
                     </archive>
                     <descriptors>
@@ -709,22 +668,22 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-clean-plugin</artifactId>
-                    <version>3.1.0</version>
+                    <version>3.2.0</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.7.0</version>
+                    <version>3.10.1</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-jar-plugin</artifactId>
-                    <version>3.1.0</version>
+                    <version>3.2.2</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-assembly-plugin</artifactId>
-                    <version>3.0.0</version>
+                    <version>3.4.2</version>
                 </plugin>
             </plugins>
         </pluginManagement>
