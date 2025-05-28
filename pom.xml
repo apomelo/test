@@ -75,24 +75,24 @@
         </dependency>
 
         <!-- log4j2 -->
-<!--        <dependency>-->
-<!--            <groupId>org.apache.logging.log4j</groupId>-->
-<!--            <artifactId>log4j-api</artifactId>-->
-<!--        </dependency>-->
-<!--        <dependency>-->
-<!--            <groupId>org.apache.logging.log4j</groupId>-->
-<!--            <artifactId>log4j-core</artifactId>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+        </dependency>
         <!-- 如果不需要ext的功能，理论上只需要这一个包即可 -->
         <!-- 下面的slf4j是2.0接口的时候，只能使用log4j-slf4j2-impl，不能使用log4j-slf4j-impl -->
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-slf4j2-impl</artifactId>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>org.slf4j</groupId>-->
-<!--            <artifactId>slf4j-api</artifactId>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-ext</artifactId>
@@ -543,6 +543,9 @@
         <resources>
             <resource>
                 <directory>src/main/resources/${profiles.active}</directory>
+            </resource>
+            <resource>
+                <directory>../src/main/resources/${profiles.active}</directory>
             </resource>
             <resource>
                 <directory>src/main/resources</directory>

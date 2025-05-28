@@ -67,6 +67,7 @@ public class JettyJmhTest {
         Options opts = new OptionsBuilder()
                 .include(JettyJmhTest.class.getSimpleName())
                 .resultFormat(ResultFormatType.JSON)
+                .output("log/jmh-results.json")
                 .build();
         new Runner(opts).run();
     }
