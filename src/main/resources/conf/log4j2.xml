@@ -7,8 +7,8 @@
         #配置日志文件目录(相对目录或者绝对目录)
         <property name="LOG_HOME">log</property>
         #配置日志文件名称
-        <property name="FILE_NAME">test_project</property>
-        <property name="EXCEPTION">exception</property>
+        <property name="FILE_NAME">test-project</property>
+        <property name="EXCEPTION">${FILE_NAME}-exception</property>
         <property name="SINGLE_SIZE">50MB</property>
     </properties>
     <!-- 自定义日志级别 -->
