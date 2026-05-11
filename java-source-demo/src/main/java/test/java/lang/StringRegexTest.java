@@ -1,8 +1,6 @@
 package test.java.lang;
 
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
 
@@ -30,6 +28,7 @@ public class StringRegexTest {
         test15();
         test16();
         test17();
+        test18();
     }
 
     /**
@@ -213,5 +212,38 @@ public class StringRegexTest {
         log.info("{}", s.replaceAll(reg, "\\\\")); // replacement相当于省略了$0
         String str = "_我a哈哈问c?&%aa_";
         log.info("{}", str.replaceAll(reg, "\\\\$0"));
+    }
+
+    /**
+     * 以,为分隔符,
+     */
+    public static void test18() {
+//        String reg = "(?:,)";
+        String reg = ",";
+        String s = "10.10.1.1, 192.168.1.1, 127.0.0.1";
+        log.info("s: {}", s);
+        String[] split = s.split(reg, 2);
+        log.info("split: {}", Arrays.toString(split));
+        String s1 = "192.168.1.1";
+        String[] split1 = s1.split(reg, 2);
+        log.info("split1: {}", Arrays.toString(split1));
+        String s2 = "192.168.1.1,";
+        String[] split2 = s2.split(reg, 2);
+        log.info("split2: {}", Arrays.toString(split2));
+        log.info("split2[1]: {}", split2[1].trim());
+        String s3 = ",";
+        String[] split3 = s3.split(reg, 2);
+        log.info("split3: {}", Arrays.toString(split3));
+        log.info("split3[0]: {}", split3[0].trim());
+        log.info("split3[1]: {}", split3[1].trim());
+        log.info("split3 length: {}", split3.length);
+        String s4 = ",192.168.1.1";
+        String[] split4 = s4.split(reg);
+        log.info("split4: {}", Arrays.toString(split4));
+        log.info("split4[1]: {}", split4[1].trim());
+        String s5 = ",192.168.1.1,";
+        String[] split5 = s5.split(reg);
+        log.info("split5: {}", Arrays.toString(split5));
+        log.info("split5[1]: {}", split5[1].trim());
     }
 }
