@@ -13,6 +13,7 @@ public class ExceptionTest {
         test1();
         test2();
         test3();
+        test4();
     }
 
     private static void test1() {
@@ -46,5 +47,29 @@ public class ExceptionTest {
         } finally {
             logger.warn("222222");
         }
+    }
+
+    private static void test4() {
+        A a = null;
+        try {
+            test4_1(a);
+        } finally {
+            logger.warn("222222");
+        }
+    }
+
+    private static void test4_1(A a) {
+        try {
+            int i = a.i;
+            logger.info("i={}", i);
+        } catch (Exception e) {
+            logger.warn("exception, e=", e);
+        } finally {
+            logger.warn("222222");
+        }
+    }
+
+    private static class A {
+        int i;
     }
 }
