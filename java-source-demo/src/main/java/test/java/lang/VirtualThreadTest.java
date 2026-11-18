@@ -252,6 +252,7 @@ public class VirtualThreadTest {
         Options opts = new OptionsBuilder()
                 .include(VirtualThreadTest.class.getSimpleName())
                 .resultFormat(ResultFormatType.JSON)
+                .output("log/jmh-results.json")
                 .build();
         new Runner(opts).run();
     }
